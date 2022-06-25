@@ -1,13 +1,15 @@
-package com.ability_plus.proj.controller;
+package com.ability_plus.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author sjx
+ */
 @RestController
 @RequestMapping
-public class TestController {
-
+public class Test {
     @GetMapping("/test")
-    public String test(){return "测试中";}
+    public String test(){return "good luck have fun";}
 }
