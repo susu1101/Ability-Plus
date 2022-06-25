@@ -1,5 +1,5 @@
 
-package com.ability_plus.proj;
+package com.ability_plus;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -58,17 +58,18 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://rm-7xvndo1h0oo173m08om.mysql.rds.aliyuncs.com:3306/industry-order-uat?useUnicode=true&characterEncoding=utf8&autoReconnectForPools=true&autoReconnect=true&serverTimezone=GMT%2B8&allowMultiQueries=true");
+        dsc.setUrl("jdbc:mysql://comp9323-glhf.cujxhuzlmnfk.ap-southeast-2.rds.amazonaws.com:3306/ability_plus?useUnicode=true&characterEncoding=utf8&autoReconnectForPools=true&autoReconnect=true&serverTimezone=UTC&allowMultiQueries=true");
         // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("");
-        dsc.setPassword("");
+//        dsc.setDriverName("com.mysql.jdbc.Driver");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+        dsc.setUsername("admin");
+        dsc.setPassword("glhfdbpwd");
         mpg.setDataSource(dsc);
 
         // 包配置
         final PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.ability_plus.proj");
+        pc.setParent("com.ability_plus");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
