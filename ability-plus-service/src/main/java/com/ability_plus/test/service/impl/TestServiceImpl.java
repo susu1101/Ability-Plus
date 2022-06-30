@@ -26,7 +26,7 @@ public class TestServiceImpl extends ServiceImpl<TestMapper, Test> implements IT
         System.out.println('1');
         this.save(test);
         System.out.println('2');
-        String text ="good luck have fun";
+        String text ="Hello, here is good luck have fun\n  This is your reached time: ";
         return text+l;
     }
 }
