@@ -24,11 +24,10 @@ public interface IProposalService extends IService<Proposal> {
 
     /**
      * does this user now can edit this proposal
-     * @param userId
      * @param proposalId
      * @return
      */
-    public  Boolean canEditProposal(Integer userId,Integer proposalId);
+    public  Boolean canEditProposal(Integer proposalId);
 
 
     /**

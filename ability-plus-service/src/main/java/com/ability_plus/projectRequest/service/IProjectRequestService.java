@@ -8,6 +8,8 @@ import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -33,15 +35,23 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
 
     /**
      * does this user now can edit this project
-     * @param userId
      * @param projectId
      * @return
      */
-    public Boolean canEditProject(Integer userId,Integer projectId);
+    public Boolean canEditProject(Integer projectId);
 
     /**
      * edit a project
      * @param po
      */
     public void editProject(ProjectEditPO po);
+
+    /**
+     * list all project request by condition
+     * @param status
+     * @param isAscendingOrder
+     * @param searchKey
+     * @return
+     */
+    List<ProjectInfoVO> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey,Integer pageNo,Integer pageSize);
 }

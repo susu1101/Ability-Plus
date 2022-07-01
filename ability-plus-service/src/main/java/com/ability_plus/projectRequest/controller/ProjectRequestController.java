@@ -3,15 +3,19 @@ package com.ability_plus.projectRequest.controller;
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
+import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.utils.RestResponse;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -49,11 +53,11 @@ public class ProjectRequestController {
     @GetMapping("/can_edit_project")
     @ApiOperation("can this user can edit this project now")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "user id", required = true),
+//            @ApiImplicitParam(name = "userId", value = "user id", required = true),
             @ApiImplicitParam(name = "projectId", value = "project id", required = true),
     })
-    public RestResponse<Boolean> canEditProject(Integer userId,Integer projectId){
-        return RestResponse.success(projectRequestService.canEditProject(userId,projectId));
+    public RestResponse<Boolean> canEditProject(Integer projectId){
+        return RestResponse.success(projectRequestService.canEditProject(projectId));
     }
 
     @PostMapping("/edit_project")
@@ -62,4 +66,22 @@ public class ProjectRequestController {
         projectRequestService.editProject(po);
         return RestResponse.success();
     }
+
+    @ApiOperation("list project request by condition")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "status", value = "status of project", required = true),
+            @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+
+    })
+    @GetMapping("/list_project_request")
+    public RestResponse<List<ProjectInfoVO>> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey,Integer pageNo,Integer pageSize){
+        List<ProjectInfoVO> projectInfoVOS = projectRequestService.listProjectRequests(status, isAscendingOrder, searchKey,pageNo,pageSize);
+        return RestResponse.success(projectInfoVOS);
+    }
+
+
+
 }

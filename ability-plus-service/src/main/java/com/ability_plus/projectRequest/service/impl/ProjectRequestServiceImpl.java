@@ -10,6 +10,8 @@ import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -31,13 +33,18 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
     }
 
     @Override
-    public Boolean canEditProject(Integer userId, Integer projectId) {
+    public Boolean canEditProject(Integer projectId) {
         return null;
     }
 
     @Override
     public void editProject(ProjectEditPO po) {
 
+    }
+
+    @Override
+    public List<ProjectInfoVO> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize) {
+        return null;
     }
 
 
