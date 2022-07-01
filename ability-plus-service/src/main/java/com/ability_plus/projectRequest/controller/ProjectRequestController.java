@@ -43,7 +43,7 @@ public class ProjectRequestController {
             @ApiImplicitParam(name = "id", value = "project id", required = true),
     })
     public RestResponse<ProjectInfoVO> getProjectInfo(@RequestParam Integer id){
-        projectRequestService.getProjectInfo(id);
-        return RestResponse.success();
+        ProjectInfoVO projectInfo = projectRequestService.getProjectInfo(id);
+        return RestResponse.success(projectInfo);
     }
 }

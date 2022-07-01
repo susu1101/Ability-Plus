@@ -26,7 +26,7 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
 
     @Override
     public ProjectInfoVO getProjectInfo(Integer id) {
-        return null;
+        return new ProjectInfoVO();
     }
 
 //    @Override

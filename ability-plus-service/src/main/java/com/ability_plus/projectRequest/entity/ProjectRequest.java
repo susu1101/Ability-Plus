@@ -83,9 +83,39 @@ public class ProjectRequest implements Serializable {
      */
     private String extraData;
 
+    /**
+     * 是否可以处理
+     */
+    private Boolean canProcess;
+
+    public Boolean getProcessingDone() {
+        return isProcessingDone;
+    }
+
+    public void setProcessingDone(Boolean processingDone) {
+        isProcessingDone = processingDone;
+    }
+
+    public Boolean getDraft() {
+        return isDraft;
+    }
+
+    public void setDraft(Boolean draft) {
+        isDraft = draft;
+    }
+
+    public Boolean getCanProcess() {
+        return canProcess;
+    }
+
+    public void setCanProcess(Boolean canProcess) {
+        this.canProcess = canProcess;
+    }
+
     public Integer getId() {
         return id;
     }
+
 
     public void setId(Integer id) {
         this.id = id;

@@ -32,7 +32,7 @@ public class TestController {
      * 内容不相对应的
      * @return
      */
-    @GetMapping("/print")
+    @GetMapping(value="/print")
     @ApiOperation("测试接口1")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "角色ID", required = true),
