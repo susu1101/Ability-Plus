@@ -28,4 +28,11 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      */
     public ProjectInfoVO getProjectInfo(Integer id);
 
+    /**
+     * does this user now can edit this project
+     * @param userId
+     * @param projectId
+     * @return
+     */
+    public Boolean canEditProject(Integer userId,Integer projectId);
 }

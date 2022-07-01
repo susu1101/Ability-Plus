@@ -29,6 +29,11 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
         return new ProjectInfoVO();
     }
 
+    @Override
+    public Boolean canEditProject(Integer userId, Integer projectId) {
+        return null;
+    }
+
 //    @Override
 //    public void createProjectRequest(String title, Integer categoryType, Integer proposalDue, Integer solutionDue, String extraData,Boolean isSubmission) {
 //        return;

@@ -75,9 +75,4 @@ public class ProjectInfoVO {
      */
     private String extraData;
 
-    /**
-     *  是否可以拥有此项目
-     */
-    private Boolean isCreator;
-
 }

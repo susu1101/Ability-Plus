@@ -46,4 +46,16 @@ public class ProjectRequestController {
         ProjectInfoVO projectInfo = projectRequestService.getProjectInfo(id);
         return RestResponse.success(projectInfo);
     }
+
+    @GetMapping("/canEditProject")
+    @ApiOperation("can this user can edit this project now")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "user id", required = true),
+            @ApiImplicitParam(name = "projectId", value = "project id", required = true),
+    })
+    public RestResponse<Boolean> canEditProject(Integer userId,Integer projectId){
+        return RestResponse.success(projectRequestService.canEditProject(userId,projectId));
+    }
+
+
 }
