@@ -1,7 +1,8 @@
 package com.ability_plus.proposal.service.impl;
 
 
-import com.ability_plus.proposal.entity.PO.ProposalPO;
+import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
+import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
@@ -21,7 +22,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
 
 
     @Override
-    public Integer createProposal(ProposalPO po) {
+    public Integer createProposal(ProposalCreatePO po) {
         return 0;
     }
 
@@ -31,7 +32,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
     }
 
     @Override
-    public void editProposal(ProposalPO po) {
+    public void editProposal(ProposalEditPO po) {
         return ;
     }
 }

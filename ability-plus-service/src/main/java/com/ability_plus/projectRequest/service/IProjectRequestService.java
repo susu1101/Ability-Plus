@@ -2,9 +2,11 @@ package com.ability_plus.projectRequest.service;
 
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
+import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>
@@ -35,4 +37,10 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      * @return
      */
     public Boolean canEditProject(Integer userId,Integer projectId);
+
+    /**
+     * edit a project
+     * @param po
+     */
+    public void editProject(@RequestBody ProjectEditPO po);
 }

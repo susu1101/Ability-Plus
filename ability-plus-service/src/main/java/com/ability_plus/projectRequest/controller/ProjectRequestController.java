@@ -2,6 +2,7 @@ package com.ability_plus.projectRequest.controller;
 
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
+import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.utils.RestResponse;
@@ -11,8 +12,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.ResultSet;
 
 /**
  * <p>
@@ -57,5 +56,10 @@ public class ProjectRequestController {
         return RestResponse.success(projectRequestService.canEditProject(userId,projectId));
     }
 
-
+    @PostMapping("/editProject")
+    @ApiOperation("edit project")
+    public RestResponse editProject(@RequestBody ProjectEditPO po){
+        projectRequestService.editProject(po);
+        return RestResponse.success();
+    }
 }

@@ -1,7 +1,9 @@
 package com.ability_plus.proposal.controller;
 
 
-import com.ability_plus.proposal.entity.PO.ProposalPO;
+import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
+import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
+import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
 import io.swagger.annotations.Api;
@@ -28,7 +30,7 @@ public class ProposalController {
 
     @PostMapping("createProposal")
     @ApiOperation("create proposal")
-    public RestResponse<Integer> createProposal(@RequestBody ProposalPO po){
+    public RestResponse<Integer> createProposal(@RequestBody ProposalCreatePO po){
         proposalService.createProposal(po);
         return RestResponse.success();
     }
@@ -45,9 +47,10 @@ public class ProposalController {
 
     @PostMapping("/editProposal")
     @ApiOperation("edit proposal")
-    public RestResponse editProposal(@RequestBody ProposalPO po){
+    public RestResponse editProposal(@RequestBody ProposalEditPO po){
         proposalService.editProposal(po);
         return RestResponse.success();
     }
+
 
 }

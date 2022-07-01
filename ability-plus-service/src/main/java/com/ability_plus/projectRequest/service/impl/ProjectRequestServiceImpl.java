@@ -2,6 +2,7 @@ package com.ability_plus.projectRequest.service.impl;
 
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
+import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
@@ -33,6 +34,12 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
     public Boolean canEditProject(Integer userId, Integer projectId) {
         return null;
     }
+
+    @Override
+    public void editProject(ProjectEditPO po) {
+
+    }
+
 
 //    @Override
 //    public void createProjectRequest(String title, Integer categoryType, Integer proposalDue, Integer solutionDue, String extraData,Boolean isSubmission) {

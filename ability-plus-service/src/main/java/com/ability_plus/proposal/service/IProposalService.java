@@ -1,6 +1,7 @@
 package com.ability_plus.proposal.service;
 
-import com.ability_plus.proposal.entity.PO.ProposalPO;
+import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
+import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -19,7 +20,7 @@ public interface IProposalService extends IService<Proposal> {
      * @param po
      * @return
      */
-    public Integer createProposal(ProposalPO po);
+    public Integer createProposal(ProposalCreatePO po);
 
     /**
      * does this user now can edit this proposal
@@ -34,5 +35,5 @@ public interface IProposalService extends IService<Proposal> {
      * edit a proposal
      * @param po
      */
-    public void editProposal(ProposalPO po);
+    public void editProposal(ProposalEditPO po);
 }
