@@ -19,8 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> implements IProposalService {
 
+
     @Override
-    public void createProjectRequest(ProposalPO po) {
-        return;
+    public Integer createProposal(ProposalPO po) {
+        return 0;
+    }
+
+    @Override
+    public Boolean canEditProposal(Integer userId, Integer proposalId) {
+        return null;
     }
 }

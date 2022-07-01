@@ -14,5 +14,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-06-30
  */
 public interface IProposalService extends IService<Proposal> {
-    public void createProjectRequest(ProposalPO po);
+    /**
+     * create a proposal request
+     * @param po
+     */
+    public Integer createProposal(ProposalPO po);
+
+
+    public  Boolean canEditProposal(Integer userId,Integer proposalId);
+
 }

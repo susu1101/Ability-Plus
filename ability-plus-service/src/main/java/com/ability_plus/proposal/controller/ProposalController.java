@@ -26,10 +26,20 @@ public class ProposalController {
     @Autowired
     IProposalService proposalService;
 
+    @PostMapping("createProposal")
     @ApiOperation("create proposal")
-    public RestResponse createProjectRequest(@RequestBody ProposalPO po){
-
-        proposalService.createProjectRequest(po);
+    public RestResponse<Integer> createProposal(@RequestBody ProposalPO po){
+        proposalService.createProposal(po);
         return RestResponse.success();
+    }
+
+    @GetMapping("/canEditProposal")
+    @ApiOperation("can this user can edit this proposal now")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "user id", required = true),
+            @ApiImplicitParam(name = "proposalId", value = "project id", required = true),
+    })
+    public RestResponse<Boolean> canEditProposal(Integer userId,Integer proposalId){
+        return RestResponse.success(proposalService.canEditProposal(userId,proposalId));
     }
 }
