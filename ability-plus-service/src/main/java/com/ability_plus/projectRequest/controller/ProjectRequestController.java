@@ -36,7 +36,7 @@ public class ProjectRequestController {
         return RestResponse.success();
     }
 
-    @GetMapping("/getProjectInfo")
+    @GetMapping("/get_project_info")
     @ApiOperation("get project request info")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "project id", required = true),
@@ -46,7 +46,7 @@ public class ProjectRequestController {
         return RestResponse.success(projectInfo);
     }
 
-    @GetMapping("/canEditProject")
+    @GetMapping("/can_edit_project")
     @ApiOperation("can this user can edit this project now")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "user id", required = true),
@@ -56,7 +56,7 @@ public class ProjectRequestController {
         return RestResponse.success(projectRequestService.canEditProject(userId,projectId));
     }
 
-    @PostMapping("/editProject")
+    @PostMapping("/edit_project")
     @ApiOperation("edit project")
     public RestResponse editProject(@RequestBody ProjectEditPO po){
         projectRequestService.editProject(po);

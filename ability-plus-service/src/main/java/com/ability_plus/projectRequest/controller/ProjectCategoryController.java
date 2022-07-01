@@ -20,12 +20,12 @@ import java.util.List;
  * @since 2022-07-01
  */
 @RestController
-@RequestMapping("/project-category")
+@RequestMapping("/project_category")
 @Api(value="listAllCategory")
 public class ProjectCategoryController {
     @Autowired
     IProjectCategoryService projectCategoryService;
-    @GetMapping("/create_project_request")
+    @GetMapping("/list_all_category")
     @ApiOperation("get all category of area")
     public RestResponse<List<ProjectCategory>> createProjectRequest(){
         List<ProjectCategory> categories = projectCategoryService.list();

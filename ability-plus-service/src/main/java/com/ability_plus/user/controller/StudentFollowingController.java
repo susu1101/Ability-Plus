@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-06-30
  */
 @RestController
-@RequestMapping("/student-following")
+@RequestMapping("/student_following")
 public class StudentFollowingController {
 
 }

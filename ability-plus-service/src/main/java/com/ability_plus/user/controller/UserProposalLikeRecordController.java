@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-06-30
  */
 @RestController
-@RequestMapping("/user-proposal-like-record")
+@RequestMapping("/user_proposal_like_record")
 public class UserProposalLikeRecordController {
 
 }
