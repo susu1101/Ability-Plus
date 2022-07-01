@@ -14,7 +14,7 @@ import java.util.Map;
 public class ProposalEditPO {
 
     @ApiModelProperty("id of proposal")
-    private Integer id;
+    private Integer proposalId;
 
     @ApiModelProperty("title of proposal")
     private String title;

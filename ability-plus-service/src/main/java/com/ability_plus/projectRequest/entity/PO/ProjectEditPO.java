@@ -10,7 +10,7 @@ import java.util.Map;
 public class ProjectEditPO {
 
     @ApiModelProperty("id of project request")
-    private String projectId;
+    private Integer projectId;
 
     @ApiModelProperty("title of project request")
     private String title;
