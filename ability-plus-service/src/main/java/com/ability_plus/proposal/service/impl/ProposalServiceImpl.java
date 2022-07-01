@@ -29,4 +29,9 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
     public Boolean canEditProposal(Integer userId, Integer proposalId) {
         return null;
     }
+
+    @Override
+    public void editProposal(ProposalPO po) {
+        return ;
+    }
 }

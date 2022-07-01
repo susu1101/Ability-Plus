@@ -15,12 +15,24 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IProposalService extends IService<Proposal> {
     /**
-     * create a proposal request
+     * create a proposal
      * @param po
+     * @return
      */
     public Integer createProposal(ProposalPO po);
 
-
+    /**
+     * does this user now can edit this proposal
+     * @param userId
+     * @param proposalId
+     * @return
+     */
     public  Boolean canEditProposal(Integer userId,Integer proposalId);
 
+
+    /**
+     * edit a proposal
+     * @param po
+     */
+    public void editProposal(ProposalPO po);
 }

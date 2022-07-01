@@ -42,4 +42,12 @@ public class ProposalController {
     public RestResponse<Boolean> canEditProposal(Integer userId,Integer proposalId){
         return RestResponse.success(proposalService.canEditProposal(userId,proposalId));
     }
+
+    @PostMapping("/editProposal")
+    @ApiOperation("edit proposal")
+    public RestResponse editProposal(@RequestBody ProposalPO po){
+        proposalService.editProposal(po);
+        return RestResponse.success();
+    }
+
 }
