@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper, ProjectRequest> implements IProjectRequestService {
     @Override
-    public void createProjectRequest(ProjectCreatePO po) {
-        return;
+    public Integer createProjectRequest(ProjectCreatePO po) {
+        return 0;
     }
 
     @Override

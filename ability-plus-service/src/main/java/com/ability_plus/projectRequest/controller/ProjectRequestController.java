@@ -31,7 +31,7 @@ public class ProjectRequestController {
 
     @PostMapping("/create_project_request")
     @ApiOperation("create project request")
-    public RestResponse createProjectRequest(@RequestBody ProjectCreatePO po){
+    public RestResponse<Integer> createProjectRequest(@RequestBody ProjectCreatePO po){
         projectRequestService.createProjectRequest(po);
         return RestResponse.success();
     }

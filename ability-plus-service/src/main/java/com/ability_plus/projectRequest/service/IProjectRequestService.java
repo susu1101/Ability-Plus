@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface IProjectRequestService extends IService<ProjectRequest> {
     /**
      * create project request
-     * @param po
+     * @param po data
+     * @return project id
      */
-    public void createProjectRequest(ProjectCreatePO po);
+    public Integer createProjectRequest(ProjectCreatePO po);
 
     /**
      * send project information to font-end
@@ -42,5 +43,5 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      * edit a project
      * @param po
      */
-    public void editProject(@RequestBody ProjectEditPO po);
+    public void editProject(ProjectEditPO po);
 }
