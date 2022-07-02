@@ -2,6 +2,7 @@ package com.ability_plus.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @author susu
  * @since 2022-06-30
  */
+@Data
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,50 +45,6 @@ public class User implements Serializable {
      */
     private String extraData;
 
-    public Integer getId() {
-        return id;
-    }
+    private String fullName;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public Boolean getIsCompany() {
-        return isCompany;
-    }
-
-    public void setIsCompany(Boolean isCompany) {
-        this.isCompany = isCompany;
-    }
-    public String getExtraData() {
-        return extraData;
-    }
-
-    public void setExtraData(String extraData) {
-        this.extraData = extraData;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", account=" + account +
-            ", password=" + password +
-            ", isCompany=" + isCompany +
-            ", extraData=" + extraData +
-        "}";
-    }
 }

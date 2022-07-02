@@ -13,5 +13,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-06-30
  */
 public interface IUserService extends IService<User> {
-
+    /**
+     * user register
+     * @param fullName
+     * @param email
+     * @param password
+     * @param extraData
+     * @param isCompany
+     * @return
+     */
+    Integer register(String fullName,String email, String password,String extraData,Boolean isCompany) throws Exception;
 }
