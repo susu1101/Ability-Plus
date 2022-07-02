@@ -4,9 +4,9 @@ package com.ability_plus.projectRequest.service;
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      * @param id    project id
      * @return      VO
      */
-    public ProjectInfoVO getProjectInfo(Integer id);
+    public ProjectDetailInfoVO getProjectInfo(Integer id);
 
     /**
      * does this user now can edit this project
@@ -53,5 +53,5 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      * @param searchKey
      * @return
      */
-    List<ProjectInfoVO> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey,Integer pageNo,Integer pageSize);
+    List<ProjectInfoVO> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
 }

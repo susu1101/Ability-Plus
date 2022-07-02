@@ -1,10 +1,9 @@
 package com.ability_plus.proposal.controller;
 
 
-import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
-import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
+import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
@@ -45,7 +44,7 @@ public class ProposalController {
 //            @ApiImplicitParam(name = "userId", value = "user id", required = true),
             @ApiImplicitParam(name = "proposalId", value = "project id", required = true),
     })
-    public RestResponse<Boolean> canEditProposal(Integer proposalId){
+    public RestResponse<Boolean> canEditProposal(@RequestParam(value = "proposalId") Integer proposalId){
         return RestResponse.success(proposalService.canEditProposal(proposalId));
     }
 
@@ -56,18 +55,40 @@ public class ProposalController {
         return RestResponse.success();
     }
 
-//    @ApiOperation("list proposal request by condition")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "status", value = "status of project", required = true),
-//            @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
-//            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
-//            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
-//            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
-//
-//    })
-//    @GetMapping("/list_proposal_request")
-//    public RestResponse<List<ProposalInfoVO>> listProposalRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize){
-//        List<ProposalInfoVO> proposalInfoVOS = proposalService.listProposalRequests(status, isAscendingOrder, searchKey,pageNo,pageSize);
-//        return RestResponse.success(proposalInfoVOS);
-//    }
+    @ApiOperation("list proposal request by condition")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ranking", value = "rank of proposal", required = true),
+            @ApiImplicitParam(name = "isAscendingOrderTime", value = "is the submission time order by ascending", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+
+    })
+    @GetMapping("/list_proposal_request")
+    public RestResponse<List<ProposalInfoVO>> listProposalRequests(@RequestParam(value = "ranking") String ranking,
+                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                   @RequestParam(value = "pageNo") Integer pageNo,
+                                                                   @RequestParam(value = "pageSize") Integer pageSize){
+        List<ProposalInfoVO> proposalInfoVOS = proposalService.listProposalRequests(ranking, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        return RestResponse.success(proposalInfoVOS);
+    }
+
+    @ApiOperation("select to approve proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalIds", value = "ids of proposal", required = true)
+    })
+    @PostMapping("/select_proposal")
+    public RestResponse selectProposal(@RequestParam(value="proposalIds") List<Integer> ids){
+        return RestResponse.success(proposalService.selectProposal(ids));
+    }
+
+    @ApiOperation("get proposal detail infomation")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId", value = "id of proposal", required = true)
+    })
+    @GetMapping("/get_proposal_detail_info")
+    public RestResponse<Proposal> getProposalInfo(@RequestParam(value="proposalId") Integer proposalId){
+        return RestResponse.success(proposalService.getProposalInfo(proposalId));
+    }
 }

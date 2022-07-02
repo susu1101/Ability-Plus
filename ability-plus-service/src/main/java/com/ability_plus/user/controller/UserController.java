@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,7 +40,11 @@ public class UserController {
             @ApiImplicitParam(name = "isCompany", value = "isCompany", required = true),
 
     })
-    public RestResponse<Integer> register(String fullName,String email, String password,String extraData,Boolean isCompany) throws Exception {
+    public RestResponse<Integer> register(@RequestParam(value = "fullName") String fullName,
+                                          @RequestParam(value = "email") String email,
+                                          @RequestParam(value = "password") String password,
+                                          @RequestParam(value = "extraData",required=false) String extraData,
+                                          @RequestParam(value = "isCompany") Boolean isCompany) throws Exception {
         Integer userId = userService.register(fullName, email, password, extraData, isCompany);
 
         return RestResponse.success(userId);

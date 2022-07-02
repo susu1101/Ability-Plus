@@ -3,11 +3,10 @@ package com.ability_plus.projectRequest.controller;
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
-import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.utils.RestResponse;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -45,8 +44,8 @@ public class ProjectRequestController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "project id", required = true),
     })
-    public RestResponse<ProjectInfoVO> getProjectInfo(@RequestParam Integer id){
-        ProjectInfoVO projectInfo = projectRequestService.getProjectInfo(id);
+    public RestResponse<ProjectDetailInfoVO> getProjectInfo(@RequestParam Integer id){
+        ProjectDetailInfoVO projectInfo = projectRequestService.getProjectInfo(id);
         return RestResponse.success(projectInfo);
     }
 
@@ -56,7 +55,7 @@ public class ProjectRequestController {
 //            @ApiImplicitParam(name = "userId", value = "user id", required = true),
             @ApiImplicitParam(name = "projectId", value = "project id", required = true),
     })
-    public RestResponse<Boolean> canEditProject(Integer projectId){
+    public RestResponse<Boolean> canEditProject(@RequestParam(value = "projectId") Integer projectId){
         return RestResponse.success(projectRequestService.canEditProject(projectId));
     }
 
@@ -71,15 +70,19 @@ public class ProjectRequestController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "status", value = "status of project", required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
-            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = false),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
 
     })
     @GetMapping("/list_project_request")
-    public RestResponse<List<ProjectInfoVO>> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey,Integer pageNo,Integer pageSize){
-        List<ProjectInfoVO> projectInfoVOS = projectRequestService.listProjectRequests(status, isAscendingOrder, searchKey,pageNo,pageSize);
-        return RestResponse.success(projectInfoVOS);
+    public RestResponse<List<ProjectInfoVO>> listProjectRequests(@RequestParam(value = "status") String status,
+                                                                 @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
+                                                                 @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                 @RequestParam(value = "pageNo") Integer pageNo,
+                                                                 @RequestParam(value = "pageSize") Integer pageSize){
+        List<ProjectInfoVO> projectInfoVO = projectRequestService.listProjectRequests(status, isAscendingOrder, searchKey,pageNo,pageSize);
+        return RestResponse.success(projectInfoVO);
     }
 
 

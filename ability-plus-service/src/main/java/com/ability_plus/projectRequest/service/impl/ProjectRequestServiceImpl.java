@@ -4,6 +4,7 @@ package com.ability_plus.projectRequest.service.impl;
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
@@ -28,8 +29,8 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
     }
 
     @Override
-    public ProjectInfoVO getProjectInfo(Integer id) {
-        return new ProjectInfoVO();
+    public ProjectDetailInfoVO getProjectInfo(Integer id) {
+        return new ProjectDetailInfoVO();
     }
 
     @Override
