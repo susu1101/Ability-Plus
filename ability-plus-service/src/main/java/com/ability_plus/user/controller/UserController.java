@@ -50,4 +50,20 @@ public class UserController {
         return RestResponse.success(userId);
 
     }
+
+    @PostMapping("/login")
+    @ApiOperation("user login")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "email", value = "email of user", required = true),
+            @ApiImplicitParam(name = "password", value = "password", required = true),
+            @ApiImplicitParam(name = "isCompany", value = "isCompany", required = true),
+    })
+    public RestResponse<Integer> login(@RequestParam(value = "email") String email,
+                                          @RequestParam(value = "password") String password,
+                                          @RequestParam(value = "isCompany") Boolean isCompany) throws Exception {
+        Integer userId = userService.login(email, password, isCompany);
+
+        return RestResponse.success(userId);
+
+    }
 }

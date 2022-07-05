@@ -53,7 +53,11 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
     }
 
     @Override
-    public Proposal getProposalInfo(Integer proposalId) {
-        return null;
-    }
+    public Proposal getProposalInfo(Integer proposalId) { return null; }
+
+    @Override
+    public List<ProposalInfoVO> listProposalsByUser(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) {return null;}
+
+    @Override
+    public List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) {return null;}
 }

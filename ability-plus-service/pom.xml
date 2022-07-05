@@ -85,12 +85,12 @@
 
 
 
-        <!-- fast json -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.69</version>
-        </dependency>
+<!--        &lt;!&ndash; fast json &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>fastjson</artifactId>-->
+<!--            <version>1.2.69</version>-->
+<!--        </dependency>-->
 
         <!-- quartz -->
         <dependency>

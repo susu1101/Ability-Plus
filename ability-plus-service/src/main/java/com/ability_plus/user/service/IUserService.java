@@ -23,4 +23,14 @@ public interface IUserService extends IService<User> {
      * @return
      */
     Integer register(String fullName,String email, String password,String extraData,Boolean isCompany) throws Exception;
+
+    /**
+     * user login
+     * @param email
+     * @param password
+     * @param isCompany
+     * @return
+     * @throws Exception
+     */
+    Integer login(String email, String password, Boolean isCompany) throws Exception;
 }
