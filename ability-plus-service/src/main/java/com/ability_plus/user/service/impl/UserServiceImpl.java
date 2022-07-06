@@ -50,9 +50,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public Integer login(String email, String password) throws Exception {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account", email);
+        wrapper.eq("password", password);
         List<User> users = this.list(wrapper);
 
-        //TODO 比对密码
         if (users.size() < 1) {
             logger.warn("account: " + email + " not found");
             throw new CheckException("user not found");
