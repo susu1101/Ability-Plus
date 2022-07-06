@@ -94,6 +94,7 @@ public class ProposalController {
 
     @ApiOperation("get proposals created by a student")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),
             @ApiImplicitParam(name = "status", value = "required status to filter", required = true),
             @ApiImplicitParam(name = "isAscendingOrderTime", value = "required order to sort", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
@@ -101,12 +102,13 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_student_proposal_request")
-    public RestResponse<List<ProposalInfoVO>> listStudentProposalRequest(@RequestParam(value = "status") String status,
+    public RestResponse<List<ProposalInfoVO>> listStudentProposalRequest(@RequestParam(value="creatorId") Integer creatorId,
+                                                                  @RequestParam(value = "status") String status,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                   @RequestParam(value = "pageNo") Integer pageNo,
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProposalInfoVO> proposalInfoVOS = proposalService.listStudentProposalRequests(status, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        List<ProposalInfoVO> proposalInfoVOS = proposalService.listStudentProposalRequest(creatorId, status, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
 
@@ -119,7 +121,7 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_outstanding_proposal_request")
-    public RestResponse<List<ProposalInfoVO>> listOutstandingProposalsByUser(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
+    public RestResponse<List<ProposalInfoVO>> listOutstandingProposalRequest(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                   @RequestParam(value = "pageNo") Integer pageNo,

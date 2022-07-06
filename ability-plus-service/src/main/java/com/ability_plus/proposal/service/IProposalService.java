@@ -67,6 +67,7 @@ public interface IProposalService extends IService<Proposal> {
 
     /**
      * list proposals created by a user for "my proposals" page
+     * @param creatorId the user id of the proposal author
      * @param status the required status enum ["all", "draft", "approved", "ejected"]
      * @param isAscendingOrderTime
      * @param searchKey
@@ -74,7 +75,7 @@ public interface IProposalService extends IService<Proposal> {
      * @param pageSize
      * @return
      */
-    List<ProposalInfoVO> listStudentProposalRequests(String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    List<ProposalInfoVO> listStudentProposalRequest(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
     /**
      * List outstanding proposals for "popular proposal" page
@@ -86,11 +87,5 @@ public interface IProposalService extends IService<Proposal> {
      * @return
      */
     List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
-
-    /**
-     * Approvea list of proposals
-     * @param proposalIds
-     */
-    void approveProposal(List<Integer> proposalIds);
 
 }
