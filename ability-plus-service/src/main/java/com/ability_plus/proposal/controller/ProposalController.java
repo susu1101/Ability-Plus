@@ -96,7 +96,7 @@ public class ProposalController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true)
     })
-    @GetMapping("/p")
+    @GetMapping("/student_proposals")
     public RestResponse<List<ProposalInfoVO>> listProposalsByUser(@RequestParam(value="creatorId") Integer creatorId,
                                                                   @RequestParam(value = "status") String status,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
