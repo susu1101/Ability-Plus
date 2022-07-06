@@ -85,6 +85,26 @@ public class ProjectRequestController {
         return RestResponse.success(projectInfoVO);
     }
 
+    @ApiOperation("list all project request created by a company")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),
+            @ApiImplicitParam(name = "status", value = "required status to filter", required = true),
+            @ApiImplicitParam(name = "isAscendingOrderTime", value = "required order to sort", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+    })
+    @GetMapping("/list_company_project_request")
+    public RestResponse<List<ProjectInfoVO>> listProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
+                                                                 @RequestParam(value = "status") String status,
+                                                                 @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                 @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                 @RequestParam(value = "pageNo") Integer pageNo,
+                                                                 @RequestParam(value = "pageSize") Integer pageSize){
+        List<ProjectInfoVO> projectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrderTime, searchKey, pageNo, pageSize);
+        return RestResponse.success(projectInfoVO);
+    }
+
 
 
 }

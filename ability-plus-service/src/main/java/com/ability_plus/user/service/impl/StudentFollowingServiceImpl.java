@@ -24,5 +24,5 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
     }
 
     @Override
-    public List<StudentFollowingVO> listStudentFollowings(Integer userId) { return null; }
+    public List<StudentFollowingVO> listStudentFollowings() { return null; }
 }

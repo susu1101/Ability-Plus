@@ -92,18 +92,21 @@ public class ProposalController {
         return RestResponse.success(proposalService.getProposalInfo(proposalId));
     }
 
-    @ApiOperation("get proposals created by a user")
+    @ApiOperation("get proposals created by a student")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true)
+            @ApiImplicitParam(name = "status", value = "required status to filter", required = true),
+            @ApiImplicitParam(name = "isAscendingOrderTime", value = "required order to sort", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
-    @GetMapping("/student_proposals")
-    public RestResponse<List<ProposalInfoVO>> listProposalsByUser(@RequestParam(value="creatorId") Integer creatorId,
-                                                                  @RequestParam(value = "status") String status,
+    @GetMapping("/list_student_proposal_request")
+    public RestResponse<List<ProposalInfoVO>> listProposalsByUser(@RequestParam(value = "status") String status,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                   @RequestParam(value = "pageNo") Integer pageNo,
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProposalInfoVO> proposalInfoVOS = proposalService.listProposalsByUser(creatorId, status, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        List<ProposalInfoVO> proposalInfoVOS = proposalService.listStudentProposalRequests(status, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
 
@@ -123,6 +126,13 @@ public class ProposalController {
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
         List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
+    }
+
+    @PostMapping("approve_proposal")
+    @ApiOperation("approve a list of proposals")
+    public RestResponse<Integer> approveProposal(@RequestBody List<Integer> proposalIds){
+        proposalService.approveProposal(proposalIds);
+        return RestResponse.success();
     }
 
 }

@@ -54,4 +54,16 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      * @return
      */
     List<ProjectInfoVO> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
+
+    /**
+     * list all project request created by a company
+     * @param creatorId
+     * @param status
+     * @param isAscendingOrderTime
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    List<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 }

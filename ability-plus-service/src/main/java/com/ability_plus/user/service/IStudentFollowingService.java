@@ -19,8 +19,7 @@ import java.util.List;
 public interface IStudentFollowingService extends IService<StudentFollowing> {
     /**
      * List all following companies of a student
-     * @param userId
      * @return
      */
-    List<StudentFollowingVO> listStudentFollowings(Integer userId);
+    List<StudentFollowingVO> listStudentFollowings();
 }

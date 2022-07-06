@@ -33,11 +33,8 @@ public class StudentFollowingController {
     IStudentFollowingService studentFollowingService;
 
     @ApiOperation("get students' following companies")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "user id of the student", required = true),
-    })
     @GetMapping("/all")
-    public RestResponse<List<StudentFollowingVO>> listStudentFollowings(@RequestParam(value="userId") Integer userId){
-        return RestResponse.success(studentFollowingService.listStudentFollowings(userId));
+    public RestResponse<List<StudentFollowingVO>> listStudentFollowings(){
+        return RestResponse.success(studentFollowingService.listStudentFollowings());
     }
 }
