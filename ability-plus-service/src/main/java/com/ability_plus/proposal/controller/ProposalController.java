@@ -101,7 +101,7 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_student_proposal_request")
-    public RestResponse<List<ProposalInfoVO>> listProposalsByUser(@RequestParam(value = "status") String status,
+    public RestResponse<List<ProposalInfoVO>> listStudentProposalRequest(@RequestParam(value = "status") String status,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                   @RequestParam(value = "pageNo") Integer pageNo,
@@ -126,13 +126,6 @@ public class ProposalController {
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
         List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
-    }
-
-    @PostMapping("approve_proposal")
-    @ApiOperation("approve a list of proposals")
-    public RestResponse<Integer> approveProposal(@RequestBody List<Integer> proposalIds){
-        proposalService.approveProposal(proposalIds);
-        return RestResponse.success();
     }
 
 }

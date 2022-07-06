@@ -95,7 +95,7 @@ public class ProjectRequestController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_company_project_request")
-    public RestResponse<List<ProjectInfoVO>> listProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
+    public RestResponse<List<ProjectInfoVO>> listCompanyProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
                                                                  @RequestParam(value = "status") String status,
                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
