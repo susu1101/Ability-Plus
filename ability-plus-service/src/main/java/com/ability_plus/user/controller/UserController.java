@@ -55,13 +55,11 @@ public class UserController {
     @ApiOperation("user login")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", value = "email of user", required = true),
-            @ApiImplicitParam(name = "password", value = "password", required = true),
-            @ApiImplicitParam(name = "isCompany", value = "isCompany", required = true),
+            @ApiImplicitParam(name = "password", value = "password", required = true)
     })
     public RestResponse<Integer> login(@RequestParam(value = "email") String email,
-                                          @RequestParam(value = "password") String password,
-                                          @RequestParam(value = "isCompany") Boolean isCompany) throws Exception {
-        Integer userId = userService.login(email, password, isCompany);
+                                          @RequestParam(value = "password") String password) throws Exception {
+        Integer userId = userService.login(email, password);
 
         return RestResponse.success(userId);
 

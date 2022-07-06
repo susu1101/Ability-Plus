@@ -32,5 +32,5 @@ public interface IUserService extends IService<User> {
      * @return
      * @throws Exception
      */
-    Integer login(String email, String password, Boolean isCompany) throws Exception;
+    Integer login(String email, String password) throws Exception;
 }

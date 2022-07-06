@@ -47,15 +47,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public Integer login(String email, String password, Boolean isCompany) throws Exception {
+    public Integer login(String email, String password) throws Exception {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account", email);
-        wrapper.eq("isCompany", isCompany);
         List<User> users = this.list(wrapper);
+
+        //TODO 比对密码
         if (users.size() < 1) {
             logger.warn("account: " + email + " not found");
             throw new CheckException("user not found");
         }
+
         return users.get(0).getId();
     }
 }
