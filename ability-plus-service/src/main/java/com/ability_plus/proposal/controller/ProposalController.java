@@ -96,7 +96,7 @@ public class ProposalController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true)
     })
-    @GetMapping("/get_proposals_by_user")
+    @GetMapping("/p")
     public RestResponse<List<ProposalInfoVO>> listProposalsByUser(@RequestParam(value="creatorId") Integer creatorId,
                                                                   @RequestParam(value = "status") String status,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
@@ -124,4 +124,5 @@ public class ProposalController {
         List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
+
 }
