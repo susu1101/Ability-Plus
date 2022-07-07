@@ -45,4 +45,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         this.save(user);
         return user.getId();
     }
+
+    @Override
+    public Integer login(String email, String password) throws Exception {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("account", email);
+        wrapper.eq("password", password);
+        List<User> users = this.list(wrapper);
+
+        if (users.size() < 1) {
+            logger.warn("account: " + email + " not found");
+            throw new CheckException("user not found");
+        }
+
+        return users.get(0).getId();
+    }
 }

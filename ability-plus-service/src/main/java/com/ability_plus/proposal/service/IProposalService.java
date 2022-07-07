@@ -65,4 +65,27 @@ public interface IProposalService extends IService<Proposal> {
      */
     Proposal getProposalInfo(@RequestParam(value="proposalId") Integer proposalId);
 
+    /**
+     * list proposals created by a user for "my proposals" page
+     * @param creatorId the user id of the proposal author
+     * @param status the required status enum ["all", "draft", "approved", "ejected"]
+     * @param isAscendingOrderTime
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    List<ProposalInfoVO> listStudentProposalRequest(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+
+    /**
+     * List outstanding proposals for "popular proposal" page
+     * @param isAscendingOrderLike
+     * @param isAscendingOrderTime
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+
 }

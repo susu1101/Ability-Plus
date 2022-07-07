@@ -53,4 +53,9 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
 //    public void createProjectRequest(String title, Integer categoryType, Integer proposalDue, Integer solutionDue, String extraData,Boolean isSubmission) {
 //        return;
 //    }
+
+    @Override
+    public List<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) {
+        return null;
+    }
 }

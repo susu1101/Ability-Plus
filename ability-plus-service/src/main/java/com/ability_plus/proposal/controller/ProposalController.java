@@ -91,4 +91,43 @@ public class ProposalController {
     public RestResponse<Proposal> getProposalInfo(@RequestParam(value="proposalId") Integer proposalId){
         return RestResponse.success(proposalService.getProposalInfo(proposalId));
     }
+
+    @ApiOperation("get proposals created by a student")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),
+            @ApiImplicitParam(name = "status", value = "required status to filter", required = true),
+            @ApiImplicitParam(name = "isAscendingOrderTime", value = "required order to sort", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+    })
+    @GetMapping("/list_student_proposal_request")
+    public RestResponse<List<ProposalInfoVO>> listStudentProposalRequest(@RequestParam(value="creatorId") Integer creatorId,
+                                                                  @RequestParam(value = "status") String status,
+                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                  @RequestParam(value = "pageNo") Integer pageNo,
+                                                                  @RequestParam(value = "pageSize") Integer pageSize){
+        List<ProposalInfoVO> proposalInfoVOS = proposalService.listStudentProposalRequest(creatorId, status, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        return RestResponse.success(proposalInfoVOS);
+    }
+
+    @ApiOperation("get outstanding proposals request")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "isAscendingOrderLike", value = "is the number of likes order by ascending", required = true),
+            @ApiImplicitParam(name = "isAscendingOrderTime", value = "is the submission time order by ascending", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+    })
+    @GetMapping("/list_outstanding_proposal_request")
+    public RestResponse<List<ProposalInfoVO>> listOutstandingProposalRequest(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
+                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                  @RequestParam(value = "pageNo") Integer pageNo,
+                                                                  @RequestParam(value = "pageSize") Integer pageSize){
+        List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        return RestResponse.success(proposalInfoVOS);
+    }
+
 }
