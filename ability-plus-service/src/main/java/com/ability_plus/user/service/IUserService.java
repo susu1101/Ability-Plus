@@ -28,9 +28,8 @@ public interface IUserService extends IService<User> {
      * user login
      * @param email
      * @param password
-     * @param isCompany
      * @return
      * @throws Exception
      */
-    Integer login(String email, String password) throws Exception;
+    String login(String email, String password) throws Exception;
 }

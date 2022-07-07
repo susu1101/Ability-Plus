@@ -1,4 +1,4 @@
-package com.ability_plus.exception;
+package com.ability_plus.system.entity;
 
 public class AppException extends RuntimeException {
 

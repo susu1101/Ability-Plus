@@ -1,7 +1,9 @@
-package com.ability_plus.utils;
+package com.ability_plus.system;
 
-import com.ability_plus.exception.CheckException;
-import org.springframework.http.ResponseEntity;
+import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.utils.RestResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 //    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 处理 Exception 异常
@@ -28,7 +31,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public RestResponse exceptionHandler(HttpServletRequest httpServletRequest, Exception e) {
-//        logger.error("服务错误:", e);
+        logger.error("服务错误:", e);
         return RestResponse.error(400L,e.getMessage());
     }
 

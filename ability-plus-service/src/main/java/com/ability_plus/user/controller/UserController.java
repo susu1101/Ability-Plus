@@ -57,11 +57,11 @@ public class UserController {
             @ApiImplicitParam(name = "email", value = "email of user", required = true),
             @ApiImplicitParam(name = "password", value = "password", required = true)
     })
-    public RestResponse<Integer> login(@RequestParam(value = "email") String email,
+    public RestResponse<String> login(@RequestParam(value = "email") String email,
                                           @RequestParam(value = "password") String password) throws Exception {
-        Integer userId = userService.login(email, password);
+        String jwt = userService.login(email, password);
 
-        return RestResponse.success(userId);
+        return RestResponse.success(jwt);
 
     }
 }

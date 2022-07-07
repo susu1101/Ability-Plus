@@ -84,7 +84,6 @@ public class ProjectRequestController {
         List<ProjectInfoVO> projectInfoVO = projectRequestService.listProjectRequests(status, isAscendingOrder, searchKey,pageNo,pageSize);
         return RestResponse.success(projectInfoVO);
     }
-
     @ApiOperation("list all project request created by a company")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),

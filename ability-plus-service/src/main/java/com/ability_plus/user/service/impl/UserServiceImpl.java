@@ -1,15 +1,17 @@
 package com.ability_plus.user.service.impl;
 
-import com.ability_plus.exception.CheckException;
+import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.mapper.UserMapper;
 import com.ability_plus.user.service.IUserService;
+import com.ability_plus.utils.JwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,6 +25,9 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+
+    static final long ONE_HOUR = 60*60*1000;
 
     @Override
     public Integer register(String fullName, String email, String password, String extraData, Boolean isCompany) throws Exception {
@@ -47,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public Integer login(String email, String password) throws Exception {
+    public String login(String email, String password) throws Exception {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account", email);
         wrapper.eq("password", password);
@@ -57,7 +62,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             logger.warn("account: " + email + " not found");
             throw new CheckException("user not found");
         }
-
-        return users.get(0).getId();
+        User user = users.get(0);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id",user.getId().toString());
+        map.put("account",user.getAccount());
+        map.put("isCompany",user.getIsCompany().toString());
+        String token = JwtUtil.getToken(map);
+        return token;
     }
 }
