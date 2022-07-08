@@ -16,7 +16,7 @@ public class JwtUtil {
 
     public static String getToken(Map<String, String> map) {
         Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.HOUR_OF_DAY, 24);
+        instance.add(Calendar.DATE, 100);
 
         JWTCreator.Builder builder = JWT.create();
         map.forEach(builder::withClaim);

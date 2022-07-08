@@ -19,8 +19,10 @@ public class UserUtils {
         String token = http.getHeader("token");
         UserPOJO user = new UserPOJO();
         DecodedJWT verify = JwtUtil.verify(token);
-        user.setId(verify.getClaim("id").asInt());
-        user.setIsCompany(verify.getClaim("isCompany").asBoolean());
+
+
+        user.setId(Integer.parseInt(verify.getClaim("id").asString()));
+        user.setIsCompany(Boolean.parseBoolean(verify.getClaim("isCompany").asString()));
         user.setAccount(verify.getClaim("account").asString());
         return user;
     }

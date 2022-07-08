@@ -6,6 +6,8 @@ import lombok.Data;
 
 /**
  * @author sjx
+ * 比project实体类多一个company_name
+ * 少一个id
  */
 @Data
 @ApiModel("project information")
@@ -74,5 +76,11 @@ public class ProjectDetailInfoVO {
      * 额外数据
      */
     private String extraData;
+
+    /**
+     * 是否可以处理
+     */
+    private Boolean canProcess;
+
 
 }

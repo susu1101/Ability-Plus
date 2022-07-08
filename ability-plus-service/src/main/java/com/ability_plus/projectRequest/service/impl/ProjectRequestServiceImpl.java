@@ -8,12 +8,16 @@ import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
+import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.UserPOJO;
+import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,11 +35,16 @@ import java.util.Map;
 @Service
 public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper, ProjectRequest> implements IProjectRequestService {
 
+    @Autowired
+    IUserService userService;
     @Override
     public Integer createProjectRequest(ProjectCreatePO po, HttpServletRequest http) {
         //check input
         CheckUtils.assertNotNull(po,"input cannot be null");
         UserPOJO user = UserUtils.getCurrentUser(http);
+        if (!user.getIsCompany()){
+            throw new CheckException("Students do not have permission to post projects");
+        }
         int notTime = TimeUtils.getTimeStamp();
         Map<String, String> extraData = po.getExtraData();
         String description = extraData.get("description");
@@ -76,7 +85,14 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
 
     @Override
     public ProjectDetailInfoVO getProjectInfo(Integer id) {
-        return new ProjectDetailInfoVO();
+        ProjectDetailInfoVO projectDetailInfoVO = new ProjectDetailInfoVO();
+        ProjectRequest proj = this.getById(id);
+        CheckUtils.assertNotNull(proj,"project request not exists");
+        BeanUtils.copyProperties(proj,projectDetailInfoVO);
+        Integer creatorId = proj.getCreatorId();
+        projectDetailInfoVO.setCreatorName(userService.getById(creatorId).getFullName());
+
+        return projectDetailInfoVO;
     }
 
     @Override
