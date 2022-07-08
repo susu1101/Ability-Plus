@@ -19,10 +19,10 @@ public class JWTInterceptor implements HandlerInterceptor {
             JwtUtil.verify(token);
             return true;
         }catch (TokenExpiredException e){
-            e.printStackTrace();
+//            e.printStackTrace();
             map.put("msg","token expired");
         }catch ( Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             map.put("msg","token fail");
         }
         String s = new ObjectMapper().writeValueAsString(map);
