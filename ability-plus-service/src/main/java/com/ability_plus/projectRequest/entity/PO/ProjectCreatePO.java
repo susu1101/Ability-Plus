@@ -12,7 +12,7 @@ import java.util.Map;
 public class ProjectCreatePO {
     private String title;
 
-    private Integer categoryType;
+    private String categoryType;
 
     private Integer proposalDue;
 

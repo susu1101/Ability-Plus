@@ -8,6 +8,7 @@ import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,10 +22,11 @@ import java.util.List;
 public interface IProjectRequestService extends IService<ProjectRequest> {
     /**
      * create project request
-     * @param po data
-     * @return project id
+     * @param po
+     * @param http
+     * @return
      */
-    public Integer createProjectRequest(ProjectCreatePO po);
+    public Integer createProjectRequest(ProjectCreatePO po, HttpServletRequest http);
 
     /**
      * send project information to font-end

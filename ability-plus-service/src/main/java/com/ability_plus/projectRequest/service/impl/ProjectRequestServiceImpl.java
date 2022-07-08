@@ -8,10 +8,17 @@ import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
+import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.UserPOJO;
+import com.ability_plus.utils.CheckUtils;
+import com.ability_plus.utils.TimeUtils;
+import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,9 +30,48 @@ import java.util.List;
  */
 @Service
 public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper, ProjectRequest> implements IProjectRequestService {
+
     @Override
-    public Integer createProjectRequest(ProjectCreatePO po) {
-        return 0;
+    public Integer createProjectRequest(ProjectCreatePO po, HttpServletRequest http) {
+        //check input
+        CheckUtils.assertNotNull(po,"input cannot be null");
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        int notTime = TimeUtils.getTimeStamp();
+        Map<String, String> extraData = po.getExtraData();
+        String description = extraData.get("description");
+        //check description
+        CheckUtils.assertNotNull(description,"Description cannot be null");
+        ProjectRequest projectRequest = makeProjectRequest(po, user, notTime, extraData, description);
+        this.save(projectRequest);
+        return projectRequest.getId();
+    }
+
+    private ProjectRequest makeProjectRequest(ProjectCreatePO po, UserPOJO user, int notTime, Map<String, String> extraData, String description) {
+        ProjectRequest projectRequest = new ProjectRequest();
+        String contactEmail;
+        String email = extraData.get("contactEmail");
+        extraData.remove("description");
+        if (!CheckUtils.isNull(email)){
+            contactEmail=email;
+            extraData.remove(email);
+        }else{
+            contactEmail= user.getAccount();
+        }
+        projectRequest.setCreatorId(user.getId());
+        projectRequest.setName(po.getTitle());
+        projectRequest.setDescription(description);
+        projectRequest.setProposalDdl(po.getProposalDue());
+        projectRequest.setSolutionDdl(po.getSolutionDue());
+        projectRequest.setIsProcessingDone(false);
+        projectRequest.setCreateTime(notTime);
+        projectRequest.setCreatorId(user.getId());
+        projectRequest.setLastModifiedTime(notTime);
+        projectRequest.setIsDraft(po.getIsDraft());
+        projectRequest.setContactEmail(contactEmail);
+        projectRequest.setProjectArea(po.getCategoryType());
+
+        projectRequest.setCanProcess(false);
+        return projectRequest;
     }
 
     @Override

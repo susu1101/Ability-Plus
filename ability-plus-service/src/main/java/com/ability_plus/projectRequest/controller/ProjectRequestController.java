@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -34,9 +35,8 @@ public class ProjectRequestController {
 
     @PostMapping("/create_project_request")
     @ApiOperation("create project request")
-    public RestResponse<Integer> createProjectRequest(@RequestBody ProjectCreatePO po){
-        projectRequestService.createProjectRequest(po);
-        return RestResponse.success();
+    public RestResponse<Integer> createProjectRequest(@RequestBody ProjectCreatePO po, HttpServletRequest http){
+        return RestResponse.success(projectRequestService.createProjectRequest(po,http));
     }
 
     @GetMapping("/get_project_info")
