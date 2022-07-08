@@ -81,7 +81,8 @@ public class ProjectRequestServiceImpl extends ServiceImpl<ProjectRequestMapper,
 
     @Override
     public Boolean canEditProject(Integer projectId) {
-        return null;
+        ProjectRequest proj = this.getById(projectId);
+        return TimeUtils.getTimeStamp() > proj.getProposalDdl();
     }
 
     @Override
