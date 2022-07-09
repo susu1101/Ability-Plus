@@ -4,8 +4,15 @@ package com.ability_plus.projectRequest.service.impl;
 import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
 import com.ability_plus.projectRequest.mapper.ProjectProposalRecordMapper;
 import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
+import com.ability_plus.user.entity.User;
+import com.ability_plus.user.service.IUserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Wrapper;
+import java.util.List;
 
 /**
  * <p>

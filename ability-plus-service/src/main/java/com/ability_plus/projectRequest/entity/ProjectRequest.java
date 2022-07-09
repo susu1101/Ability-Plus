@@ -51,7 +51,7 @@ public class ProjectRequest implements Serializable {
     /**
      * 创建项目时间
      */
-    private Integer createTime;
+    private Long createTime;
 
     /**
      * 创建用户id
@@ -61,12 +61,12 @@ public class ProjectRequest implements Serializable {
     /**
      * 最后修改时间
      */
-    private Integer lastModifiedTime;
+    private Long lastModifiedTime;
 
     /**
-     * 是否是草稿
+     * project状态
      */
-    private Boolean isDraft;
+    private String status;
 
     /**
      * 公司邮箱，若未特别设置，则为公司自己的邮箱
@@ -96,12 +96,12 @@ public class ProjectRequest implements Serializable {
         isProcessingDone = processingDone;
     }
 
-    public Boolean getDraft() {
-        return isDraft;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDraft(Boolean draft) {
-        isDraft = draft;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Boolean getCanProcess() {
@@ -116,6 +116,29 @@ public class ProjectRequest implements Serializable {
         return id;
     }
 
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Long getLastModifiedTime() {
+        return lastModifiedTime;
+    }
+
+    public void setLastModifiedTime(Long lastModifiedTime) {
+        this.lastModifiedTime = lastModifiedTime;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -155,34 +178,7 @@ public class ProjectRequest implements Serializable {
     public void setIsProcessingDone(Boolean isProcessingDone) {
         this.isProcessingDone = isProcessingDone;
     }
-    public Integer getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Integer createTime) {
-        this.createTime = createTime;
-    }
-    public Integer getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Integer creatorId) {
-        this.creatorId = creatorId;
-    }
-    public Integer getLastModifiedTime() {
-        return lastModifiedTime;
-    }
-
-    public void setLastModifiedTime(Integer lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
-    }
-    public Boolean getIsDraft() {
-        return isDraft;
-    }
-
-    public void setIsDraft(Boolean isDraft) {
-        this.isDraft = isDraft;
-    }
     public String getContactEmail() {
         return contactEmail;
     }
@@ -208,19 +204,20 @@ public class ProjectRequest implements Serializable {
     @Override
     public String toString() {
         return "ProjectRequest{" +
-            "id=" + id +
-            ", name=" + name +
-            ", description=" + description +
-            ", proposalDdl=" + proposalDdl +
-            ", solutionDdl=" + solutionDdl +
-            ", isProcessingDone=" + isProcessingDone +
-            ", createTime=" + createTime +
-            ", creatorId=" + creatorId +
-            ", lastModifiedTime=" + lastModifiedTime +
-            ", isDraft=" + isDraft +
-            ", contactEmail=" + contactEmail +
-            ", projectArea=" + projectArea +
-            ", extraData=" + extraData +
-        "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", proposalDdl=" + proposalDdl +
+                ", solutionDdl=" + solutionDdl +
+                ", isProcessingDone=" + isProcessingDone +
+                ", createTime=" + createTime +
+                ", creatorId=" + creatorId +
+                ", lastModifiedTime=" + lastModifiedTime +
+                ", status='" + status + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", projectArea='" + projectArea + '\'' +
+                ", extraData='" + extraData + '\'' +
+                ", canProcess=" + canProcess +
+                '}';
     }
 }

@@ -68,7 +68,7 @@ public interface IProposalService extends IService<Proposal> {
     /**
      * list proposals created by a user for "my proposals" page
      * @param creatorId the user id of the proposal author
-     * @param status the required status enum ["all", "draft", "approved", "ejected"]
+     * @param status the required status
      * @param isAscendingOrderTime
      * @param searchKey
      * @param pageNo

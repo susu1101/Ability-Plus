@@ -41,7 +41,7 @@ public class Proposal implements Serializable {
     /**
      * 创建时间
      */
-    private Integer createTime;
+    private Long createTime;
 
     /**
      * 创建时间
@@ -51,12 +51,12 @@ public class Proposal implements Serializable {
     /**
      * 最后修改时间
      */
-    private Integer lastModifiedTime;
+    private Long lastModifiedTime;
 
     /**
-     * 是否是草稿
+     * proposal状态
      */
-    private Boolean isDraft;
+    private String status;
 
     /**
      * 是否是草稿
@@ -91,13 +91,15 @@ public class Proposal implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Integer getCreateTime() {
+
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Integer createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
+
     public Integer getLikeNum() {
         return likeNum;
     }
@@ -105,20 +107,23 @@ public class Proposal implements Serializable {
     public void setLikeNum(Integer likeNum) {
         this.likeNum = likeNum;
     }
-    public Integer getLastModifiedTime() {
+
+    public Long getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(Integer lastModifiedTime) {
+    public void setLastModifiedTime(Long lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
-    public Boolean getIsDraft() {
-        return isDraft;
+
+    public String getStatus() {
+        return status;
     }
 
-    public void setIsDraft(Boolean isDraft) {
-        this.isDraft = isDraft;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
     public String getOneSentenceDescription() {
         return oneSentenceDescription;
     }
@@ -130,15 +135,15 @@ public class Proposal implements Serializable {
     @Override
     public String toString() {
         return "Proposal{" +
-            "id=" + id +
-            ", title=" + title +
-            ", creatorId=" + creatorId +
-            ", description=" + description +
-            ", createTime=" + createTime +
-            ", likeNum=" + likeNum +
-            ", lastModifiedTime=" + lastModifiedTime +
-            ", isDraft=" + isDraft +
-            ", oneSentenceDescription=" + oneSentenceDescription +
-        "}";
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", creatorId=" + creatorId +
+                ", description='" + description + '\'' +
+                ", createTime=" + createTime +
+                ", likeNum=" + likeNum +
+                ", lastModifiedTime=" + lastModifiedTime +
+                ", status='" + status + '\'' +
+                ", oneSentenceDescription='" + oneSentenceDescription + '\'' +
+                '}';
     }
 }

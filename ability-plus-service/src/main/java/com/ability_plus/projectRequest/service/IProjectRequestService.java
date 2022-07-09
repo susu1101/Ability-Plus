@@ -6,7 +6,10 @@ import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.yulichang.base.MPJBaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.List;
  * @author susu
  * @since 2022-06-30
  */
-public interface IProjectRequestService extends IService<ProjectRequest> {
+public interface IProjectRequestService extends IService<ProjectRequest>, MPJBaseService<ProjectRequest> {
     /**
      * create project request
      * @param po
@@ -55,7 +58,7 @@ public interface IProjectRequestService extends IService<ProjectRequest> {
      * @param searchKey
      * @return
      */
-    List<ProjectInfoVO> listProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProjectInfoVO> listMyProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize, HttpServletRequest http);
 
     /**
      * list all project request created by a company

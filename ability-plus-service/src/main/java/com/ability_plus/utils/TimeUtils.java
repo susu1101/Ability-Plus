@@ -5,7 +5,7 @@ package com.ability_plus.utils;
  */
 public class TimeUtils {
 
-    public static int getTimeStamp(){
-        return (int) System.currentTimeMillis()/1000;
+    public static long getTimeStamp(){
+        return System.currentTimeMillis()/1000;
     }
 }

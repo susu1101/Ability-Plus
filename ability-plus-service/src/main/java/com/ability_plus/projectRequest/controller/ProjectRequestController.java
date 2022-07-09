@@ -7,6 +7,8 @@ import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.utils.RestResponse;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -48,7 +50,7 @@ public class ProjectRequestController {
         ProjectDetailInfoVO projectInfo = projectRequestService.getProjectInfo(id);
         return RestResponse.success(projectInfo);
     }
-
+       
     @GetMapping("/can_edit_project")
     @ApiOperation("can this user can edit this project now")
     @ApiImplicitParams({
@@ -66,7 +68,7 @@ public class ProjectRequestController {
         return RestResponse.success();
     }
 
-    @ApiOperation("list project request by condition")
+    @ApiOperation("list my project request by condition")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "status", value = "status of project", required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
@@ -75,13 +77,14 @@ public class ProjectRequestController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
 
     })
-    @GetMapping("/list_project_request")
-    public RestResponse<List<ProjectInfoVO>> listProjectRequests(@RequestParam(value = "status") String status,
-                                                                 @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
-                                                                 @RequestParam(value = "searchKey",required = false) String searchKey,
-                                                                 @RequestParam(value = "pageNo") Integer pageNo,
-                                                                 @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProjectInfoVO> projectInfoVO = projectRequestService.listProjectRequests(status, isAscendingOrder, searchKey,pageNo,pageSize);
+    @GetMapping("/list_my_project_request")
+    public RestResponse<IPage<ProjectInfoVO>> listMyProjectRequests(@RequestParam(value = "status") String status,
+                                                                   @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
+                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                   @RequestParam(value = "pageNo") Integer pageNo,
+                                                                   @RequestParam(value = "pageSize") Integer pageSize,
+                                                                   HttpServletRequest http){
+        IPage<ProjectInfoVO> projectInfoVO = projectRequestService.listMyProjectRequests(status, isAscendingOrder, searchKey,pageNo,pageSize,http);
         return RestResponse.success(projectInfoVO);
     }
     @ApiOperation("list all project request created by a company")
