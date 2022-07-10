@@ -15,6 +15,8 @@ import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.base.MPJBaseMapper;
+import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ import java.util.List;
  * @since 2022-06-30
  */
 @Service
-public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMapper, StudentFollowing> implements IStudentFollowingService {
+public class StudentFollowingServiceImpl extends MPJBaseServiceImpl<StudentFollowingMapper, StudentFollowing> implements IStudentFollowingService {
     @Autowired
     IUserService userService;
 
@@ -45,7 +47,7 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
     @Override
     public List<StudentFollowingVO> listStudentFollowings(HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
-        checkNotCompany(user);
+        CheckUtils.assertNotCompany(user);
         MPJLambdaWrapper<StudentFollowing> wrapper = new MPJLambdaWrapper<>();
         wrapper
                 .leftJoin(User.class, User::getId, StudentFollowing::getCompanyId)
@@ -59,17 +61,17 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
     @Override
     public void followCompany(Integer companyId, HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
-        checkNotCompany(user);
+        CheckUtils.assertNotCompany(user);
+
+        // check if company exists
+        if (userService.getById(companyId) == null) {
+            throw new CheckException("Company not exists");
+        }
 
         // find if the company has been followed. Throw exception on found
         QueryWrapper<StudentFollowing> wrapper = findRecord(user.getId(), companyId);
         if (this.list(wrapper).size() > 0) {
             throw new CheckException("Company has been followed");
-        }
-
-        // check if company exists
-        if (userService.getById(companyId) == null) {
-            throw new CheckException("Company not exists");
         }
 
         // create new student following object
@@ -84,23 +86,14 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
     @Override
     public void unFollowCompany(Integer companyId, HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
-        checkNotCompany(user);
+        CheckUtils.assertNotCompany(user);
 
         // query wrapper to find the following record
         QueryWrapper<StudentFollowing> wrapper = findRecord(user.getId(), companyId);
         this.remove(wrapper);
     }
 
-    /**
-     * Check if the request user is company
-     * @param user
-     */
-    private void checkNotCompany(UserPOJO user) {
-        System.out.println(user.toString());
-        if (user.getIsCompany()){
-            throw new CheckException("Company do not have permission to execute this operation");
-        }
-    }
+
 
     /**
      * Find a following record

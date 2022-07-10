@@ -5,6 +5,7 @@ import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.user.entity.StudentFollowing;
 import com.ability_plus.user.entity.VO.StudentFollowingVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.yulichang.base.MPJBaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author susu
  * @since 2022-06-30
  */
-public interface IStudentFollowingService extends IService<StudentFollowing> {
+public interface IStudentFollowingService extends IService<StudentFollowing>, MPJBaseService<StudentFollowing> {
     /**
      * list student's following
      * @param http

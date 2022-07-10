@@ -2,6 +2,7 @@ package com.ability_plus.utils;
 
 
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.user.entity.UserPOJO;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 import java.util.Collection;
@@ -16,6 +17,27 @@ import java.util.Map;
  * Copyright©2018 All rights reserved.
  */
 public class CheckUtils {
+
+    /**
+     * Check if the request user is company
+     * @param user
+     */
+    public static final void assertNotCompany(UserPOJO user) {
+        if (user.getIsCompany()){
+            throw new CheckException("Company do not have permission to execute this operation");
+        }
+    }
+
+    /**
+     * Check if the request user is student
+     * @param user
+     */
+    public static final void assertNotStudent(UserPOJO user) {
+        if (!user.getIsCompany()){
+            throw new CheckException("Student do not have permission to execute this operation");
+        }
+    }
+
 
     public static final boolean isNull(Object object) {
         return object == null;
