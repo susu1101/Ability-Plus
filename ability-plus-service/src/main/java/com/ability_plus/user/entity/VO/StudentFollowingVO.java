@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class StudentFollowingVO {
-    private String name;
+    private String companyName;
     private Integer companyId;
+    private Integer followTime;
 }

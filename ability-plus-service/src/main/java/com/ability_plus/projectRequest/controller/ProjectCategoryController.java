@@ -31,4 +31,5 @@ public class ProjectCategoryController {
         List<ProjectCategory> categories = projectCategoryService.list();
         return RestResponse.success(categories);
     }
+
 }
