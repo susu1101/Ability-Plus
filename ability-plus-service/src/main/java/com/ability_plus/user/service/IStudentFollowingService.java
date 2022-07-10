@@ -6,6 +6,7 @@ import com.ability_plus.user.entity.StudentFollowing;
 import com.ability_plus.user.entity.VO.StudentFollowingVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,4 +23,15 @@ public interface IStudentFollowingService extends IService<StudentFollowing> {
      * @return
      */
     List<StudentFollowingVO> listStudentFollowings();
+
+    /**
+     * Follow a company
+     * @return
+     */
+    Boolean followCompany(Integer companyId, HttpServletRequest http);
+    /**
+     * Follow a company
+     * @return
+     */
+    void unFollowCompany(Integer companyId, HttpServletRequest http);
 }

@@ -3,6 +3,7 @@ package com.ability_plus.user.mapper;
 
 import com.ability_plus.user.entity.StudentFollowing;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,6 +15,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2022-06-30
  */
 @Mapper
-public interface StudentFollowingMapper extends BaseMapper<StudentFollowing> {
+public interface StudentFollowingMapper extends BaseMapper<StudentFollowing>, MPJBaseMapper<StudentFollowing> {
 
 }

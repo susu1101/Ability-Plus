@@ -10,11 +10,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -37,4 +35,37 @@ public class StudentFollowingController {
     public RestResponse<List<StudentFollowingVO>> listStudentFollowings(){
         return RestResponse.success(studentFollowingService.listStudentFollowings());
     }
+
+    @ApiOperation("follow a company")
+    @PostMapping("/{id}")
+    public RestResponse<List<StudentFollowingVO>> followCompany(@PathVariable("id") String id, HttpServletRequest http){
+        int companyId;
+        try {
+            companyId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            return RestResponse.error(4L, "ID must be integer");
+        }
+        if (studentFollowingService.followCompany(companyId, http)) {
+            return RestResponse.success();
+        } else {
+            // TODO change this error code
+            return RestResponse.error(1L, "Company has been followed");
+        }
+
+    }
+
+    @ApiOperation("unfollow a company")
+    @DeleteMapping("/{id}")
+    public RestResponse<List<StudentFollowingVO>> unfollowCompany(@PathVariable("id") String id, HttpServletRequest http){
+        int companyId;
+        try {
+            companyId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            // TODO change this error code
+            return RestResponse.error(1L, "ID must be integer");
+        }
+        studentFollowingService.unFollowCompany(companyId, http);
+        return RestResponse.success();
+    }
+
 }
