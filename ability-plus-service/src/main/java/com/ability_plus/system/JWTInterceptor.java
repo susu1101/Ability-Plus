@@ -28,6 +28,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         String s = new ObjectMapper().writeValueAsString(map);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(s);
+        response.setStatus(401);
         return false;
     }
 }
