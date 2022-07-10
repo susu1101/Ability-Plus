@@ -11,6 +11,7 @@ import com.ability_plus.user.entity.VO.StudentFollowingVO;
 import com.ability_plus.user.mapper.StudentFollowingMapper;
 import com.ability_plus.user.service.IStudentFollowingService;
 import com.ability_plus.user.service.IUserService;
+import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -66,7 +67,10 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
             throw new CheckException("Company has been followed");
         }
 
-        // TODO check if company exists
+        // check if company exists
+        if (userService.getById(companyId) == null) {
+            throw new CheckException("Company not exists");
+        }
 
         // create new student following object
         StudentFollowing studentFollowing = new StudentFollowing();
