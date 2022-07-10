@@ -19,19 +19,23 @@ import java.util.List;
  */
 public interface IStudentFollowingService extends IService<StudentFollowing> {
     /**
-     * List all following companies of a student
+     * list student's following
+     * @param http
      * @return
      */
     List<StudentFollowingVO> listStudentFollowings(HttpServletRequest http);
 
     /**
-     * Follow a company
-     * @return
+     * follow a company
+     * @param companyId
+     * @param http
      */
     void followCompany(Integer companyId, HttpServletRequest http);
+
     /**
-     * Follow a company
-     * @return
+     * unfollow a company
+     * @param companyId
+     * @param http
      */
     void unFollowCompany(Integer companyId, HttpServletRequest http);
 }
