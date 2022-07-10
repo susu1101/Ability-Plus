@@ -1,6 +1,9 @@
 package com.ability_plus.utils;
 
 
+/**
+ * @author sjx
+ */
 public class RestResponse<T> extends RestSimpleResponse {
 
     private T data;
@@ -18,7 +21,7 @@ public class RestResponse<T> extends RestSimpleResponse {
     }
 
     public static <T> RestResponse<T> success(T data) {
-        return new RestResponse<>(0L, "success", data);
+        return new RestResponse<>(200L, "success", data);
     }
 
     public static <T> RestResponse<T> error(Long resultCode, Throwable throwable) {
