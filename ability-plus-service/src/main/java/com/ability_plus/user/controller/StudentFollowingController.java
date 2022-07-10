@@ -2,6 +2,7 @@ package com.ability_plus.user.controller;
 
 
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.VO.StudentFollowingVO;
 import com.ability_plus.user.service.IStudentFollowingService;
 import com.ability_plus.user.service.impl.StudentFollowingServiceImpl;
@@ -32,39 +33,21 @@ public class StudentFollowingController {
 
     @ApiOperation("get students' following companies")
     @GetMapping("/all")
-    public RestResponse<List<StudentFollowingVO>> listStudentFollowings(){
-        return RestResponse.success(studentFollowingService.listStudentFollowings());
+    public RestResponse<List<StudentFollowingVO>> listStudentFollowings(HttpServletRequest http){
+        return RestResponse.success(studentFollowingService.listStudentFollowings(http));
     }
 
     @ApiOperation("follow a company")
     @PostMapping("/{id}")
-    public RestResponse<List<StudentFollowingVO>> followCompany(@PathVariable("id") String id, HttpServletRequest http){
-        int companyId;
-        try {
-            companyId = Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            return RestResponse.error(4L, "ID must be integer");
-        }
-        if (studentFollowingService.followCompany(companyId, http)) {
-            return RestResponse.success();
-        } else {
-            // TODO change this error code
-            return RestResponse.error(1L, "Company has been followed");
-        }
-
+    public RestResponse<List<StudentFollowingVO>> followCompany(@PathVariable("id") Integer id, HttpServletRequest http){
+        studentFollowingService.followCompany(id, http);
+        return RestResponse.success();
     }
 
     @ApiOperation("unfollow a company")
     @DeleteMapping("/{id}")
-    public RestResponse<List<StudentFollowingVO>> unfollowCompany(@PathVariable("id") String id, HttpServletRequest http){
-        int companyId;
-        try {
-            companyId = Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            // TODO change this error code
-            return RestResponse.error(1L, "ID must be integer");
-        }
-        studentFollowingService.unFollowCompany(companyId, http);
+    public RestResponse<List<StudentFollowingVO>> unfollowCompany(@PathVariable("id") Integer id, HttpServletRequest http){
+        studentFollowingService.unFollowCompany(id, http);
         return RestResponse.success();
     }
 

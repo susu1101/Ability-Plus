@@ -22,13 +22,13 @@ public interface IStudentFollowingService extends IService<StudentFollowing> {
      * List all following companies of a student
      * @return
      */
-    List<StudentFollowingVO> listStudentFollowings();
+    List<StudentFollowingVO> listStudentFollowings(HttpServletRequest http);
 
     /**
      * Follow a company
      * @return
      */
-    Boolean followCompany(Integer companyId, HttpServletRequest http);
+    void followCompany(Integer companyId, HttpServletRequest http);
     /**
      * Follow a company
      * @return

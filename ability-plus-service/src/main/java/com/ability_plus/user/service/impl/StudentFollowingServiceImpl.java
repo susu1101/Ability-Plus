@@ -42,7 +42,9 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
     StudentFollowingMapper studentFollowingMapper;
 
     @Override
-    public List<StudentFollowingVO> listStudentFollowings() {
+    public List<StudentFollowingVO> listStudentFollowings(HttpServletRequest http) {
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        checkNotCompany(user);
         MPJLambdaWrapper<StudentFollowing> wrapper = new MPJLambdaWrapper<>();
         wrapper
                 .leftJoin(User.class, User::getId, StudentFollowing::getCompanyId)
@@ -54,15 +56,17 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
     }
 
     @Override
-    public Boolean followCompany(Integer companyId, HttpServletRequest http) {
+    public void followCompany(Integer companyId, HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
         checkNotCompany(user);
 
-        // find if the company has been followed. Return false on found
+        // find if the company has been followed. Throw exception on found
         QueryWrapper<StudentFollowing> wrapper = findRecord(user.getId(), companyId);
         if (this.list(wrapper).size() > 0) {
-            return false;
+            throw new CheckException("Company has been followed");
         }
+
+        // TODO check if company exists
 
         // create new student following object
         StudentFollowing studentFollowing = new StudentFollowing();
@@ -71,7 +75,6 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
         studentFollowing.setFollowTime((int)Instant.now().getEpochSecond());
 
         this.save(studentFollowing);
-        return true;
     }
 
     @Override
@@ -84,12 +87,23 @@ public class StudentFollowingServiceImpl extends ServiceImpl<StudentFollowingMap
         this.remove(wrapper);
     }
 
+    /**
+     * Check if the request user is company
+     * @param user
+     */
     private void checkNotCompany(UserPOJO user) {
+        System.out.println(user.toString());
         if (user.getIsCompany()){
             throw new CheckException("Company do not have permission to execute this operation");
         }
     }
 
+    /**
+     * Find a following record
+     * @param studentId
+     * @param companyId
+     * @return query wrapper
+     */
     private QueryWrapper<StudentFollowing> findRecord(int studentId, int companyId) {
         QueryWrapper<StudentFollowing> wrapper = new QueryWrapper<>();
         wrapper.eq("student_id", studentId);
