@@ -2,6 +2,7 @@ package com.ability_plus.user.service;
 
 
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -31,5 +32,5 @@ public interface IUserService extends IService<User> {
      * @return
      * @throws Exception
      */
-    String login(String email, String password) throws Exception;
+    UserLoginVO login(String email, String password) throws Exception;
 }

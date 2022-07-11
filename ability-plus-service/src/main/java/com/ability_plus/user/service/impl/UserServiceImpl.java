@@ -2,6 +2,7 @@ package com.ability_plus.user.service.impl;
 
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.mapper.UserMapper;
 import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.JwtUtil;
@@ -52,7 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public String login(String email, String password) throws Exception {
+    public UserLoginVO login(String email, String password) throws Exception {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account", email);
         wrapper.eq("password", password);
@@ -68,6 +69,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         map.put("account",user.getAccount());
         map.put("isCompany",user.getIsCompany().toString());
         String token = JwtUtil.getToken(map);
-        return token;
+        UserLoginVO userLoginVO = new UserLoginVO();
+        userLoginVO.setUserName(user.getFullName());
+        userLoginVO.setAccessToken(token);
+        userLoginVO.setIsCompany(user.getIsCompany());
+        return userLoginVO;
     }
 }

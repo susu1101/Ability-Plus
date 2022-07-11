@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class JWTInterceptor implements HandlerInterceptor {
 
@@ -20,10 +21,10 @@ public class JWTInterceptor implements HandlerInterceptor {
             return true;
         }catch (TokenExpiredException e){
 //            e.printStackTrace();
-            map.put("msg","token expired");
+            map.put("message","token expired");
         }catch ( Exception e){
 //            e.printStackTrace();
-            map.put("msg","token fail");
+            map.put("message","token fail");
         }
         String s = new ObjectMapper().writeValueAsString(map);
         response.setContentType("application/json;charset=UTF-8");

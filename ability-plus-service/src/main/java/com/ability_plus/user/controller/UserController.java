@@ -1,6 +1,7 @@
 package com.ability_plus.user.controller;
 
 
+import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.RestResponse;
 import io.swagger.annotations.Api;
@@ -8,10 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -57,11 +55,11 @@ public class UserController {
             @ApiImplicitParam(name = "email", value = "email of user", required = true),
             @ApiImplicitParam(name = "password", value = "password", required = true)
     })
-    public RestResponse<String> login(@RequestParam(value = "email") String email,
-                                          @RequestParam(value = "password") String password) throws Exception {
-        String jwt = userService.login(email, password);
+    public RestResponse<UserLoginVO> login(@RequestParam(value = "email") String email,
+                                           @RequestParam(value = "password") String password) throws Exception {
+        UserLoginVO userLoginVO = userService.login(email, password);
 
-        return RestResponse.success(jwt);
+        return RestResponse.success(userLoginVO);
 
     }
 }
