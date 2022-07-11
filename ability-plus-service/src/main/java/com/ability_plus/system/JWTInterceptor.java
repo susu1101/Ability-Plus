@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
+/**
+ * @author sjx
+ */
 public class JWTInterceptor implements HandlerInterceptor {
 
     @Override
