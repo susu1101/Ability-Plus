@@ -28,7 +28,6 @@ import java.util.List;
  * @since 2022-06-30
  */
 @RestController
-
 @Api(value="project_request")
 @RequestMapping("/project")
 public class ProjectRequestController {

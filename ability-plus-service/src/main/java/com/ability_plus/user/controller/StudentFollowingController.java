@@ -7,6 +7,7 @@ import com.ability_plus.user.entity.VO.StudentFollowingVO;
 import com.ability_plus.user.service.IStudentFollowingService;
 import com.ability_plus.user.service.impl.StudentFollowingServiceImpl;
 import com.ability_plus.utils.RestResponse;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/student_following")
+@Api(value="student_following")
 public class StudentFollowingController {
 
     @Autowired
