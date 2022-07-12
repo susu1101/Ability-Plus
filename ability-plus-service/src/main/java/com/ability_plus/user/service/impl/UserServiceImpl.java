@@ -102,8 +102,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String userName=po.getUserName();
         String extraData=po.getExtraData().toString();
         String password=po.getNewPassword();
-        /*System.out.println(this.getById(userID).getPassword());*/
-        if (this.getById(userID).getPassword().toString()==oldPassword){
+        /*System.out.println(this.getById(userID));
+        System.out.println(this.getById(userID).getPassword());
+        System.out.println(oldPassword);*/
+
+        String realOldPassword=this.getById(userID).getPassword().toString();
+        if (!realOldPassword.equals(oldPassword)){
             throw new CheckException("Wrong old password!");
         }
         UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
