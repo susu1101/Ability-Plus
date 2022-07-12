@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class ProjectInfoVO {
+    private Integer id;
     private String title;
     private String description;
     private String authorName;
