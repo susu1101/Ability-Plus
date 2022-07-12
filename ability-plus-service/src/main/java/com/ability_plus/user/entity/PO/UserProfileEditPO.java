@@ -12,19 +12,12 @@ import java.util.Map;
 @ApiModel("edit profile")
 public class UserProfileEditPO {
 
-    @ApiModelProperty("id of user")
-    private Integer userId;
-
     @ApiModelProperty("user name")
     private String userName;
 
     @ApiModelProperty("extra data in json")
     private Map<String,String> extraData;
 
-    @ApiModelProperty("new user password")
-    private String newPassword;
 
-    @ApiModelProperty("old user password")
-    private String oldPassword;
 
 }

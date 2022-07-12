@@ -1,6 +1,7 @@
 package com.ability_plus.user.controller;
 
 
+import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
@@ -12,6 +13,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -69,8 +72,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "user id", required = true),
     })
-    public RestResponse<UserProfileVO> getProfileInfo(@RequestParam Integer id) throws Exception{
-        UserProfileVO userProfileVO = userService.getProfileInfo(id);
+    public RestResponse<UserProfileVO> getProfileInfo(HttpServletRequest http) throws Exception{
+        UserProfileVO userProfileVO = userService.getProfileInfo(http);
         return RestResponse.success(userProfileVO);
     }
 
@@ -78,8 +81,8 @@ public class UserController {
 
     @PostMapping("/edit_own_profile_info")
     @ApiOperation("edit own profile info")
-    public RestResponse editProfile(@RequestBody UserProfileEditPO po) throws Exception{
-        userService.editProfile(po);
+    public RestResponse editProfile(@RequestBody UserProfileEditPO po,HttpServletRequest http) throws Exception{
+        userService.editProfile(po,http);
         return RestResponse.success();
     }
 
@@ -87,6 +90,13 @@ public class UserController {
     @ApiOperation("delete account")
     public RestResponse deleteAccount(@RequestParam Integer id) throws Exception{
         userService.deleteAccount(id);
+        return RestResponse.success();
+    }
+
+    @PostMapping("/change_password")
+    @ApiOperation("change password")
+    public RestResponse changePassword(@RequestBody ChangePasswordPO po, HttpServletRequest http) throws Exception{
+        userService.changePassword(po, http);
         return RestResponse.success();
     }
 }

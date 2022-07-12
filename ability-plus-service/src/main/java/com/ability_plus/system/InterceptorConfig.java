@@ -28,7 +28,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     }
 
-    @Override
+   /* @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
@@ -53,5 +53,5 @@ public class InterceptorConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**",addCorsCig());
         return new CorsFilter(source);
     }
-
+*/
 }

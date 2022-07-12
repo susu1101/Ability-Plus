@@ -1,11 +1,14 @@
 package com.ability_plus.user.service;
 
 
+import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -41,18 +44,25 @@ public interface IUserService extends IService<User> {
     @return info
     @throws Exception*/
 
-    UserProfileVO getProfileInfo(Integer id) throws Exception;
+    UserProfileVO getProfileInfo(HttpServletRequest http) throws Exception;
 
 
 
     /**
      * edit a profile
-     * @param po
+     * @param po,http
      */
-    public void editProfile(UserProfileEditPO po) throws Exception;
+    public void editProfile(UserProfileEditPO po,HttpServletRequest http) throws Exception;
 
     /*delete account
     @param id
     @throws Exception*/
     public void deleteAccount(Integer id) throws Exception;
+
+    /**
+     * change password
+     * @param po,http
+     */
+    public void changePassword(ChangePasswordPO po, HttpServletRequest http) throws Exception;
+
 }

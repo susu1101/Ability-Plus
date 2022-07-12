@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author sjx
  */
 public class UserUtils {
-
     /**
      * 获得当前用户
      * @return
@@ -25,7 +24,6 @@ public class UserUtils {
         user.setAccount(verify.getClaim("account").asString());
         return user;
     }
-
 
 
 
