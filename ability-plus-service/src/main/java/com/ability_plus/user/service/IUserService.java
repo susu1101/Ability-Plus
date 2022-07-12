@@ -7,6 +7,8 @@ import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  *  服务类
@@ -41,7 +43,7 @@ public interface IUserService extends IService<User> {
     @return info
     @throws Exception*/
 
-    UserProfileVO getProfileInfo(Integer id) throws Exception;
+    UserProfileVO getProfileInfo(HttpServletRequest http) throws Exception;
 
 
 
@@ -49,7 +51,7 @@ public interface IUserService extends IService<User> {
      * edit a profile
      * @param po
      */
-    public void editProfile(UserProfileEditPO po) throws Exception;
+    public void editProfile(UserProfileEditPO po,HttpServletRequest http) throws Exception;
 
     /*delete account
     @param id

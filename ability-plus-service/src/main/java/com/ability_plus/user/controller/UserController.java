@@ -13,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  *  前端控制器
@@ -70,8 +72,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "user id", required = true),
     })
-    public RestResponse<UserProfileVO> getProfileInfo(@RequestParam Integer id) throws Exception{
-        UserProfileVO userProfileVO = userService.getProfileInfo(id);
+    public RestResponse<UserProfileVO> getProfileInfo(HttpServletRequest http) throws Exception{
+        UserProfileVO userProfileVO = userService.getProfileInfo(http);
         return RestResponse.success(userProfileVO);
     }
 
@@ -79,8 +81,8 @@ public class UserController {
 
     @PostMapping("/edit_own_profile_info")
     @ApiOperation("edit own profile info")
-    public RestResponse editProfile(@RequestBody UserProfileEditPO po) throws Exception{
-        userService.editProfile(po);
+    public RestResponse editProfile(@RequestBody UserProfileEditPO po,HttpServletRequest http) throws Exception{
+        userService.editProfile(po,http);
         return RestResponse.success();
     }
 

@@ -3,12 +3,14 @@ package com.ability_plus.user.service.impl;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.UserPOJO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.mapper.UserMapper;
 import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.JwtUtil;
+import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -19,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,11 +87,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public UserProfileVO getProfileInfo(Integer id) {
+    public UserProfileVO getProfileInfo(HttpServletRequest http) {
         UserProfileVO userProfileVO = new UserProfileVO();
-        User user = this.getById(id);
-        CheckUtils.assertNotNull(user,"user not exists");
-        BeanUtils.copyProperties(user,userProfileVO);
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        User userData = this.getById(user.getId());
+        CheckUtils.assertNotNull(userData,"user not exists");
+        BeanUtils.copyProperties(userData,userProfileVO);
 
         return userProfileVO;
     }
@@ -96,27 +100,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
     @Override
-    public void editProfile(UserProfileEditPO po){
-        Integer userID=po.getUserId();
+    public void editProfile(UserProfileEditPO po,HttpServletRequest http){
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        Integer userID = user.getId();
         String oldPassword=po.getOldPassword();
         String userName=po.getUserName();
         String extraData=po.getExtraData().toString();
         String password=po.getNewPassword();
-        /*System.out.println(this.getById(userID));
-        System.out.println(this.getById(userID).getPassword());
-        System.out.println(oldPassword);*/
-
-        String realOldPassword=this.getById(userID).getPassword().toString();
-        if (!realOldPassword.equals(oldPassword)){
-            throw new CheckException("Wrong old password!");
-        }
         UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
         updateWrapper.eq("id",userID);
-        User user=new User();
-        user.setExtraData(extraData);
-        user.setPassword(password);
-        user.setFullName(userName);
-        this.update(user,updateWrapper);
+        User userData=new User();
+        //if need change password
+        if (!CheckUtils.isNull(password)){
+            //old password cannot be null
+            if (CheckUtils.isNull(oldPassword)){
+                throw new CheckException("required old password");
+            }
+            if (this.getById(userID).getPassword().equals(oldPassword)){
+                userData.setPassword(password);
+            }else{
+                throw new CheckException("Wrong old password!");
+            }
+        }
+        userData.setExtraData(extraData);
+        if (CheckUtils.isNull(userName)){
+            throw new CheckException("User name cannot be Null");
+        }
+        userData.setFullName(userName);
+        this.update(userData,updateWrapper);
     }
 
     @Override
