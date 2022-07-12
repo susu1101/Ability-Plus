@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * @author sjx
+ */
 public class JWTInterceptor implements HandlerInterceptor {
 
     @Override
@@ -23,7 +26,7 @@ public class JWTInterceptor implements HandlerInterceptor {
 //            e.printStackTrace();
             map.put("message","token expired");
         }catch ( Exception e){
-//            e.printStackTrace();
+//    w        e.printStackTrace();
             map.put("message","token fail");
         }
         String s = new ObjectMapper().writeValueAsString(map);

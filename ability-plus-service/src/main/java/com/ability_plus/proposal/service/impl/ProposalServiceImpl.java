@@ -7,9 +7,12 @@ import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
+import com.ability_plus.user.entity.POJO.UserPOJO;
+import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,12 +26,8 @@ import java.util.List;
 @Service
 public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> implements IProposalService {
 
-
-    public ProposalServiceImpl() {
-    }
-
     @Override
-    public Integer createProposal(ProposalCreatePO po) {
+    public Integer createProposal(ProposalCreatePO po, HttpServletRequest http) {
         return 0;
     }
 

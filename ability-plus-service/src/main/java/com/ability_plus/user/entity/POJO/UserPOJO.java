@@ -1,4 +1,4 @@
-package com.ability_plus.user.entity;
+package com.ability_plus.user.entity.POJO;
 
 import lombok.Data;
 
