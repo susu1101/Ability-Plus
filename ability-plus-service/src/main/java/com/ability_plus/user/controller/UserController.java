@@ -1,7 +1,9 @@
 package com.ability_plus.user.controller;
 
 
+import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
+import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.RestResponse;
 import io.swagger.annotations.Api;
@@ -10,6 +12,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -60,5 +64,31 @@ public class UserController {
 
         return RestResponse.success(userLoginVO);
 
+    }
+
+    @GetMapping("/view_own_profile_info")
+    @ApiOperation("view own profile info")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "user id", required = true),
+    })
+    public RestResponse<UserProfileVO> getProfileInfo(HttpServletRequest http) throws Exception{
+        UserProfileVO userProfileVO = userService.getProfileInfo(http);
+        return RestResponse.success(userProfileVO);
+    }
+
+
+
+    @PostMapping("/edit_own_profile_info")
+    @ApiOperation("edit own profile info")
+    public RestResponse editProfile(@RequestBody UserProfileEditPO po,HttpServletRequest http) throws Exception{
+        userService.editProfile(po,http);
+        return RestResponse.success();
+    }
+
+    @PostMapping("/delete_account")
+    @ApiOperation("delete account")
+    public RestResponse deleteAccount(@RequestParam Integer id) throws Exception{
+        userService.deleteAccount(id);
+        return RestResponse.success();
     }
 }

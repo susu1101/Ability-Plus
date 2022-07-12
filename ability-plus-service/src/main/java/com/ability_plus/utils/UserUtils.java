@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author sjx
  */
 public class UserUtils {
-
     /**
      * 获得当前用户
      * @return
