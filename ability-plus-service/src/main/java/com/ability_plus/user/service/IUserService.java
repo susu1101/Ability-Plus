@@ -54,10 +54,6 @@ public interface IUserService extends IService<User> {
      */
     public void editProfile(UserProfileEditPO po,HttpServletRequest http) throws Exception;
 
-    /*delete account
-    @param id
-    @throws Exception*/
-    public void deleteAccount(Integer id) throws Exception;
 
     /**
      * change password
