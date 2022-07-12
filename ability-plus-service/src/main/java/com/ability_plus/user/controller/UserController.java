@@ -36,7 +36,6 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "password", required = true),
             @ApiImplicitParam(name = "extraData", value = "json extraData"),
             @ApiImplicitParam(name = "isCompany", value = "isCompany", required = true),
-
     })
     public RestResponse<Integer> register(@RequestParam(value = "fullName") String fullName,
                                           @RequestParam(value = "email") String email,

@@ -8,6 +8,7 @@ import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public interface IProposalService extends IService<Proposal> {
      * @param po
      * @return
      */
-    public Integer createProposal(ProposalCreatePO po);
+    public Integer createProposal(ProposalCreatePO po, HttpServletRequest http);
 
     /**
      * does this user now can edit this proposal

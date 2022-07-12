@@ -2,7 +2,7 @@ package com.ability_plus.utils;
 
 
 import com.ability_plus.system.entity.CheckException;
-import com.ability_plus.user.entity.UserPOJO;
+import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 import java.util.Collection;

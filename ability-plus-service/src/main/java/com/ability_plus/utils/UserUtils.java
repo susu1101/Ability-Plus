@@ -1,7 +1,6 @@
 package com.ability_plus.utils;
 
-import com.ability_plus.user.entity.User;
-import com.ability_plus.user.entity.UserPOJO;
+import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import javax.servlet.http.HttpServletRequest;

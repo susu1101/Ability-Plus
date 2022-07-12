@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -33,8 +34,8 @@ public class ProposalController {
 
     @PostMapping("create_proposal")
     @ApiOperation("create proposal")
-    public RestResponse<Integer> createProposal(@RequestBody ProposalCreatePO po){
-        proposalService.createProposal(po);
+    public RestResponse<Integer> createProposal(@RequestBody ProposalCreatePO po, HttpServletRequest http){
+        proposalService.createProposal(po,http);
         return RestResponse.success();
     }
 
