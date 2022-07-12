@@ -1,9 +1,10 @@
 package com.ability_plus.user.service.impl;
 
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
+import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
-import com.ability_plus.user.entity.UserPOJO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.mapper.UserMapper;
@@ -103,14 +104,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void editProfile(UserProfileEditPO po,HttpServletRequest http){
         UserPOJO user = UserUtils.getCurrentUser(http);
         Integer userID = user.getId();
-        String oldPassword=po.getOldPassword();
         String userName=po.getUserName();
         String extraData=po.getExtraData().toString();
-        String password=po.getNewPassword();
         UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
         updateWrapper.eq("id",userID);
         User userData=new User();
         //if need change password
+
+        userData.setExtraData(extraData);
+        if (CheckUtils.isNull(userName)){
+            throw new CheckException("User name cannot be Null");
+        }
+        userData.setFullName(userName);
+        this.update(userData,updateWrapper);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordPO po,HttpServletRequest http){
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        Integer userID = user.getId();
+        String password=po.getNewPassword();
+        String oldPassword=po.getOldPassword();
+        UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.eq("id",userID);
+        User userData=new User();
         if (!CheckUtils.isNull(password)){
             //old password cannot be null
             if (CheckUtils.isNull(oldPassword)){
@@ -122,12 +139,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 throw new CheckException("Wrong old password!");
             }
         }
-        userData.setExtraData(extraData);
-        if (CheckUtils.isNull(userName)){
-            throw new CheckException("User name cannot be Null");
-        }
-        userData.setFullName(userName);
         this.update(userData,updateWrapper);
+
+
     }
 
     @Override
