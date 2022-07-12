@@ -1,6 +1,7 @@
 package com.ability_plus.user.service.impl;
 
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
@@ -36,7 +37,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
 
     static final long ONE_HOUR = 60*60*1000;
 
@@ -102,38 +102,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public void editProfile(UserProfileEditPO po,HttpServletRequest http){
         UserPOJO user = UserUtils.getCurrentUser(http);
-        Integer userID = user.getId();
-        String oldPassword=po.getOldPassword();
+        Integer userId = user.getId();
         String userName=po.getUserName();
         String extraData=po.getExtraData().toString();
-        String password=po.getNewPassword();
-        UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.eq("id",userID);
-        User userData=new User();
+        User userData = this.getById(userId);
         //if need change password
-        if (!CheckUtils.isNull(password)){
-            //old password cannot be null
-            if (CheckUtils.isNull(oldPassword)){
-                throw new CheckException("required old password");
-            }
-            if (this.getById(userID).getPassword().equals(oldPassword)){
-                userData.setPassword(password);
-            }else{
-                throw new CheckException("Wrong old password!");
-            }
-        }
         userData.setExtraData(extraData);
         if (CheckUtils.isNull(userName)){
             throw new CheckException("User name cannot be Null");
         }
         userData.setFullName(userName);
-        this.update(userData,updateWrapper);
+        updateById(userData);
     }
 
     @Override
-    public void deleteAccount(Integer id) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",id);
-        this.remove(queryWrapper);
+    public void changePassword(ChangePasswordPO po,HttpServletRequest http){
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        Integer userId = user.getId();
+        String password=po.getNewPassword();
+        String oldPassword=po.getOldPassword();
+
+        User userData = this.getById(userId);
+        if (!CheckUtils.isNull(password)){
+            //old password cannot be null
+            if (CheckUtils.isNull(oldPassword)){
+                throw new CheckException("required old password");
+            }
+            if (userData.getPassword().equals(oldPassword)){
+                userData.setPassword(password);
+            }else{
+                throw new CheckException("Wrong old password!");
+            }
+        }
+        this.updateById(userData);
     }
+
+
 }

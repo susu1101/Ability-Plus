@@ -1,6 +1,7 @@
 package com.ability_plus.user.controller;
 
 
+import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
@@ -85,10 +86,11 @@ public class UserController {
         return RestResponse.success();
     }
 
-    @PostMapping("/delete_account")
-    @ApiOperation("delete account")
-    public RestResponse deleteAccount(@RequestParam Integer id) throws Exception{
-        userService.deleteAccount(id);
+
+    @PostMapping("/change_password")
+    @ApiOperation("change password")
+    public RestResponse changePassword(@RequestBody ChangePasswordPO po, HttpServletRequest http) throws Exception{
+        userService.changePassword(po, http);
         return RestResponse.success();
     }
 }
