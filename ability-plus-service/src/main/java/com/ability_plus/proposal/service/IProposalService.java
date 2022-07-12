@@ -32,14 +32,14 @@ public interface IProposalService extends IService<Proposal> {
      * @param proposalId
      * @return
      */
-    public  Boolean canEditProposal(Integer proposalId);
+    public  Boolean canEditProposal(Integer proposalId,HttpServletRequest http);
 
 
     /**
      * edit a proposal
      * @param po
      */
-    public void editProposal(ProposalEditPO po);
+    public void editProposal(ProposalEditPO po,HttpServletRequest http);
 
     /**
      * list proposal by condition
