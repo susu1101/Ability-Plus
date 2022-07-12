@@ -36,7 +36,7 @@ public class Proposal implements Serializable {
     /**
      * 提案内容，json格式
      */
-    private String description;
+    private String extraData;
 
     /**
      * 创建时间
@@ -84,12 +84,12 @@ public class Proposal implements Serializable {
     public void setCreatorId(Integer creatorId) {
         this.creatorId = creatorId;
     }
-    public String getDescription() {
-        return description;
+    public String getExtraData() {
+        return extraData;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setExtraData(String extraData) {
+        this.extraData = extraData;
     }
 
     public Long getCreateTime() {
@@ -138,7 +138,7 @@ public class Proposal implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", description='" + description + '\'' +
+                ", description='" + extraData + '\'' +
                 ", createTime=" + createTime +
                 ", likeNum=" + likeNum +
                 ", lastModifiedTime=" + lastModifiedTime +

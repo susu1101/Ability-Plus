@@ -3,6 +3,7 @@ package com.ability_plus.projectRequest.service.impl;
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
+import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.ProjectRequestStatus;
 import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
@@ -24,6 +25,7 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +63,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         CheckUtils.assertNotNull(description,"Description cannot be null");
         ProjectRequest projectRequest = makeProjectRequest(po, user, notTime, extraData, description);
         this.save(projectRequest);
+
         return projectRequest.getId();
     }
 

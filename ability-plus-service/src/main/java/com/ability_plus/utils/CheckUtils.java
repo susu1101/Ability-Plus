@@ -43,6 +43,10 @@ public class CheckUtils {
         return object == null;
     }
 
+    public static final boolean isNotNull(Object object) {
+        return object != null;
+    }
+
     public static final void assertNotNull(Object object, String message, Object... args) {
         if (isNull(object)) {
             throw new CheckException(String.format(message, args));

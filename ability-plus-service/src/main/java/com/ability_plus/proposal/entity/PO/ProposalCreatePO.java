@@ -26,4 +26,5 @@ public class ProposalCreatePO {
     @ApiModelProperty("is draft")
     Boolean isDraft;
 
+    Integer projectId;
 }

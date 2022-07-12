@@ -2,8 +2,8 @@ package com.ability_plus.user.service.impl;
 
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
+import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
-import com.ability_plus.user.entity.UserPOJO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.mapper.UserMapper;

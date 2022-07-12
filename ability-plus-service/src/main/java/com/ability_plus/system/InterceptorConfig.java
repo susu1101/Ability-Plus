@@ -27,31 +27,31 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
 
     }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .allowedHeaders("*")
-                .allowedMethods("*")
-                .maxAge(3600*60);
-    }
-    private CorsConfiguration addCorsCig(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        ArrayList<String> list = new ArrayList<>();
-        list.add("*");
-        corsConfiguration.setAllowedOrigins(list);
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-        return corsConfiguration;
-    }
-    @Bean
-    public CorsFilter corsFilter(){
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",addCorsCig());
-        return new CorsFilter(source);
-    }
+//
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowCredentials(true)
+//                .allowedHeaders("*")
+//                .allowedMethods("*")
+//                .maxAge(3600*60);
+//    }
+//    private CorsConfiguration addCorsCig(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("*");
+//        corsConfiguration.setAllowedOrigins(list);
+//        corsConfiguration.addAllowedOrigin("*");
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.addAllowedMethod("*");
+//        return corsConfiguration;
+//    }
+//    @Bean
+//    public CorsFilter corsFilter(){
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**",addCorsCig());
+//        return new CorsFilter(source);
+//    }
 
 }

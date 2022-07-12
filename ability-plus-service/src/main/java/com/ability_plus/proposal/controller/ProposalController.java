@@ -45,14 +45,14 @@ public class ProposalController {
 //            @ApiImplicitParam(name = "userId", value = "user id", required = true),
             @ApiImplicitParam(name = "proposalId", value = "project id", required = true),
     })
-    public RestResponse<Boolean> canEditProposal(@RequestParam(value = "proposalId") Integer proposalId){
-        return RestResponse.success(proposalService.canEditProposal(proposalId));
+    public RestResponse<Boolean> canEditProposal(@RequestParam(value = "proposalId") Integer proposalId,HttpServletRequest http){
+        return RestResponse.success(proposalService.canEditProposal(proposalId,http));
     }
 
     @PostMapping("/edit_proposal")
     @ApiOperation("edit proposal")
-    public RestResponse editProposal(@RequestBody ProposalEditPO po){
-        proposalService.editProposal(po);
+    public RestResponse editProposal(@RequestBody ProposalEditPO po,HttpServletRequest http){
+        proposalService.editProposal(po,http);
         return RestResponse.success();
     }
 
