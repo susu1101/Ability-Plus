@@ -1,19 +1,33 @@
 package com.ability_plus.user.service.impl;
 
+import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.UserPOJO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
+import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.mapper.UserMapper;
 import com.ability_plus.user.service.IUserService;
+import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.JwtUtil;
+import com.ability_plus.utils.UserUtils;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Text;
 
+import javax.servlet.http.HttpServlet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -74,5 +88,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userLoginVO.setAccessToken(token);
         userLoginVO.setIsCompany(user.getIsCompany());
         return userLoginVO;
+    }
+
+    @Override
+    public UserProfileVO getProfileInfo(Integer id) {
+        UserProfileVO userProfileVO = new UserProfileVO();
+        User user = this.getById(id);
+        CheckUtils.assertNotNull(user,"user not exists");
+        BeanUtils.copyProperties(user,userProfileVO);
+
+        return userProfileVO;
+    }
+
+    @Override
+    public void editProfile(UserProfileEditPO po){
+        Integer userID=po.getUserId();
+        String userName=po.getUserName();
+        String extraData=po.getExtraData().toString();
+        String password=po.getPassword();
+        UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.eq("id",userID);
+        User user=new User();
+        user.setExtraData(extraData);
+        user.setPassword(password);
+        user.setFullName(userName);
+        this.update(user,updateWrapper);
+    }
+
+    @Override
+    public void deleteAccount(Integer id) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",id);
+        this.remove(queryWrapper);
     }
 }
