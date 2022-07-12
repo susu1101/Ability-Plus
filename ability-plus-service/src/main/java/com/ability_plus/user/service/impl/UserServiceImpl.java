@@ -7,6 +7,7 @@ import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.UserPOJO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
+import com.ability_plus.user.entity.VO.UserProfileEditVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.mapper.UserMapper;
 import com.ability_plus.user.service.IUserService;
@@ -98,6 +99,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         BeanUtils.copyProperties(user,userProfileVO);
 
         return userProfileVO;
+    }
+
+    @Override
+    public UserProfileEditVO getProfileEditInfo(Integer id) {
+        UserProfileEditVO userProfileEditVO = new UserProfileEditVO();
+        User user = this.getById(id);
+        CheckUtils.assertNotNull(user,"user not exists");
+        BeanUtils.copyProperties(user,userProfileEditVO);
+
+        return userProfileEditVO;
     }
 
     @Override

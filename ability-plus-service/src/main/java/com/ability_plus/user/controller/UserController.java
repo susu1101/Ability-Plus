@@ -5,6 +5,7 @@ import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
+import com.ability_plus.user.entity.VO.UserProfileEditVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.RestResponse;
@@ -75,6 +76,16 @@ public class UserController {
     public RestResponse<UserProfileVO> getProfileInfo(@RequestParam Integer id) throws Exception{
         UserProfileVO userProfileVO = userService.getProfileInfo(id);
         return RestResponse.success(userProfileVO);
+    }
+
+    @GetMapping("/view_own_profile_edit_info")
+    @ApiOperation("view own profile edit info")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "user id", required = true),
+    })
+    public RestResponse<UserProfileEditVO> getProfileEditInfo(@RequestParam Integer id) throws Exception{
+        UserProfileEditVO userProfileEditVO = userService.getProfileEditInfo(id);
+        return RestResponse.success(userProfileEditVO);
     }
 
     @PostMapping("/edit_own_profile_info")
