@@ -1,14 +1,11 @@
 package com.ability_plus.user.service;
 
 
-import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.VO.UserLoginVO;
-import com.ability_plus.user.entity.VO.UserProfileEditVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.swagger.models.auth.In;
 
 /**
  * <p>
@@ -46,12 +43,7 @@ public interface IUserService extends IService<User> {
 
     UserProfileVO getProfileInfo(Integer id) throws Exception;
 
-    /*get profile edit info
-    @param id
-    @return info
-    @throws Exception*/
 
-    UserProfileEditVO getProfileEditInfo(Integer id) throws Exception;
 
     /**
      * edit a profile

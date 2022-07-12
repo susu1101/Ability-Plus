@@ -21,7 +21,10 @@ public class UserProfileEditPO {
     @ApiModelProperty("extra data in json")
     private Map<String,String> extraData;
 
-    @ApiModelProperty("user password")
-    private String password;
+    @ApiModelProperty("new user password")
+    private String newPassword;
+
+    @ApiModelProperty("old user password")
+    private String oldPassword;
 
 }
