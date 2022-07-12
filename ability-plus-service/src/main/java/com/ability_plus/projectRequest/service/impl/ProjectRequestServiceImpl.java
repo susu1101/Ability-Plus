@@ -144,6 +144,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
                 .select(ProjectRequest::getStatus)
+                .select(ProjectRequest::getId)
 
                 .selectAs(User::getFullName,"authorName");
 
