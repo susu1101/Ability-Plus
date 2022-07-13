@@ -78,6 +78,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         }else{
             contactEmail= user.getAccount();
         }
+        projectRequest.setExtraData(extraData.toString());
         projectRequest.setCreatorId(user.getId());
         projectRequest.setName(po.getTitle());
         projectRequest.setDescription(description);
@@ -106,6 +107,8 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         CheckUtils.assertNotNull(proj,"project request not exists");
         BeanUtils.copyProperties(proj,projectDetailInfoVO);
         Integer creatorId = proj.getCreatorId();
+        projectDetailInfoVO.setProjectArea(proj.getProjectArea());
+
         projectDetailInfoVO.setCreatorName(userService.getById(creatorId).getFullName());
 
         return projectDetailInfoVO;
