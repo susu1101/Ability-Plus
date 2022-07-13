@@ -38,7 +38,6 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-
     static final long ONE_HOUR = 60*60*1000;
 
     @Override
@@ -103,51 +102,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public void editProfile(UserProfileEditPO po,HttpServletRequest http){
         UserPOJO user = UserUtils.getCurrentUser(http);
-        Integer userID = user.getId();
+        Integer userId = user.getId();
         String userName=po.getUserName();
         String extraData=po.getExtraData().toString();
-        UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.eq("id",userID);
-        User userData=new User();
+        User userData = this.getById(userId);
         //if need change password
-
         userData.setExtraData(extraData);
         if (CheckUtils.isNull(userName)){
             throw new CheckException("User name cannot be Null");
         }
         userData.setFullName(userName);
-        this.update(userData,updateWrapper);
+        updateById(userData);
     }
 
     @Override
     public void changePassword(ChangePasswordPO po,HttpServletRequest http){
         UserPOJO user = UserUtils.getCurrentUser(http);
-        Integer userID = user.getId();
+        Integer userId = user.getId();
         String password=po.getNewPassword();
         String oldPassword=po.getOldPassword();
-        UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.eq("id",userID);
-        User userData=new User();
+
+        User userData = this.getById(userId);
         if (!CheckUtils.isNull(password)){
             //old password cannot be null
             if (CheckUtils.isNull(oldPassword)){
                 throw new CheckException("required old password");
             }
-            if (this.getById(userID).getPassword().equals(oldPassword)){
+            if (userData.getPassword().equals(oldPassword)){
                 userData.setPassword(password);
             }else{
                 throw new CheckException("Wrong old password!");
             }
         }
-        this.update(userData,updateWrapper);
-
-
+        this.updateById(userData);
     }
 
-    @Override
-    public void deleteAccount(Integer id) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",id);
-        this.remove(queryWrapper);
-    }
+
 }

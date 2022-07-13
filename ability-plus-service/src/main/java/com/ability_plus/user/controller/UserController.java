@@ -86,12 +86,6 @@ public class UserController {
         return RestResponse.success();
     }
 
-    @PostMapping("/delete_account")
-    @ApiOperation("delete account")
-    public RestResponse deleteAccount(@RequestParam Integer id) throws Exception{
-        userService.deleteAccount(id);
-        return RestResponse.success();
-    }
 
     @PostMapping("/change_password")
     @ApiOperation("change password")
