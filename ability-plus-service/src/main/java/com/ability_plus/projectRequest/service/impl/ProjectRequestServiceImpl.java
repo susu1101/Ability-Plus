@@ -17,6 +17,7 @@ import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,6 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -78,7 +80,11 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         }else{
             contactEmail= user.getAccount();
         }
-        projectRequest.setExtraData(extraData.toString());
+
+
+        projectRequest.setExtraData(JSON.toJSONString(extraData));
+
+
         projectRequest.setCreatorId(user.getId());
         projectRequest.setName(po.getTitle());
         projectRequest.setDescription(description);
@@ -146,7 +152,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
                 .select(ProjectRequest::getStatus)
                 .select(ProjectRequest::getId)
-
+                .select(ProjectRequest::getLastModifiedTime)
                 .selectAs(User::getFullName,"authorName");
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, wrapper);
