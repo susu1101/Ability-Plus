@@ -70,5 +70,5 @@ public interface IProjectRequestService extends IService<ProjectRequest>, MPJBas
      * @param pageSize
      * @return
      */
-    List<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 }

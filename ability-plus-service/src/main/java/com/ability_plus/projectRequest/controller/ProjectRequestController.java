@@ -99,13 +99,13 @@ public class ProjectRequestController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_company_project_request")
-    public RestResponse<List<ProjectInfoVO>> listCompanyProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
+    public RestResponse<IPage<ProjectInfoVO>> listCompanyProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
                                                                  @RequestParam(value = "status") String status,
                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                  @RequestParam(value = "pageNo") Integer pageNo,
                                                                  @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProjectInfoVO> projectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrderTime, searchKey, pageNo, pageSize);
+        IPage<ProjectInfoVO> projectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrderTime, searchKey, pageNo, pageSize);
         return RestResponse.success(projectInfoVO);
     }
 

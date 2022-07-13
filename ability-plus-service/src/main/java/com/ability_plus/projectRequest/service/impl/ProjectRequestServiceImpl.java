@@ -155,7 +155,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
     }
 
     @Override
-    public List<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) {
+    public IPage<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) {
         return null;
     }
 }
