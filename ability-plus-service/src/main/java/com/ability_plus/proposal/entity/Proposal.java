@@ -63,6 +63,7 @@ public class Proposal implements Serializable {
      */
     private String oneSentenceDescription;
 
+
     public Integer getId() {
         return id;
     }

@@ -127,7 +127,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
                 proposal.setStatus(ProposalStatus.SUBMITTED);
             }
         }
-
+        proposal.setLastModifiedTime(TimeUtils.getTimeStamp());
         updateById(proposal);
 
     }
