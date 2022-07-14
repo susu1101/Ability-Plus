@@ -184,10 +184,11 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         Page<ProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
         setFilter(isAscendingOrderLike, isAscendingOrderTime, pageSetting);
         MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
+//        wrapper.like("title","%"+searchKey+"%");
+
+        proposalMapper.selectJoinPage(pageSetting,ProposalInfoVO.class,wrapper);
 
 
-
-//        proposalMapper.select
         return null;
     }
 
