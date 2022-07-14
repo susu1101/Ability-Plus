@@ -16,11 +16,14 @@ import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.POJO.UserPOJO;
+import com.ability_plus.user.entity.User;
+import com.ability_plus.utils.CardUtils;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -48,8 +51,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     IProjectProposalRecordService projectProposalRecordService;
     @Autowired
     IProjectRequestService projectRequestService;
-    @Autowired
-    IProposalService proposalService;
+
     @Autowired
     ProposalMapper proposalMapper;
     @Override
@@ -176,34 +178,31 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     public List<ProposalInfoVO> listStudentProposalRequest(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) { return null; }
 
     @Override
-    public List<ProposalInfoVO> listOutstandingProposal(Boolean isAscendingOrderLike,
+    public IPage<ProposalInfoVO> listOutstandingProposal(Boolean isAscendingOrderLike,
                                                         Boolean isAscendingOrderTime,
                                                         String searchKey, Integer pageNo,
                                                         Integer pageSize)
     {
-        Page<ProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        Page<Proposal> pageSetting = new Page<>(pageNo, pageSize);
         setFilter(isAscendingOrderLike, isAscendingOrderTime, pageSetting);
-        MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
-//        wrapper.like("title","%"+searchKey+"%");
-
-        proposalMapper.selectJoinPage(pageSetting,ProposalInfoVO.class,wrapper);
-
-
-        return null;
+        //Todo search key
+        MPJLambdaWrapper<Proposal> wrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
+        wrapper.select(Proposal::getLikeNum);
+        IPage<ProposalInfoVO> page = proposalMapper.selectJoinPage(pageSetting, ProposalInfoVO.class, wrapper);
+        return page;
     }
 
-    private void setFilter(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, Page<ProjectInfoVO> pageSetting) {
+    private void setFilter(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, Page<Proposal> pageSetting) {
         if (isAscendingOrderLike){
             pageSetting.addOrder(OrderItem.asc("like_num"));
         }else {
             pageSetting.addOrder(OrderItem.desc("like_num"));
         }
         if (isAscendingOrderTime){
-            pageSetting.addOrder(OrderItem.asc("last_modify_time"));
+            pageSetting.addOrder(OrderItem.asc("last_modified_time"));
         }else {
-            pageSetting.addOrder(OrderItem.desc("last_modify_time"));
+            pageSetting.addOrder(OrderItem.desc("last_modified_time"));
         }
-        //TODO like search key
     }
 
 

@@ -7,6 +7,7 @@ import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -122,12 +123,12 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_outstanding_proposal")
-    public RestResponse<List<ProposalInfoVO>> listOutstandingProposal(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
+    public RestResponse<IPage<ProposalInfoVO>> listOutstandingProposal(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                   @RequestParam(value = "pageNo") Integer pageNo,
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposal(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        IPage<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposal(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
 

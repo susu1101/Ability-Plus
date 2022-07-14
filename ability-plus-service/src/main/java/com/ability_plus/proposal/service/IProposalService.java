@@ -5,6 +5,7 @@ import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,6 +89,6 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param pageSize
      * @return
      */
-    List<ProposalInfoVO> listOutstandingProposal(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProposalInfoVO> listOutstandingProposal(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
 }

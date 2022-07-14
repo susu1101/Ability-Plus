@@ -1,14 +1,13 @@
 package com.ability_plus.proposal.entity.VO;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author sjx
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ProposalInfoVO {
-    private String title;
-    private String oneSentenceDescription;
-    private String authorName;
-    private Integer authorId;
+public class ProposalInfoVO extends ProposalCard {
+    private Integer likeNum;
 }
