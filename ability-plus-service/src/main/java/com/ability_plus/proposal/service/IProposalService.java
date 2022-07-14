@@ -5,7 +5,9 @@ import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
 import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
+import com.ability_plus.proposal.entity.VO.ProposalCard;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.ability_plus.proposal.entity.VO.StudentMyProposalVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
@@ -80,7 +82,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param http
      * @return
      */
-    IPage<ProposalInfoVO> listMyProposal(String status, Boolean isAscendingOrder, String whatOrder,String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http);
+    IPage<StudentMyProposalVO> listMyProposal(String status, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize, HttpServletRequest http);
 
     /**
      * List outstanding proposals for "popular proposal" page
@@ -91,7 +93,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param pageSize
      * @return
      */
-    List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProposalCard> listOutstandingProposal(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
 
     /**

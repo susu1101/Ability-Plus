@@ -18,7 +18,8 @@ public class CardUtils {
                 .selectAs(ProjectRequest::getProjectArea,"area")
                 .selectAs(Proposal::getCreatorId,"authorId")
                 .selectAs(User::getFullName,"authorName")
-
+                .selectAs(ProjectRequest::getName,"projectName")
+                .select(Proposal::getLikeNum);
         ;
         return  wrapper;
     }

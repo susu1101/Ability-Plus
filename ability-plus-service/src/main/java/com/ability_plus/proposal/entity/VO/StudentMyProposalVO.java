@@ -1,6 +1,5 @@
 package com.ability_plus.proposal.entity.VO;
 
-import com.ability_plus.utils.CardUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,6 +8,6 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ProposalInfoVO extends CardUtils {
+public class StudentMyProposalVO extends ProposalCard{
     private String status;
 }

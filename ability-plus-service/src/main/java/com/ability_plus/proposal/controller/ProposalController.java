@@ -6,7 +6,9 @@ import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
+import com.ability_plus.proposal.entity.VO.ProposalCard;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.ability_plus.proposal.entity.VO.StudentMyProposalVO;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -106,14 +108,14 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_my_proposal")
-    public RestResponse<IPage<ProposalInfoVO>> listMyProposal(@RequestParam(value = "status") String status,
-                                                             @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
-                                                             @RequestParam(value = "whatOrder") String whatOrder,
-                                                             @RequestParam(value = "searchKey",required = false) String searchKey,
-                                                             @RequestParam(value = "pageNo") Integer pageNo,
-                                                             @RequestParam(value = "pageSize") Integer pageSize,
-                                                             HttpServletRequest http){
-        IPage<ProposalInfoVO> proposalInfoVO = proposalService.listMyProposal(status,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize,http);
+    public RestResponse<IPage<StudentMyProposalVO>> listMyProposal(@RequestParam(value = "status") String status,
+                                                                   @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
+                                                                   @RequestParam(value = "whatOrder") String whatOrder,
+                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                   @RequestParam(value = "pageNo") Integer pageNo,
+                                                                   @RequestParam(value = "pageSize") Integer pageSize,
+                                                                   HttpServletRequest http){
+        IPage<StudentMyProposalVO> proposalInfoVO = proposalService.listMyProposal(status,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize,http);
         return RestResponse.success(proposalInfoVO);
     }
 
@@ -163,12 +165,12 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_outstanding_proposal_request")
-    public RestResponse<List<ProposalInfoVO>> listOutstandingProposalRequest(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
-                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
-                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
-                                                                  @RequestParam(value = "pageNo") Integer pageNo,
-                                                                  @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
+    public RestResponse<IPage<ProposalCard>> listOutstandingProposal(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
+                                                                          @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                          @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                          @RequestParam(value = "pageNo") Integer pageNo,
+                                                                          @RequestParam(value = "pageSize") Integer pageSize){
+        IPage<ProposalCard> proposalInfoVOS = proposalService.listOutstandingProposal(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
 
