@@ -22,6 +22,7 @@ import com.ability_plus.user.entity.User;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -81,7 +82,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
         if (CheckUtils.isNull(extraData)){
             throw new CheckException("extraData cannot be null");
         }
-        proposal.setExtraData(extraData.toString());
+        proposal.setExtraData(JSON.toJSONString(extraData));
         proposal.setLikeNum(0);
         proposal.setLastModifiedTime(notTime);
         this.save(proposal);
@@ -128,7 +129,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
         }
 
         if (CheckUtils.isNotNull(po.getExtraData())){
-            proposal.setExtraData(po.getExtraData().toString());
+            proposal.setExtraData(JSON.toJSONString(po.getExtraData()));
         }
 
         if (CheckUtils.isNotNull(po.getIsDraft())){
@@ -138,7 +139,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
                 proposal.setStatus(ProposalStatus.SUBMITTED);
             }
         }
-
+        proposal.setLastModifiedTime(TimeUtils.getTimeStamp());
         updateById(proposal);
 
     }

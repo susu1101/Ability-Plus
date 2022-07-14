@@ -40,7 +40,7 @@ public class ProjectDetailInfoVO {
     /**
      * 创建项目时间
      */
-    private Integer createTime;
+    private Long createTime;
 
     /**
      * 创建用户id
@@ -55,12 +55,12 @@ public class ProjectDetailInfoVO {
     /**
      * 最后修改时间
      */
-    private Integer lastModifiedTime;
+    private Long lastModifiedTime;
 
     /**
-     * 是否是草稿
+     * 状态
      */
-    private Boolean isDraft;
+    private String status;
 
     /**
      * 公司邮箱，若未特别设置，则为公司自己的邮箱

@@ -15,6 +15,7 @@ import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.JwtUtil;
 import com.ability_plus.utils.UserUtils;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -120,7 +121,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         UserPOJO user = UserUtils.getCurrentUser(http);
         Integer userId = user.getId();
         String userName=po.getUserName();
-        String extraData=po.getExtraData().toString();
+        String extraData= JSON.toJSONString(po.getExtraData());
         User userData = this.getById(userId);
         //if need change password
         userData.setExtraData(extraData);
