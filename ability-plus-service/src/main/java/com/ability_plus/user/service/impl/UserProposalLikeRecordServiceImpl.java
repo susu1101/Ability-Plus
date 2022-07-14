@@ -30,16 +30,13 @@ import com.ability_plus.proposal.service.IProposalService;
 public class UserProposalLikeRecordServiceImpl extends ServiceImpl<UserProposalLikeRecordMapper, UserProposalLikeRecord> implements IUserProposalLikeRecordService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserProposalLikeRecordServiceImpl.class);
+    @Override
     public Integer likeRecord(Integer proposalId, HttpServletRequest http){
-        logger.info("111111");
         UserPOJO user = UserUtils.getCurrentUser(http);
         if(user.getIsCompany()){
             throw new CheckException("Company cant like proposal by themselves");
         }
         Integer studentId = user.getId();
-        logger.info("here we go");
-        logger.info(studentId.toString());
-
         UserProposalLikeRecord record = new UserProposalLikeRecord();
         record.setStudentId(studentId);
         record.setProposalId(proposalId);
