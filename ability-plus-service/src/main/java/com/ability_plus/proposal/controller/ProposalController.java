@@ -113,7 +113,7 @@ public class ProposalController {
         return RestResponse.success(proposalInfoVOS);
     }
 
-    @ApiOperation("get outstanding proposals request")
+    @ApiOperation("get ability-plus whole outstanding proposals")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "isAscendingOrderLike", value = "is the number of likes order by ascending", required = true),
             @ApiImplicitParam(name = "isAscendingOrderTime", value = "is the submission time order by ascending", required = true),
@@ -121,13 +121,13 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
-    @GetMapping("/list_outstanding_proposal_request")
-    public RestResponse<List<ProposalInfoVO>> listOutstandingProposalRequest(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
+    @GetMapping("/list_outstanding_proposal")
+    public RestResponse<List<ProposalInfoVO>> listOutstandingProposal(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
                                                                   @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                   @RequestParam(value = "pageNo") Integer pageNo,
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
+        List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposal(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
 

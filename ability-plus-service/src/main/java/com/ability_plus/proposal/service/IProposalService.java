@@ -6,6 +6,7 @@ import com.ability_plus.proposal.entity.Proposal;
 
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.yulichang.base.MPJBaseService;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author susu
  * @since 2022-06-30
  */
-public interface IProposalService extends IService<Proposal> {
+public interface IProposalService extends IService<Proposal> , MPJBaseService<Proposal> {
     /**
      * create a proposal
      * @param po
@@ -87,6 +88,6 @@ public interface IProposalService extends IService<Proposal> {
      * @param pageSize
      * @return
      */
-    List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    List<ProposalInfoVO> listOutstandingProposal(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
 }
