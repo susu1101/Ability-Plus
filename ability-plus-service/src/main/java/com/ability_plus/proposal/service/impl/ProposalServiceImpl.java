@@ -172,7 +172,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
         MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
         wrapper
                 .leftJoin(User.class,User::getId,Proposal::getCreatorId)
-                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
                 .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
                 .eq(Proposal::getCreatorId,creatorID)
                 .eq(Proposal::getStatus,ProposalStatus.APPROVED)
@@ -198,7 +198,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
                 .leftJoin(User.class,User::getId,Proposal::getCreatorId)
-                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
                 .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
                 .eq(Proposal::getCreatorId,creatorId)
                 .eq(Proposal::getStatus,ProposalStatus.APPROVED)
@@ -238,7 +238,7 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
                 .leftJoin(User.class,User::getId,Proposal::getCreatorId)
-                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
                 .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
                 .eq(Proposal::getCreatorId,user.getId())
                 .eq(Proposal::getStatus,status)
