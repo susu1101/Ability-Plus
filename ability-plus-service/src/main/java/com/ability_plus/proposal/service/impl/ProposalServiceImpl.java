@@ -12,6 +12,7 @@ import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.ProposalStatus;
+import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
@@ -277,4 +278,67 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
     @Override
     public List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) { return null; }
 
+
+
+    @Override
+    public IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
+        Page<ProjectProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
+        myWrapper
+                .leftJoin(User.class,User::getId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .eq(ProjectRequest::getId,projectId)
+                .ne(Proposal::getStatus,ProposalStatus.DRAFT)
+                .select(Proposal::getId)
+                .select(Proposal::getTitle)
+                .select(Proposal::getOneSentenceDescription)
+                .selectAs(User::getId,"authorId")
+                .selectAs(User::getFullName,"authorName")
+                .select(ProjectProposalRecord::getRating)
+                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
+
+        if (whatOrder.equals("Rating")){
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectProposalRecord::getRating);}
+            else{myWrapper.orderByDesc(ProjectProposalRecord::getRating);}
+        }
+        else {
+            if(isAscendingOrder){myWrapper.orderByAsc(Proposal::getLastModifiedTime);}
+            else{myWrapper.orderByDesc(Proposal::getLastModifiedTime);}
+        }
+
+
+        IPage<ProjectProposalInfoVO> page=proposalMapper.selectJoinPage(pageSetting,ProjectProposalInfoVO.class,myWrapper);
+        return page;
+    }
+
+    @Override
+    public IPage<ProjectProposalInfoVO> listApprovedProjectProposals(Integer projectId, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize){
+        Page<ProjectProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
+        myWrapper
+                .leftJoin(User.class,User::getId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .eq(ProjectRequest::getId,projectId)
+                .eq(Proposal::getStatus,ProposalStatus.APPROVED)
+                .select(Proposal::getId)
+                .select(Proposal::getTitle)
+                .select(Proposal::getOneSentenceDescription)
+                .selectAs(User::getId,"authorId")
+                .selectAs(User::getFullName,"authorName")
+                .select(ProjectProposalRecord::getRating)
+                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
+
+        if (isAscendingOrder){
+            myWrapper.orderByAsc(Proposal::getLikeNum);
+        }
+        else {
+            myWrapper.orderByDesc(Proposal::getLikeNum);
+        }
+
+
+        IPage<ProjectProposalInfoVO> page=proposalMapper.selectJoinPage(pageSetting,ProjectProposalInfoVO.class,myWrapper);
+        return page;
+    }
 }

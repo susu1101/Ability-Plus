@@ -4,6 +4,7 @@ import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
+import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -112,4 +113,29 @@ public interface IProposalService extends IService<Proposal> {
      * @return
      */
     IPage<ProposalInfoVO> listStudentProposal(Integer creatorId, Boolean isAscendingOrderLastModifiedTime,String searchKey, Integer pageNo, Integer pageSize);
+
+    /**
+     * list proposals in one project request using filter
+     * @param projectId
+     * @param isAscendingOrder
+     * @param whatOrder
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize);
+
+    /**
+     * list approved proposals in one project request using filter
+     * @param projectId
+     * @param isAscendingOrder
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    IPage<ProjectProposalInfoVO> listApprovedProjectProposals(Integer projectId, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
+
+
 }

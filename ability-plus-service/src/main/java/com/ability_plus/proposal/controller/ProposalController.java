@@ -5,6 +5,7 @@ import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
+import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
@@ -172,6 +173,43 @@ public class ProposalController {
     }
 
 
+    @GetMapping("/list_project_proposals")
+    @ApiOperation("list project proposals")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
+            @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
+            @ApiImplicitParam(name = "whatOrder", value = "sort by what order", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+    })
+    public RestResponse<IPage<ProjectProposalInfoVO>> listProjectProposals (@RequestParam(value = "projectId") Integer projectId,
+                                                                            @RequestParam(value="isAscendingOrder") Boolean isAscendingOrder,
+                                                                            @RequestParam(value = "whatOrder") String whatOrder,
+                                                                            @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                            @RequestParam(value = "pageNo") Integer pageNo,
+                                                                            @RequestParam(value = "pageSize") Integer pageSize){
+        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
+        return RestResponse.success(projectProposalInfoVO);
+    }
 
+
+    @GetMapping("/list_approved_project_proposals")
+    @ApiOperation("list approved project proposals")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
+            @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+    })
+    public RestResponse<IPage<ProjectProposalInfoVO>> listApprovedProjectProposals (@RequestParam(value = "projectId") Integer projectId,
+                                                                            @RequestParam(value="isAscendingOrder") Boolean isAscendingOrder,
+                                                                            @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                            @RequestParam(value = "pageNo") Integer pageNo,
+                                                                            @RequestParam(value = "pageSize") Integer pageSize){
+        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listApprovedProjectProposals(projectId,isAscendingOrder,searchKey,pageNo,pageSize);
+        return RestResponse.success(projectProposalInfoVO);
+    }
 
 }
