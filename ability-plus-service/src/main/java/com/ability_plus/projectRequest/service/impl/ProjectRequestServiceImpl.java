@@ -208,4 +208,40 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         IPage<ProfileProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProfileProjectInfoVO.class, myWrapper);
         return page;
     }
+
+    @Override
+    public IPage<ProjectInfoVO> listAllProjectRequests(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
+        Page<ProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        if (status==ProjectRequestStatus.DRAFT){
+            throw new CheckException("Cannot view draft project requests");
+        }
+
+        MPJLambdaWrapper<ProjectRequest> myWrapper = new MPJLambdaWrapper<>();
+        myWrapper
+                .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
+                .eq(ProjectRequest::getStatus,status)
+                .select(ProjectRequest::getId)
+                .selectAs(ProjectRequest::getName,"title")
+                .select(ProjectRequest::getDescription)
+                .selectAs(User::getId,"authorId")
+                .selectAs(User::getFullName,"authorName")
+                .select(ProjectRequest::getStatus)
+                .select(ProjectRequest::getLastModifiedTime)
+                .and(wrapper->wrapper.like(ProjectRequest::getDescription,"%"+searchKey+"%")
+                        .or()
+                        .like(ProjectRequest::getName,"%"+searchKey+"%")
+                        .or()
+                        .like(User::getFullName,"%"+searchKey+"%"));
+
+        if(whatOrder.equals("ProposalDue")){
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
+            else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
+        }else{
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
+            else{myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
+        }
+
+        IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, myWrapper);
+        return page;
+    }
 }

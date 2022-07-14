@@ -91,7 +91,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param pageSize
      * @return
      */
-    IPage<ProposalInfoVO> listOutstandingProposal(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
 
     /**

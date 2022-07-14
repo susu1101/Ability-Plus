@@ -28,6 +28,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ import java.util.Map;
  * @since 2022-06-30
  */
 @Service
-public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> implements IProposalService {
+public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Proposal> implements IProposalService {
     @Autowired
     IProjectProposalRecordService projectProposalRecordService;
     @Autowired

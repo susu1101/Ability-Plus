@@ -126,4 +126,25 @@ public class ProjectRequestController {
     }
 
 
+    @GetMapping("/list_all_project_requests")
+    @ApiOperation("list all project requests")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "status", value = "status of project", required = true),
+            @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
+            @ApiImplicitParam(name = "whatOrder",value = "sort by what order", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key", required = false),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
+
+    })
+    public RestResponse<IPage<ProjectInfoVO>> listAllProjectRequests(@RequestParam(value = "status") String status,
+                                                                    @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
+                                                                    @RequestParam(value = "whatOrder") String whatOrder,
+                                                                    @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                    @RequestParam(value = "pageNo") Integer pageNo,
+                                                                    @RequestParam(value = "pageSize") Integer pageSize){
+        IPage<ProjectInfoVO> projectInfoVO=projectRequestService.listAllProjectRequests(status,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
+        return RestResponse.success(projectInfoVO);
+    }
+
 }
