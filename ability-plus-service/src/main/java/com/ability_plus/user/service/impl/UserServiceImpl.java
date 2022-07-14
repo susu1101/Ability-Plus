@@ -1,5 +1,8 @@
 package com.ability_plus.user.service.impl;
 
+import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
+import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
@@ -16,6 +19,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.base.MPJBaseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -39,6 +43,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     static final long ONE_HOUR = 60*60*1000;
+
+
 
     @Override
     public Integer register(String fullName, String email, String password, String extraData, Boolean isCompany) throws Exception {
@@ -87,7 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public UserProfileVO getProfileInfo(HttpServletRequest http) {
+    public UserProfileVO viewOwnProfileInfo(HttpServletRequest http) {
         UserProfileVO userProfileVO = new UserProfileVO();
         UserPOJO user = UserUtils.getCurrentUser(http);
         User userData = this.getById(user.getId());
@@ -97,6 +103,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userProfileVO;
     }
 
+
+    @Override
+    public UserProfileVO getProfileInfo(Integer userId){
+        UserProfileVO userProfileVO = new UserProfileVO();
+        User user=this.getById(userId);
+        CheckUtils.assertNotNull(user,"user not exists");
+        BeanUtils.copyProperties(user,userProfileVO);
+
+        return userProfileVO;
+    }
 
 
     @Override

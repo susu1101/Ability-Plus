@@ -3,13 +3,14 @@ package com.ability_plus.projectRequest.service.impl;
 
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
-import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.ProjectRequestStatus;
+import com.ability_plus.projectRequest.entity.VO.ProfileProjectInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
+import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.POJO.UserPOJO;
@@ -25,11 +26,9 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -138,6 +137,11 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .eq(ProjectRequest::getStatus,status)
                 .eq(ProjectRequest::getCreatorId,user.getId())
                 //TODO like search key还没写
+                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
+                .or()
+                .like(ProjectRequest::getName,"%"+searchKey+"%")
+                .or()
+                .like(User::getFullName,"%"+searchKey+"%")
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
@@ -147,12 +151,61 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .selectAs(User::getFullName,"authorName");
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, wrapper);
-//
         return page;
     }
 
     @Override
-    public List<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) {
-        return null;
+    public IPage<ProfileProjectInfoVO> listCompanyProfileProjectRequest(Integer companyId, Integer pageNo, Integer pageSize) {
+
+        Page<ProfileProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        MPJLambdaWrapper<ProjectRequest> wrapper = new MPJLambdaWrapper<>();
+        wrapper
+                .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
+                .eq(ProjectRequest::getCreatorId,companyId)
+                .ne(Proposal::getStatus,ProjectRequestStatus.DRAFT)
+                .select(ProjectRequest::getId)
+                .selectAs(ProjectRequest::getName,"title")
+                .select(ProjectRequest::getDescription)
+                .select(ProjectRequest::getStatus)
+                .select(ProjectRequest::getLastModifiedTime)
+                .orderByAsc(ProjectRequest::getCreateTime);
+
+
+
+        IPage<ProfileProjectInfoVO> page=projectRequestMapper.selectJoinPage(pageSetting,ProfileProjectInfoVO.class,wrapper);
+
+        return page;
+    }
+
+    @Override
+    public IPage<ProfileProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize) {
+        Page<ProfileProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        if (isAscendingOrder){
+            pageSetting.addOrder(OrderItem.asc("create_time"));
+        }else {
+            pageSetting.addOrder(OrderItem.desc("create_time"));
+        }
+        if (status==ProjectRequestStatus.DRAFT){
+            throw new CheckException("Cannot view draft project requests");
+        }
+
+        MPJLambdaWrapper<ProjectRequest> myWrapper = new MPJLambdaWrapper<>();
+        myWrapper
+                .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
+                .eq(ProjectRequest::getStatus,status)
+                .eq(ProjectRequest::getCreatorId,creatorId)
+                .select(ProjectRequest::getId)
+                .selectAs(ProjectRequest::getName,"title")
+                .select(ProjectRequest::getDescription)
+                .select(ProjectRequest::getStatus)
+                .select(ProjectRequest::getLastModifiedTime)
+                .and(wrapper->wrapper.like(ProjectRequest::getDescription,"%"+searchKey+"%")
+                        .or()
+                        .like(ProjectRequest::getName,"%"+searchKey+"%")
+                        .or()
+                        .like(User::getFullName,"%"+searchKey+"%"));
+
+        IPage<ProfileProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProfileProjectInfoVO.class, myWrapper);
+        return page;
     }
 }

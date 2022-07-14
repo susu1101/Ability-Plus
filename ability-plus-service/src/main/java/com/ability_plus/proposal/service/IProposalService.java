@@ -5,6 +5,7 @@ import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -68,15 +69,16 @@ public interface IProposalService extends IService<Proposal> {
 
     /**
      * list proposals created by a user for "my proposals" page
-     * @param creatorId the user id of the proposal author
      * @param status the required status
-     * @param isAscendingOrderTime
+     * @param isAscendingOrder
+     * @param whatOrder
      * @param searchKey
      * @param pageNo
      * @param pageSize
+     * @param http
      * @return
      */
-    List<ProposalInfoVO> listStudentProposalRequest(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProposalInfoVO> listMyProposal(String status, Boolean isAscendingOrder, String whatOrder,String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http);
 
     /**
      * List outstanding proposals for "popular proposal" page
@@ -89,4 +91,25 @@ public interface IProposalService extends IService<Proposal> {
      */
     List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
+
+    /**
+     * list proposals created by a user for "profile" page
+     * @param creatorId the user id of the proposal author
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    IPage<ProposalInfoVO> listStudentProfileProposals(Integer creatorId, Integer pageNo, Integer pageSize);
+
+
+    /**
+     * list proposals created by a user for "profile" page using filter
+     * @param creatorId the user id of the proposal author
+     * @param isAscendingOrderLastModifiedTime
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    IPage<ProposalInfoVO> listStudentProposal(Integer creatorId, Boolean isAscendingOrderLastModifiedTime,String searchKey, Integer pageNo, Integer pageSize);
 }

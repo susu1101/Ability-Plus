@@ -5,6 +5,7 @@ import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
+import com.ability_plus.projectRequest.entity.VO.ProfileProjectInfoVO;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.utils.RestResponse;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -87,28 +88,42 @@ public class ProjectRequestController {
         return RestResponse.success(projectInfoVO);
     }
 
+    @GetMapping("/list_company_profile_project_request")
+    @ApiOperation("list company profile project request")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "companyId", value = "company Id", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true)
+
+    })
+    public RestResponse<IPage<ProfileProjectInfoVO>> listCompanyProfileProjectRequest(@RequestParam(value = "companyId") Integer companyId,
+                                                                               @RequestParam(value = "pageNo") Integer pageNo,
+                                                                               @RequestParam(value = "pageSize") Integer pageSize){
+        IPage<ProfileProjectInfoVO> profileProjectInfoVO=projectRequestService.listCompanyProfileProjectRequest(companyId,pageNo,pageSize);
+        return RestResponse.success(profileProjectInfoVO);
+    }
+
 
 
     @ApiOperation("list all project request created by a company")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),
             @ApiImplicitParam(name = "status", value = "required status to filter", required = true),
-            @ApiImplicitParam(name = "isAscendingOrderTime", value = "required order to sort", required = true),
+            @ApiImplicitParam(name = "isAscendingOrder", value = "required order to sort", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_company_project_request")
-    public RestResponse<List<ProjectInfoVO>> listCompanyProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
+    public RestResponse<IPage<ProfileProjectInfoVO>> listCompanyProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
                                                                  @RequestParam(value = "status") String status,
-                                                                 @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                 @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrder,
                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                  @RequestParam(value = "pageNo") Integer pageNo,
                                                                  @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProjectInfoVO> projectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrderTime, searchKey, pageNo, pageSize);
-        return RestResponse.success(projectInfoVO);
+        IPage<ProfileProjectInfoVO> profileProjectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrder, searchKey, pageNo, pageSize);
+        return RestResponse.success(profileProjectInfoVO);
     }
-
 
 
 }

@@ -4,6 +4,7 @@ package com.ability_plus.projectRequest.service;
 import com.ability_plus.projectRequest.entity.PO.ProjectCreatePO;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.VO.ProfileProjectInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectDetailInfoVO;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -61,14 +62,24 @@ public interface IProjectRequestService extends IService<ProjectRequest>, MPJBas
     IPage<ProjectInfoVO> listMyProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize, HttpServletRequest http);
 
     /**
+     * list all project request of one company at "profile" page
+     * @param companyId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    IPage<ProfileProjectInfoVO> listCompanyProfileProjectRequest(Integer companyId, Integer pageNo, Integer pageSize);
+
+
+    /**
      * list all project request created by a company
      * @param creatorId
      * @param status
-     * @param isAscendingOrderTime
+     * @param isAscendingOrder
      * @param searchKey
      * @param pageNo
      * @param pageSize
      * @return
      */
-    List<ProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProfileProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
 }

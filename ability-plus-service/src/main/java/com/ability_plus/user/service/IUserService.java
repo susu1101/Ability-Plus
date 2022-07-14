@@ -40,12 +40,19 @@ public interface IUserService extends IService<User> {
     UserLoginVO login(String email, String password) throws Exception;
 
     /*get profile info
-    @param id
+    @param http
     @return info
     @throws Exception*/
 
-    UserProfileVO getProfileInfo(HttpServletRequest http) throws Exception;
+    UserProfileVO viewOwnProfileInfo(HttpServletRequest http) throws Exception;
 
+    /**
+     * user login
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    UserProfileVO getProfileInfo(Integer userId) throws Exception;
 
 
     /**

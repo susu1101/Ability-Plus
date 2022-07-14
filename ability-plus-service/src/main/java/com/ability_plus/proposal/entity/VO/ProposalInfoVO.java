@@ -7,8 +7,10 @@ import lombok.Data;
  */
 @Data
 public class ProposalInfoVO {
+    private Integer id;
     private String title;
     private String oneSentenceDescription;
-    private String authorName;
-    private Integer authorId;
+    private String projectName;
+    private String status;
+    private Integer lastModifiedTime;
 }

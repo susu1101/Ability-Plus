@@ -72,11 +72,20 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "user id", required = true),
     })
-    public RestResponse<UserProfileVO> getProfileInfo(HttpServletRequest http) throws Exception{
-        UserProfileVO userProfileVO = userService.getProfileInfo(http);
+    public RestResponse<UserProfileVO> viewOwnProfileInfo(HttpServletRequest http) throws Exception{
+        UserProfileVO userProfileVO = userService.viewOwnProfileInfo(http);
         return RestResponse.success(userProfileVO);
     }
 
+    @GetMapping("/get_profile_info")
+    @ApiOperation("get profile info")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "user id", required = true),
+    })
+    public RestResponse<UserProfileVO> getProfileInfo(Integer userId) throws Exception{
+        UserProfileVO userProfileVO = userService.getProfileInfo(userId);
+        return RestResponse.success(userProfileVO);
+    }
 
 
     @PostMapping("/edit_own_profile_info")
@@ -93,4 +102,7 @@ public class UserController {
         userService.changePassword(po, http);
         return RestResponse.success();
     }
+
+
 }
+
