@@ -2,6 +2,7 @@ package com.ability_plus.proposal.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @author susu
  * @since 2022-06-30
  */
+@ApiModel("proposal information")
 public class Proposal implements Serializable {
 
     private static final long serialVersionUID = 1L;
