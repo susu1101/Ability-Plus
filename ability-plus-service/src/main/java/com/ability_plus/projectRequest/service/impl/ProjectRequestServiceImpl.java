@@ -18,6 +18,7 @@ import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -47,6 +48,13 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
 
     @Resource
     ProjectRequestMapper projectRequestMapper;
+
+    /**
+     * 公司创建project
+     * @param po
+     * @param http
+     * @return
+     */
     @Override
     public Integer createProjectRequest(ProjectCreatePO po, HttpServletRequest http) {
         //check input
@@ -98,6 +106,11 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         return projectRequest;
     }
 
+    /**
+     * 获取某个project info
+     * @param id    project id
+     * @return
+     */
     @Override
     public ProjectDetailInfoVO getProjectInfo(Integer id) {
         ProjectDetailInfoVO projectDetailInfoVO = new ProjectDetailInfoVO();
@@ -110,17 +123,70 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         return projectDetailInfoVO;
     }
 
+    /**
+     * 查此project是否可以被编辑
+     * @param projectId
+     * @return
+     */
     @Override
     public Boolean canEditProject(Integer projectId) {
         ProjectRequest proj = this.getById(projectId);
-        return TimeUtils.getTimeStamp() > proj.getProposalDdl();
+        return TimeUtils.getTimeStamp() < proj.getProposalDdl();
     }
 
+    /**
+     * 修改project
+     * @param po
+     * @param http
+     */
     @Override
-    public void editProject(ProjectEditPO po) {
+    public void editProject(ProjectEditPO po,HttpServletRequest http) {
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        ProjectRequest proj = this.getById(po.getProjectId());
+        editProjectByParams(po, user, proj);
+        proj.setLastModifiedTime(TimeUtils.getTimeStamp());
 
+        this.updateById(proj);
     }
 
+    private void editProjectByParams(ProjectEditPO po, UserPOJO user, ProjectRequest proj) {
+        if (!proj.getCreatorId().equals(user.getId())){
+            throw new CheckException("You cannot edit others project");
+        }
+        if (po.getTitle()!=null){
+            proj.setName(po.getTitle());
+        }
+        if (po.getCategoryType()!=null){
+            proj.setProjectArea(po.getCategoryType());
+        }
+        if (po.getProposalDue()!=null){
+            proj.setProposalDdl(po.getProposalDue());
+        }
+        if (po.getSolutionDue()!=null){
+            proj.setSolutionDdl(po.getSolutionDue());
+        }
+        Map<String, String> extraData = po.getExtraData();
+        if (extraData !=null){
+            String description = extraData.get("description");
+            CheckUtils.assertNotNull(description,"description cannot be null");
+            proj.setDescription(description);
+            proj.setExtraData(JSON.toJSONString(extraData));
+        }
+        if (po.getContactEmail()!=null){
+            proj.setContactEmail(po.getContactEmail());
+        }
+    }
+
+    /**
+     * 公司获取自己的project
+     * @param status
+     * @param isAscendingOrder  true->时间升序
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @param http
+     * @return
+     */
     @Override
     public IPage<ProjectInfoVO> listMyProjectRequests(String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
@@ -154,6 +220,13 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         return page;
     }
 
+    /**
+     * 公司个人页
+     * @param companyId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @Override
     public IPage<ProfileProjectInfoVO> listCompanyProfileProjectRequest(Integer companyId, Integer pageNo, Integer pageSize) {
 
@@ -177,6 +250,16 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         return page;
     }
 
+    /**
+     * 列出某个公司的project
+     * @param creatorId
+     * @param status
+     * @param isAscendingOrder
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @Override
     public IPage<ProfileProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize) {
         Page<ProfileProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
@@ -185,7 +268,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         }else {
             pageSetting.addOrder(OrderItem.desc("create_time"));
         }
-        if (status==ProjectRequestStatus.DRAFT){
+        if (status.equals(ProjectRequestStatus.DRAFT)){
             throw new CheckException("Cannot view draft project requests");
         }
 
@@ -209,6 +292,16 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         return page;
     }
 
+    /**
+     * 学生看所有的project
+     * @param status
+     * @param isAscendingOrder
+     * @param whatOrder
+     * @param searchKey
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @Override
     public IPage<ProjectInfoVO> listAllProjectRequests(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
         Page<ProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);

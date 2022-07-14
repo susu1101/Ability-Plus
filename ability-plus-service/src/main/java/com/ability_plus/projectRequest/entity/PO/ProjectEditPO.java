@@ -16,7 +16,7 @@ public class ProjectEditPO {
     private String title;
 
     @ApiModelProperty("the area of project")
-    private Integer categoryType;
+    private String categoryType;
 
     @ApiModelProperty("due of proposal collection")
     private Integer proposalDue;
@@ -24,10 +24,10 @@ public class ProjectEditPO {
     @ApiModelProperty("due of solution collection")
     private Integer solutionDue;
 
-    @ApiModelProperty("is draft")
-    private Boolean isDraft;
 
     @ApiModelProperty("extra data in json")
     private Map<String, String> extraData;
 
+    @ApiModelProperty("contact email")
+    private String contactEmail;
 }

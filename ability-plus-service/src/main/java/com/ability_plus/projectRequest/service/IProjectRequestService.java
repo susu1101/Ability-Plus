@@ -50,7 +50,7 @@ public interface IProjectRequestService extends IService<ProjectRequest>, MPJBas
      * edit a project
      * @param po
      */
-    public void editProject(ProjectEditPO po);
+    public void editProject(ProjectEditPO po,HttpServletRequest http);
 
     /**
      * list all project request by condition

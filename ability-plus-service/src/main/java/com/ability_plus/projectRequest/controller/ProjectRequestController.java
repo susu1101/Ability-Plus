@@ -63,8 +63,8 @@ public class ProjectRequestController {
 
     @PostMapping("/edit_project")
     @ApiOperation("edit project")
-    public RestResponse editProject(@RequestBody ProjectEditPO po){
-        projectRequestService.editProject(po);
+    public RestResponse editProject(@RequestBody ProjectEditPO po,HttpServletRequest http){
+        projectRequestService.editProject(po,http);
         return RestResponse.success();
     }
 
