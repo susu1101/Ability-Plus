@@ -3,7 +3,7 @@ package com.ability_plus.user.service;
 
 import com.ability_plus.user.entity.UserProposalLikeRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
-
+import javax.servlet.http.HttpServletRequest;
 /**
  * <p>
  *  服务类
@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserProposalLikeRecordService extends IService<UserProposalLikeRecord> {
 
+    public Integer likeRecord(Integer proposalId, HttpServletRequest http);
 }
