@@ -63,6 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(password);
         user.setFullName(fullName);
         user.setIsCompany(isCompany);
+        //TODO 校验extradata是不是json
         user.setExtraData(extraData);
 
         this.save(user);
@@ -106,9 +107,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
     @Override
-    public UserProfileVO getProfileInfo(Integer userId){
+    public UserProfileVO getProfileInfo(HttpServletRequest http){
         UserProfileVO userProfileVO = new UserProfileVO();
-        User user=this.getById(userId);
+        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        User user=this.getById(currentUser.getId());
         CheckUtils.assertNotNull(user,"user not exists");
         BeanUtils.copyProperties(user,userProfileVO);
 

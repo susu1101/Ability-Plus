@@ -69,9 +69,7 @@ public class UserController {
 
     @GetMapping("/view_own_profile_info")
     @ApiOperation("view own profile info")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "user id", required = true),
-    })
+//
     public RestResponse<UserProfileVO> viewOwnProfileInfo(HttpServletRequest http) throws Exception{
         UserProfileVO userProfileVO = userService.viewOwnProfileInfo(http);
         return RestResponse.success(userProfileVO);
@@ -79,11 +77,9 @@ public class UserController {
 
     @GetMapping("/get_profile_info")
     @ApiOperation("get profile info")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "user id", required = true),
-    })
-    public RestResponse<UserProfileVO> getProfileInfo(Integer userId) throws Exception{
-        UserProfileVO userProfileVO = userService.getProfileInfo(userId);
+
+    public RestResponse<UserProfileVO> getProfileInfo(HttpServletRequest http) throws Exception{
+        UserProfileVO userProfileVO = userService.getProfileInfo(http);
         return RestResponse.success(userProfileVO);
     }
 

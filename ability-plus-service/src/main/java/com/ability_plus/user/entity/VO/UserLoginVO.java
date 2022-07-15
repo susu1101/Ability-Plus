@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-@ApiModel("student followings information")
+@ApiModel("student login information")
 public class UserLoginVO {
     private String accessToken;
     private Boolean isCompany;
