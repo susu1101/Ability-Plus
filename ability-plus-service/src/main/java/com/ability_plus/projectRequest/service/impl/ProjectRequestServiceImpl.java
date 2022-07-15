@@ -212,7 +212,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
     @Override
     public IPage<ProjectInfoVO> listAllProjectRequests(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
         Page<ProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
-        if (status==ProjectRequestStatus.DRAFT){
+        if (status.equals(ProjectRequestStatus.DRAFT)){
             throw new CheckException("Cannot view draft project requests");
         }
 
@@ -233,7 +233,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                         .or()
                         .like(User::getFullName,"%"+searchKey+"%"));
 
-        if(whatOrder.equals("ProposalDue")){
+        if("ProposalDue".equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
             else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
         }else{

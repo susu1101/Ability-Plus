@@ -41,14 +41,14 @@ public class StudentFollowingController {
 
     @ApiOperation("follow a company")
     @PostMapping("/{id}")
-    public RestResponse<List<StudentFollowingVO>> followCompany(@PathVariable("id") Integer id, HttpServletRequest http){
+    public RestResponse followCompany(@PathVariable("id") Integer id, HttpServletRequest http){
         studentFollowingService.followCompany(id, http);
         return RestResponse.success();
     }
 
     @ApiOperation("unfollow a company")
     @DeleteMapping("/{id}")
-    public RestResponse<List<StudentFollowingVO>> unfollowCompany(@PathVariable("id") Integer id, HttpServletRequest http){
+    public RestResponse unfollowCompany(@PathVariable("id") Integer id, HttpServletRequest http){
         studentFollowingService.unFollowCompany(id, http);
         return RestResponse.success();
     }

@@ -5,6 +5,7 @@ import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
+import com.ability_plus.proposal.entity.ProposalIds;
 import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.service.IProposalService;
@@ -83,8 +84,8 @@ public class ProposalController {
             @ApiImplicitParam(name = "proposalIds", value = "ids of proposal", required = true)
     })
     @PostMapping("/select_proposal")
-    public RestResponse selectProposal(@RequestParam(value="proposalIds") List<Integer> ids){
-        return RestResponse.success(proposalService.selectProposal(ids));
+    public RestResponse selectProposal(@RequestBody ProposalIds ids){
+        return RestResponse.success(proposalService.selectProposal(ids.getIds()));
     }
 
     @ApiOperation("get proposal detail infomation")

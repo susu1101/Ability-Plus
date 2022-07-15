@@ -45,6 +45,7 @@ public class StudentFollowingServiceImpl extends MPJBaseServiceImpl<StudentFollo
         MPJLambdaWrapper<StudentFollowing> wrapper = new MPJLambdaWrapper<>();
         wrapper
                 .leftJoin(User.class, User::getId, StudentFollowing::getCompanyId)
+                .eq(StudentFollowing::getStudentId,user.getId())
                 .selectAs(User::getFullName, "companyName")
                 .selectAs(StudentFollowing::getCompanyId, "companyId")
                 .select(StudentFollowing::getFollowTime);
