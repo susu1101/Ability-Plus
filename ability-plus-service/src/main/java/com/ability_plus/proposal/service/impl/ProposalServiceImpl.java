@@ -300,7 +300,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .select(ProjectProposalRecord::getRating)
                 .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
-        if (whatOrder.equals("Rating")){
+        if ("Rating".equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectProposalRecord::getRating);}
             else{myWrapper.orderByDesc(ProjectProposalRecord::getRating);}
         }
