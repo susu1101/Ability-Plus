@@ -15,11 +15,19 @@ import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.POJO.UserPOJO;
+import com.ability_plus.user.entity.StudentFollowing;
+import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.UserProposalLikeRecord;
+import com.ability_plus.user.service.IUserProposalLikeRecordService;
+import com.ability_plus.user.service.impl.UserProposalLikeRecordServiceImpl;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +50,10 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
     IProjectProposalRecordService projectProposalRecordService;
     @Autowired
     IProjectRequestService projectRequestService;
+    @Autowired
+    IUserProposalLikeRecordService userProposalLikeRecordService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserProposalLikeRecordServiceImpl.class);
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -168,5 +180,19 @@ public class ProposalServiceImpl extends ServiceImpl<ProposalMapper, Proposal> i
 
     @Override
     public List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize) { return null; }
+
+    @Override
+    public void updateLike(Integer proposalId){
+
+        logger.info("UPDATELIKE FUNCTION CALLED");
+        Proposal proposal = this.getById(proposalId);
+
+        QueryWrapper<UserProposalLikeRecord> wrapper = new QueryWrapper<>();
+        wrapper.eq("proposal_id",proposal.getId());
+        List<UserProposalLikeRecord> records = userProposalLikeRecordService.list(wrapper);
+        proposal.setLikeNum(records.size());
+        updateById(proposal);
+
+    }
 
 }

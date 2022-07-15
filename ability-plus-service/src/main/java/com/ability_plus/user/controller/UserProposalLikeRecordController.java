@@ -38,22 +38,15 @@ public class UserProposalLikeRecordController {
         return RestResponse.success(userProposalLikeRecordService.likeRecord(proposalId, http));
     }
 
-    @GetMapping("/get_proposal_like_num")
-    @ApiOperation("get_proposal_like_num")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "proposalID", value = "id of the proposal", required = true),
-    })
-    public RestResponse<Integer> getLikeRecord(@RequestParam(value = "proposalID") Integer proposalId){
-        return RestResponse.success();
-    }
-
-
 
 
     @PostMapping("/unlike_proposal")
     @ApiOperation("unlike_proposal")
-    public RestResponse cancelLikeRecord(@RequestBody Integer studentId,
-                                         @RequestBody Integer proposalId){
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId", value = "id of the proposal", required = true),
+    })
+    public RestResponse cancelLikeRecord(@RequestParam Integer proposalId, HttpServletRequest http){
+        userProposalLikeRecordService.cancelLikeRecord(proposalId, http);
         return RestResponse.success();
     }
 }

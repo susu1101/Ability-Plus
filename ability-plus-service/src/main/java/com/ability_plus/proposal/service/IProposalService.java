@@ -89,4 +89,6 @@ public interface IProposalService extends IService<Proposal> {
      */
     List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
+
+    public void updateLike(Integer proposalId);
 }

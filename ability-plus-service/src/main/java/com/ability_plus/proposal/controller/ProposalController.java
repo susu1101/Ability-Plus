@@ -6,11 +6,14 @@ import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.service.IProposalService;
+import com.ability_plus.user.service.impl.UserProposalLikeRecordServiceImpl;
 import com.ability_plus.utils.RestResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,7 @@ import java.util.List;
 @RequestMapping("/proposal")
 @Api(value="proposal")
 public class ProposalController {
+    private static final Logger logger = LoggerFactory.getLogger(UserProposalLikeRecordServiceImpl.class);
     @Autowired
     IProposalService proposalService;
 
@@ -129,6 +133,17 @@ public class ProposalController {
                                                                   @RequestParam(value = "pageSize") Integer pageSize){
         List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
+    }
+
+    @GetMapping("/get_like_num")
+    @ApiOperation("get_like_num")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId", value = "id of the proposal", required = true),
+    })
+    public RestResponse getLikeRecord(@RequestParam Integer proposalId){
+//        logger.info("UPDATELIKE FUNCTION CALLED0");
+        proposalService.updateLike(proposalId);
+        return RestResponse.success();
     }
 
 }
