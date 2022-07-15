@@ -177,6 +177,7 @@ public class ProposalController {
     @ApiOperation("list project proposals")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
+            @ApiImplicitParam(name = "isPick", value = "the status of is pick",required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
             @ApiImplicitParam(name = "whatOrder", value = "sort by what order", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
@@ -184,12 +185,13 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     public RestResponse<IPage<ProjectProposalInfoVO>> listProjectProposals (@RequestParam(value = "projectId") Integer projectId,
+                                                                            @RequestParam(value = "isPick") Integer isPick,
                                                                             @RequestParam(value="isAscendingOrder") Boolean isAscendingOrder,
                                                                             @RequestParam(value = "whatOrder") String whatOrder,
                                                                             @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                             @RequestParam(value = "pageNo") Integer pageNo,
                                                                             @RequestParam(value = "pageSize") Integer pageSize){
-        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
+        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId, isPick,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
         return RestResponse.success(projectProposalInfoVO);
     }
 

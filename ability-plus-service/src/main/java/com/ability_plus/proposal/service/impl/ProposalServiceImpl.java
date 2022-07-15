@@ -2,6 +2,7 @@ package com.ability_plus.proposal.service.impl;
 
 
 import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
+import com.ability_plus.projectRequest.entity.ProjectProposalRecordIsPick;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.ProjectRequestStatus;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
@@ -91,7 +92,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         ProjectProposalRecord projectProposalRecord = new ProjectProposalRecord();
         projectProposalRecord.setProjectId(po.getProjectId());
         projectProposalRecord.setProposalId(proposal.getId());
-        projectProposalRecord.setIsPick(false);
+        projectProposalRecord.setIsPick(0);
         projectProposalRecordService.save(projectProposalRecord);
 
 
@@ -283,7 +284,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
 
     @Override
-    public IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
+    public IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Integer isPick, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
         Page<ProjectProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
@@ -299,6 +300,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .selectAs(User::getFullName,"authorName")
                 .select(ProjectProposalRecord::getRating)
                 .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
+
+        if (ProjectProposalRecordIsPick.ALL.equals(isPick)) {
+
+        } else{
+            myWrapper.eq(ProjectProposalRecord::getIsPick,isPick);
+        }
 
         if ("Rating".equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectProposalRecord::getRating);}
