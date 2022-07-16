@@ -214,5 +214,14 @@ public class ProposalController {
         IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listApprovedProjectProposals(projectId,isAscendingOrder,searchKey,pageNo,pageSize);
         return RestResponse.success(projectProposalInfoVO);
     }
+    @ApiOperation("delete draft proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+    })
+    @PostMapping("/delete_proposal")
+    public RestResponse deleteProposal(@RequestParam Integer projectId){
+        proposalService.deleteProposal(projectId);
+        return RestResponse.success();
+    }
 
 }

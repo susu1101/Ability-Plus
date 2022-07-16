@@ -140,5 +140,9 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      */
     IPage<ProjectProposalInfoVO> listApprovedProjectProposals(Integer projectId, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
 
-
+    /**
+     * delete draft proposal
+     * @param projectId
+     */
+    void deleteProposal(@RequestParam Integer projectId);
 }

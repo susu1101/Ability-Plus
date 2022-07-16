@@ -94,6 +94,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         projectRequest.setCreateTime(notTime);
         projectRequest.setCreatorId(user.getId());
         projectRequest.setLastModifiedTime(notTime);
+        projectRequest.setExtraData(JSON.toJSONString(extraData));
         if (po.getIsDraft()){
             projectRequest.setStatus(ProjectRequestStatus.DRAFT);
         }else{

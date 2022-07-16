@@ -336,4 +336,15 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         IPage<ProjectProposalInfoVO> page = proposalMapper.selectJoinPage(pageSetting, ProjectProposalInfoVO.class, myWrapper);
         return page;
     }
+
+    @Override
+    public void deleteProposal(Integer projectId) {
+        Proposal proposal = this.getById(projectId);
+        CheckUtils.assertNotNull(proposal,"project not exist");
+        if (!Proposal.isDraft(proposal)){
+            throw  new CheckException("this proposal is already submitted");
+        }
+
+
+    }
 }

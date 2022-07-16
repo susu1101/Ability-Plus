@@ -149,4 +149,7 @@ public class Proposal implements Serializable {
                 ", oneSentenceDescription='" + oneSentenceDescription + '\'' +
                 '}';
     }
+    public static Boolean isDraft(Proposal proposal){
+        return ProposalStatus.DRAFT.equals(proposal.getStatus());
+    }
 }
