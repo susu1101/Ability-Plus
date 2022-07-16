@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -95,4 +96,10 @@ public interface IProjectRequestService extends IService<ProjectRequest>, MPJBas
      */
     IPage<ProjectInfoVO> listAllProjectRequests(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize);
 
+    /**
+     * delete draft project
+     * @param projectId
+     * @param http
+     */
+    void deleteProject(Integer projectId, HttpServletRequest http);
 }

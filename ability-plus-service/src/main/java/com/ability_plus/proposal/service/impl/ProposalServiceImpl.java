@@ -341,7 +341,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     public void deleteProposal(Integer proposalId,HttpServletRequest http) {
         Proposal proposal = this.getById(proposalId);
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
-        CheckUtils.assertNotNull(proposal,"project not exist");
+        CheckUtils.assertNotNull(proposal,"proposal not exist");
         if (!Proposal.isDraft(proposal)){
             throw  new CheckException("this proposal is already submitted");
         }

@@ -216,7 +216,7 @@ public class ProposalController {
     }
     @ApiOperation("delete draft proposal")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+            @ApiImplicitParam(name = "proposalId", value = "proposalId", required = true),
     })
     @PostMapping("/delete_proposal")
     public RestResponse deleteProposal(@RequestParam Integer proposalId,
