@@ -338,4 +338,19 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, myWrapper);
         return page;
     }
+
+    @Override
+    public void deleteProject(Integer projectId, HttpServletRequest http) {
+        ProjectRequest project = this.getById(projectId);
+//        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+//        CheckUtils.assertNotNull(project,"project not exist");
+//        if (!ProjectRequest.isDraft(project)){
+//            throw  new CheckException("this project cannot delete");
+//        }
+//        if (!currentUser.getId().equals(proposal.getCreatorId())){
+//            throw new CheckException("you cannot delete others proposal");
+//        }
+//        this.removeById(proposal);
+
+    }
 }

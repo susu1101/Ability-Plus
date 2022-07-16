@@ -15,6 +15,6 @@ public class ProjectInfoVO {
     private String description;
     private String authorName;
     private Integer authorId;
-    private Long lastModifyTime;
+    private Long lastModifiedTime;
     private String status;
 }

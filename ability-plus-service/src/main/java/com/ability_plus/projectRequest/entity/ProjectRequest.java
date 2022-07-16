@@ -220,4 +220,8 @@ public class ProjectRequest implements Serializable {
                 ", canProcess=" + canProcess +
                 '}';
     }
+
+    public static Boolean isDraft(ProjectRequest project){
+        return ProjectRequestStatus.DRAFT.equals(project.getStatus());
+    }
 }

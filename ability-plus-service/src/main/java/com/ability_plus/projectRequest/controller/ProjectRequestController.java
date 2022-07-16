@@ -147,4 +147,15 @@ public class ProjectRequestController {
         return RestResponse.success(projectInfoVO);
     }
 
+    @ApiOperation("delete draft project")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+    })
+    @PostMapping("/delete_project")
+    public RestResponse deleteProject(@RequestParam Integer projectId,
+                                       HttpServletRequest http){
+        projectRequestService.deleteProject(projectId,http);
+        return RestResponse.success();
+    }
+
 }
