@@ -201,7 +201,7 @@ public class ProposalController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
-            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key"),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
@@ -214,4 +214,30 @@ public class ProposalController {
         return RestResponse.success(projectProposalInfoVO);
     }
 
+    @PostMapping("/company_process_proposal")
+    @ApiOperation("company process proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId",value = "id of proposal",required = true),
+            @ApiImplicitParam(name = "rating",value = "rating"),
+            @ApiImplicitParam(name = "isPick",value = "the value of proposal is pick"),
+            @ApiImplicitParam(name = "comment",value = "the comment given by company")
+    })
+    public RestResponse companyProcessProposal(@RequestParam(value = "proposalId") Integer proposalId,
+                                               @RequestParam(value = "rating", required=false) Integer rating,
+                                               @RequestParam(value = "isPick",required = false) Integer isPick,
+                                               @RequestParam(value = "comment",required = false) String comment){
+        proposalService.companyProcessProposal(proposalId,rating,isPick,comment);
+        return RestResponse.success();
+    }
+
+
+    @PostMapping("/commit_approved_proposal")
+    @ApiOperation("commit approved proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "id of project")
+    })
+    public RestResponse commitApprovedProposal(@RequestParam(value = "projectId") Integer projectId){
+        proposalService.commitApprovedProposal(projectId);
+        return RestResponse.success();
+    }
 }

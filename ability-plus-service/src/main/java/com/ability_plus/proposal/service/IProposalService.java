@@ -140,4 +140,23 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
     IPage<ProjectProposalInfoVO> listApprovedProjectProposals(Integer projectId, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
 
 
+
+    /**
+     * company process a proposal
+     * @param proposalId
+     * @param rating
+     * @param isPick
+     * @param comment
+     * @return
+     */
+    public void companyProcessProposal(Integer proposalId,Integer rating,Integer isPick,String comment);
+
+
+    /**
+     * company commit approved proposal
+     * @param projectId
+     * @return
+     */
+    public void commitApprovedProposal(Integer projectId);
+
 }

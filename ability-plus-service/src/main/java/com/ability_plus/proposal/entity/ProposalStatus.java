@@ -11,6 +11,6 @@ public class ProposalStatus {
     public static String SUBMITTED="submitted";
     public static String APPROVING="approving";
     public static String APPROVED="approved";
-    public static String REJECTED="REJECTED";
+    public static String REJECTED="rejected";
 
 }

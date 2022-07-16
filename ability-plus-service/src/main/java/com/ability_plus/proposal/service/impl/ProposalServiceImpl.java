@@ -6,6 +6,7 @@ import com.ability_plus.projectRequest.entity.ProjectProposalRecordIsPick;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.ProjectRequestStatus;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
+import com.ability_plus.projectRequest.mapper.ProjectProposalRecordMapper;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
@@ -25,6 +26,8 @@ import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -350,4 +353,35 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         IPage<ProjectProposalInfoVO> page=proposalMapper.selectJoinPage(pageSetting,ProjectProposalInfoVO.class,myWrapper);
         return page;
     }
+
+    @Override
+    public void companyProcessProposal(Integer proposalId,Integer rating,Integer isPick,String comment){
+        UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("proposal_id",proposalId);
+        ProjectProposalRecord projectProposalRecord = new ProjectProposalRecord();
+        projectProposalRecord.setRating(rating);
+        projectProposalRecord.setIsPick(isPick);
+        projectProposalRecord.setComment(comment);
+        projectProposalRecordService.update(projectProposalRecord, updateWrapper);
+    }
+
+    @Override
+    public void commitApprovedProposal(Integer projectId) {
+        UpdateWrapper<Proposal> updateWrapperApproved = new UpdateWrapper<>();
+        updateWrapperApproved.inSql("id","select proposal_id from project_proposal_record where project_id="+projectId.toString()+" and is_pick=1");
+        Proposal proposalApproved=new Proposal();
+        proposalApproved.setStatus(ProposalStatus.APPROVED);
+        proposalMapper.update(proposalApproved, updateWrapperApproved);
+
+        UpdateWrapper<Proposal> updateWrapperRejected = new UpdateWrapper<>();
+        updateWrapperRejected.inSql("id","select proposal_id from project_proposal_record where project_id="+projectId.toString()+" and (is_pick=0 or is_pick=-1)");
+        Proposal proposalRejected=new Proposal();
+        proposalRejected.setStatus(ProposalStatus.REJECTED);
+        proposalMapper.update(proposalRejected, updateWrapperRejected);
+
+
+    }
+
+
+
 }
