@@ -4,10 +4,7 @@ import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
-import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.ProposalCard;
-import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.StudentMyProposalVO;
+import com.ability_plus.proposal.entity.VO.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
@@ -69,7 +66,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param proposalId
      * @return
      */
-    Proposal getProposalInfo(@RequestParam(value="proposalId") Integer proposalId);
+    ProposalDetailVO getProposalInfo(@RequestParam(value="proposalId") Integer proposalId);
 
     /**
      * list proposals created by a user for "my proposals" page

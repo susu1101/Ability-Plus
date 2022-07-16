@@ -12,15 +12,13 @@ import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.ProposalStatus;
-import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.ProposalCard;
-import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.StudentMyProposalVO;
+import com.ability_plus.proposal.entity.VO.*;
 import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CardUtils;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
@@ -33,6 +31,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +56,8 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     @Autowired
     IProjectRequestService projectRequestService;
 
+    @Autowired
+    IUserService userService;
     @Resource
     ProposalMapper proposalMapper;
 
@@ -210,10 +211,15 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     }
 
     @Override
-    public Proposal getProposalInfo(Integer proposalId) {
+    public ProposalDetailVO getProposalInfo(Integer proposalId) {
         Proposal proposal = this.getById(proposalId);
+        CheckUtils.assertNotNull(proposal,"proposal not exist");
+        ProposalDetailVO data = new ProposalDetailVO();
+        BeanUtils.copyProperties(proposal,data);
+        User auth = userService.getById(proposal.getCreatorId());
+        data.setCreatorName(auth.getFullName());
 
-        return null;
+        return data;
     }
 
     @Override

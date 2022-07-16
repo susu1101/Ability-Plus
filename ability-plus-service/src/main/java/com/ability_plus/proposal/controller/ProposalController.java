@@ -6,10 +6,7 @@ import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.ProposalIds;
-import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.ProposalCard;
-import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.StudentMyProposalVO;
+import com.ability_plus.proposal.entity.VO.*;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -95,7 +92,7 @@ public class ProposalController {
             @ApiImplicitParam(name = "proposalId", value = "id of proposal", required = true)
     })
     @GetMapping("/get_proposal_detail_info")
-    public RestResponse<Proposal> getProposalInfo(@RequestParam(value="proposalId") Integer proposalId){
+    public RestResponse<ProposalDetailVO> getProposalInfo(@RequestParam(value="proposalId") Integer proposalId){
         return RestResponse.success(proposalService.getProposalInfo(proposalId));
     }
 

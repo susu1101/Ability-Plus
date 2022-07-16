@@ -10,5 +10,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ProposalDetailVO extends Proposal {
-    private String authName;
+    private String creatorName;
 }
