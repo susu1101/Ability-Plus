@@ -390,8 +390,8 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
         updateWrapper.in("id",ids);
         Proposal proposal = new Proposal();
-        proposal.set(status);
-        this.update();
+//        proposal.set(status);
+//        this.update();
 
     }
 }
