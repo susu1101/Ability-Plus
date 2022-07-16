@@ -36,7 +36,7 @@ public class ProjectProposalRecord implements Serializable {
     /**
      * 提案是否被通过
      */
-    private Boolean isPick;
+    private Integer isPick;
 
     /**
      * 得分
@@ -69,11 +69,11 @@ public class ProjectProposalRecord implements Serializable {
     public void setProposalId(Integer proposalId) {
         this.proposalId = proposalId;
     }
-    public Boolean getIsPick() {
+    public Integer getIsPick() {
         return isPick;
     }
 
-    public void setIsPick(Boolean isPick) {
+    public void setIsPick(Integer isPick) {
         this.isPick = isPick;
     }
     public Integer getRating() {

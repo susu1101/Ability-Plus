@@ -2,9 +2,11 @@ package com.ability_plus.proposal.service.impl;
 
 
 import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
+import com.ability_plus.projectRequest.entity.ProjectProposalRecordIsPick;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.ProjectRequestStatus;
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
+import com.ability_plus.projectRequest.mapper.ProjectProposalRecordMapper;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
@@ -19,6 +21,7 @@ import com.ability_plus.proposal.entity.VO.*;
 import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.system.entity.FilterName;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.service.IUserService;
@@ -29,6 +32,8 @@ import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -101,7 +106,6 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         ProjectProposalRecord projectProposalRecord = new ProjectProposalRecord();
         projectProposalRecord.setProjectId(po.getProjectId());
         projectProposalRecord.setProposalId(proposal.getId());
-        projectProposalRecord.setIsPick(false);
         projectProposalRecordService.save(projectProposalRecord);
 
 
@@ -226,20 +230,45 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     }
 
     @Override
-    public IPage<StudentMyProposalVO> listMyProposal(String status, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize, HttpServletRequest http) {
+    public IPage<ProposalInfoVO> listMyProposal(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
-        Page<StudentMyProposalVO> pageSetting = new Page<>(pageNo, pageSize);
+        Page<ProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
+        myWrapper
+                .leftJoin(User.class,User::getId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .eq(Proposal::getCreatorId,user.getId())
+                .eq(Proposal::getStatus,status)
+                .select(Proposal::getId)
+                .select(Proposal::getTitle)
+                .select(Proposal::getOneSentenceDescription)
+                .selectAs(ProjectRequest::getName,"projectName")
+                .select(Proposal::getStatus)
+                .select(Proposal::getLastModifiedTime)
+                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
 
-        MPJLambdaWrapper<Proposal> myWrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
-        myWrapper.select(Proposal::getStatus)
-                .selectAs(Proposal::getId,"proposalId")
-                .eq(Proposal::getCreatorId, user.getId())
-                .eq(Proposal::getStatus, status);
-//                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));
-        //Todo like有错
-        setStudentMyProposalOrder(isAscendingOrder, whatOrder, myWrapper);
-        IPage<StudentMyProposalVO> page = proposalMapper.selectJoinPage(pageSetting, StudentMyProposalVO.class, myWrapper);
+
+
+        if(FilterName.LAST_MODIFIED_TIME.equals(whatOrder)){
+            if (isAscendingOrder){ myWrapper.orderByAsc(Proposal::getLastModifiedTime);}
+            else{myWrapper.orderByDesc(Proposal::getLastModifiedTime); }
+        }
+        else if(FilterName.PROPOSAL_DUE.equals(whatOrder)){
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
+            else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
+        }
+        else if(FilterName.SOLUTION_DUE.equals(whatOrder)){
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
+            else{myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
+        }
+        else{
+            if(isAscendingOrder){myWrapper.orderByAsc(Proposal::getLikeNum);}
+            else{myWrapper.orderByDesc(Proposal::getLikeNum);}
+        }
+
+        IPage<ProposalInfoVO> page=proposalMapper.selectJoinPage(pageSetting,ProposalInfoVO.class,myWrapper);
         return page;
     }
 
@@ -302,27 +331,36 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
 
     @Override
-    public IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize) {
+    public IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Integer isPick, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize){
         Page<ProjectProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
-        MPJLambdaWrapper<Proposal> myWrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
+        MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
-                .eq(ProjectRequest::getId, projectId)
-                .ne(Proposal::getStatus, ProposalStatus.DRAFT)
+                .leftJoin(User.class,User::getId,Proposal::getCreatorId)
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .eq(ProjectRequest::getId,projectId)
+                .ne(Proposal::getStatus,ProposalStatus.DRAFT)
+                .select(Proposal::getId)
+                .select(Proposal::getTitle)
+                .select(Proposal::getOneSentenceDescription)
+                .selectAs(User::getId,"authorId")
+                .selectAs(User::getFullName,"authorName")
                 .select(ProjectProposalRecord::getRating)
-                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));
+                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
-        if (whatOrder.equals("Rating")) {
-            if (isAscendingOrder) {
-                myWrapper.orderByAsc(ProjectProposalRecord::getRating);
-            } else {
-                myWrapper.orderByDesc(ProjectProposalRecord::getRating);
-            }
-        } else {
-            if (isAscendingOrder) {
-                myWrapper.orderByAsc(Proposal::getLastModifiedTime);
-            } else {
-                myWrapper.orderByDesc(Proposal::getLastModifiedTime);
-            }
+        if (ProjectProposalRecordIsPick.ALL.equals(isPick)) {
+
+        } else{
+            myWrapper.eq(ProjectProposalRecord::getIsPick,isPick);
+        }
+
+        if (FilterName.RATING.equals(whatOrder)){
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectProposalRecord::getRating);}
+            else{myWrapper.orderByDesc(ProjectProposalRecord::getRating);}
+        }
+        else {
+            if(isAscendingOrder){myWrapper.orderByAsc(Proposal::getLastModifiedTime);}
+            else{myWrapper.orderByDesc(Proposal::getLastModifiedTime);}
         }
 
 
@@ -350,6 +388,37 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         IPage<ProjectProposalInfoVO> page = proposalMapper.selectJoinPage(pageSetting, ProjectProposalInfoVO.class, myWrapper);
         return page;
     }
+
+    @Override
+    public void companyProcessProposal(Integer proposalId,Integer rating,Integer isPick,String comment){
+        UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("proposal_id",proposalId);
+        ProjectProposalRecord projectProposalRecord = new ProjectProposalRecord();
+        projectProposalRecord.setRating(rating);
+        projectProposalRecord.setIsPick(isPick);
+        projectProposalRecord.setComment(comment);
+        projectProposalRecordService.update(projectProposalRecord, updateWrapper);
+    }
+
+    @Override
+    public void commitApprovedProposal(Integer projectId) {
+        UpdateWrapper<Proposal> updateWrapperApproved = new UpdateWrapper<>();
+        updateWrapperApproved.inSql("id","select proposal_id from project_proposal_record where project_id="+projectId.toString()+" and is_pick=1");
+        Proposal proposalApproved=new Proposal();
+        proposalApproved.setStatus(ProposalStatus.APPROVED);
+        proposalMapper.update(proposalApproved, updateWrapperApproved);
+
+        UpdateWrapper<Proposal> updateWrapperRejected = new UpdateWrapper<>();
+        updateWrapperRejected.inSql("id","select proposal_id from project_proposal_record where project_id="+projectId.toString()+" and (is_pick=0 or is_pick=-1)");
+        Proposal proposalRejected=new Proposal();
+        proposalRejected.setStatus(ProposalStatus.REJECTED);
+        proposalMapper.update(proposalRejected, updateWrapperRejected);
+
+
+    }
+
+
+
 
     @Override
     public void deleteProposal(Integer proposalId,HttpServletRequest http) {

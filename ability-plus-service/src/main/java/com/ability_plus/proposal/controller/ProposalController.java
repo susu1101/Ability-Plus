@@ -172,6 +172,7 @@ public class ProposalController {
     @ApiOperation("list project proposals")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
+            @ApiImplicitParam(name = "isPick", value = "the status of is pick",required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
             @ApiImplicitParam(name = "whatOrder", value = "sort by what order", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
@@ -179,12 +180,13 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     public RestResponse<IPage<ProjectProposalInfoVO>> listProjectProposals (@RequestParam(value = "projectId") Integer projectId,
+                                                                            @RequestParam(value = "isPick") Integer isPick,
                                                                             @RequestParam(value="isAscendingOrder") Boolean isAscendingOrder,
                                                                             @RequestParam(value = "whatOrder") String whatOrder,
                                                                             @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                             @RequestParam(value = "pageNo") Integer pageNo,
                                                                             @RequestParam(value = "pageSize") Integer pageSize){
-        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
+        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId, isPick,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
         return RestResponse.success(projectProposalInfoVO);
     }
 
@@ -194,7 +196,7 @@ public class ProposalController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
-            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key"),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
@@ -224,4 +226,30 @@ public class ProposalController {
         return RestResponse.success();
     }
 
+    @PostMapping("/company_process_proposal")
+    @ApiOperation("company process proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId",value = "id of proposal",required = true),
+            @ApiImplicitParam(name = "rating",value = "rating"),
+            @ApiImplicitParam(name = "isPick",value = "the value of proposal is pick"),
+            @ApiImplicitParam(name = "comment",value = "the comment given by company")
+    })
+    public RestResponse companyProcessProposal(@RequestParam(value = "proposalId") Integer proposalId,
+                                               @RequestParam(value = "rating", required=false) Integer rating,
+                                               @RequestParam(value = "isPick",required = false) Integer isPick,
+                                               @RequestParam(value = "comment",required = false) String comment){
+        proposalService.companyProcessProposal(proposalId,rating,isPick,comment);
+        return RestResponse.success();
+    }
+
+
+    @PostMapping("/commit_approved_proposal")
+    @ApiOperation("commit approved proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "id of project")
+    })
+    public RestResponse commitApprovedProposal(@RequestParam(value = "projectId") Integer projectId){
+        proposalService.commitApprovedProposal(projectId);
+        return RestResponse.success();
+    }
 }

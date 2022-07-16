@@ -115,6 +115,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
     /**
      * list proposals in one project request using filter
      * @param projectId
+     * @param isPick
      * @param isAscendingOrder
      * @param whatOrder
      * @param searchKey
@@ -122,7 +123,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param pageSize
      * @return
      */
-    IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Integer isPick ,Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize);
 
     /**
      * list approved proposals in one project request using filter
@@ -147,4 +148,23 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param http
      */
     void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http);
+
+    /**
+     * company process a proposal
+     * @param proposalId
+     * @param rating
+     * @param isPick
+     * @param comment
+     * @return
+     */
+    public void companyProcessProposal(Integer proposalId,Integer rating,Integer isPick,String comment);
+
+
+    /**
+     * company commit approved proposal
+     * @param projectId
+     * @return
+     */
+    public void commitApprovedProposal(Integer projectId);
+
 }
