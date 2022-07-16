@@ -211,6 +211,8 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
     @Override
     public Proposal getProposalInfo(Integer proposalId) {
+        Proposal proposal = this.getById(proposalId);
+
         return null;
     }
 
@@ -223,9 +225,9 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         MPJLambdaWrapper<Proposal> myWrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
         myWrapper.select(Proposal::getStatus)
                 .eq(Proposal::getCreatorId, user.getId())
-                .eq(Proposal::getStatus, status)
-                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));
-
+                .eq(Proposal::getStatus, status);
+//                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));
+        //Todo like有错
         setStudentMyProposalOrder(isAscendingOrder, whatOrder, myWrapper);
         IPage<StudentMyProposalVO> page = proposalMapper.selectJoinPage(pageSetting, StudentMyProposalVO.class, myWrapper);
         return page;
