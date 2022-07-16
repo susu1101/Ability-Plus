@@ -2,6 +2,7 @@ package com.ability_plus.proposal.controller;
 
 
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -78,14 +80,7 @@ public class ProposalController {
         return RestResponse.success(proposalInfoVOS);
     }
 
-    @ApiOperation("select to approve proposal")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "proposalIds", value = "ids of proposal", required = true)
-    })
-    @PostMapping("/select_proposal")
-    public RestResponse selectProposal(@RequestBody ProposalIds ids){
-        return RestResponse.success(proposalService.selectProposal(ids.getIds()));
-    }
+
 
     @ApiOperation("get proposal detail infomation")
     @ApiImplicitParams({
@@ -219,6 +214,13 @@ public class ProposalController {
     public RestResponse deleteProposal(@RequestParam Integer proposalId,
                                        HttpServletRequest http){
         proposalService.deleteProposal(proposalId,http);
+        return RestResponse.success();
+    }
+
+    @PostMapping("/batch_process_proposals")
+    public RestResponse batchProcessProposals(@RequestBody ProposalBatchProcessRequest request,HttpServletRequest http){
+        proposalService.batchProcessProposals(request,http);
+
         return RestResponse.success();
     }
 

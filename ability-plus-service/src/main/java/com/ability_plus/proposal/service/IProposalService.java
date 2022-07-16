@@ -1,13 +1,16 @@
 package com.ability_plus.proposal.service;
 
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
+import com.ability_plus.proposal.entity.ProposalIds;
 import com.ability_plus.proposal.entity.VO.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,12 +57,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      */
     List<ProposalInfoVO> listProposalRequests(String ranking, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
-    /**
-     * select proposal
-     * @param ids
-     * @return
-     */
-    List<Integer> selectProposal(List<Integer> ids);
+
 
     /**
      * get proposal detail infomation
@@ -142,4 +140,11 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param proposalId
      */
     void deleteProposal(Integer proposalId,HttpServletRequest http);
+
+    /**
+     * 批量处理
+     * @param request
+     * @param http
+     */
+    void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http);
 }

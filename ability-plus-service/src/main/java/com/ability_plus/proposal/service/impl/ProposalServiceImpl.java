@@ -8,9 +8,12 @@ import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
+import com.ability_plus.proposal.entity.P2pPOJO;
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
+import com.ability_plus.proposal.entity.ProposalIds;
 import com.ability_plus.proposal.entity.ProposalStatus;
 import com.ability_plus.proposal.entity.VO.*;
 import com.ability_plus.proposal.mapper.ProposalMapper;
@@ -24,7 +27,9 @@ import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -205,10 +211,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         return page;
     }
 
-    @Override
-    public List<Integer> selectProposal(List<Integer> ids) {
-        return null;
-    }
+
 
     @Override
     public ProposalDetailVO getProposalInfo(Integer proposalId) {
@@ -360,6 +363,38 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
             throw new CheckException("you cannot delete others proposal");
         }
         this.removeById(proposal);
+
+    }
+
+    @Override
+    public void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http) {
+        ArrayList<Integer> ids = request.getIds();
+        String status = request.getStatus();
+        MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        wrapper
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .in(Proposal::getId,ids)
+                .selectAs(ProjectRequest::getStatus,"projectStatus")
+                .selectAs(ProjectRequest::getCreatorId,"projectCreatorId")
+                .selectAs(Proposal::getId,"proposalCreateId");
+        List<P2pPOJO> p2pPOJOS = proposalMapper.selectJoinList(P2pPOJO.class, wrapper);
+
+        for (P2pPOJO p2pPOJO:p2pPOJOS){
+            if (!user.getId().equals(p2pPOJO.getProjectCreatorId())){
+                throw new CheckException("Not all proposals belong in your project");
+            }
+            if (!ProjectRequestStatus.APPROVING.equals(p2pPOJO.getProjectStatus())){
+                throw new CheckException("Not all proposals belong in the processing stage");
+            }
+        }
+
+        UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.in("id",ids);
+        Proposal proposal = new Proposal();
+//        proposal.set(status);
+//        this.update();
 
     }
 }
