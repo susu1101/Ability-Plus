@@ -232,7 +232,15 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     @Override
     public IPage<StudentMyProposalVO> listMyProposal(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
-        Page<ProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
+        Page<StudentMyProposalVO> pageSetting = new Page<>(pageNo, pageSize);
+//        MPJLambdaWrapper<Proposal> wrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
+//        wrapper
+//                .eq(Proposal::getCreatorId,user.getId())
+//                .eq(Proposal::getStatus,status)
+//                .select(Proposal::getStatus)
+//                .
+//
+
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
                 .leftJoin(User.class,User::getId,Proposal::getCreatorId)
@@ -435,10 +443,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
     }
 
+
+    //todo 还没测
     @Override
     public void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http) {
         ArrayList<Integer> ids = request.getIds();
-        String status = request.getStatus();
+        Integer isPick = request.getIsPick();
         MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
         UserPOJO user = UserUtils.getCurrentUser(http);
         wrapper
@@ -461,9 +471,9 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
         UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
         updateWrapper.in("id",ids);
-        Proposal proposal = new Proposal();
-//        proposal.set(status);
-//        this.update();
+        ProjectProposalRecord record = new ProjectProposalRecord();
+        record.setIsPick(isPick);
+        projectProposalRecordService.update(record,updateWrapper);
 
     }
 }
