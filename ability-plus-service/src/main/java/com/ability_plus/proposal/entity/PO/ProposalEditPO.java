@@ -17,6 +17,7 @@ public class ProposalEditPO {
 
     private String title;
 
+    private Integer projectId;
     private String shortDescription;
 
     @ApiModelProperty("extra data in json")

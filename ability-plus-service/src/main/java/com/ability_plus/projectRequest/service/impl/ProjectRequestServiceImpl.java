@@ -143,6 +143,12 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
     public void editProject(ProjectEditPO po,HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
         ProjectRequest proj = this.getById(po.getProjectId());
+        CheckUtils.assertNotNull(proj,"This project not exist");
+        if (!ProjectRequestStatus.DRAFT.equals(proj.getStatus()) &&
+                !ProjectRequestStatus.OPEN_FOR_PROPOSAL.equals(proj.getStatus())){
+            throw new CheckException("This project status cannot be edit");
+        }
+
         editProjectByParams(po, user, proj);
         proj.setLastModifiedTime(TimeUtils.getTimeStamp());
 
@@ -150,7 +156,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
     }
 
     private void editProjectByParams(ProjectEditPO po, UserPOJO user, ProjectRequest proj) {
-        if (!proj.getCreatorId().equals(user.getId())){
+        if (!equals(user.getId().equals(proj.getCreatorId()))){
             throw new CheckException("You cannot edit others project");
         }
         if (po.getTitle()!=null){

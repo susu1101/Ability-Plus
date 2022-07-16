@@ -27,6 +27,7 @@ import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -75,10 +76,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         proposal.setTitle(po.getTitle());
         proposal.setCreatorId(user.getId());
         proposal.setOneSentenceDescription(po.getShortDescription());
+        //草稿不新增record
         if (po.getIsDraft()) {
             proposal.setStatus(ProposalStatus.DRAFT);
         } else {
             proposal.setStatus(ProposalStatus.SUBMITTED);
+            insertProjectProposalRecord(project.getId(),project.getId());
         }
         long notTime = TimeUtils.getTimeStamp();
         proposal.setCreateTime(notTime);
@@ -90,14 +93,6 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         proposal.setLikeNum(0);
         proposal.setLastModifiedTime(notTime);
         this.save(proposal);
-
-        ProjectProposalRecord projectProposalRecord = new ProjectProposalRecord();
-        projectProposalRecord.setProjectId(po.getProjectId());
-        projectProposalRecord.setProposalId(proposal.getId());
-        projectProposalRecord.setIsPick(false);
-        projectProposalRecordService.save(projectProposalRecord);
-
-
         return proposal.getId();
     }
 
@@ -112,10 +107,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void editProposal(ProposalEditPO po, HttpServletRequest http) {
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
         Integer pid = po.getProposalId();
         Proposal proposal = this.getById(pid);
+
         if (CheckUtils.isNull(proposal)) {
             throw new CheckException("proposal not exist");
         }
@@ -123,6 +120,14 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         if (!verifyEditProposalPermission(currentUser, proposal)) {
             throw new CheckException("You do not have permission to edit other people's proposals");
         }
+
+        if (ProposalStatus.DRAFT.equals(proposal.getStatus())
+                && !po.getIsDraft()){
+            Integer projectId = po.getProjectId();
+            Integer proposalId = proposal.getId();
+            insertProjectProposalRecord(projectId, proposalId);
+        }
+
         if (CheckUtils.isNotNull(po.getTitle())) {
             proposal.setTitle(po.getTitle());
         }
@@ -145,6 +150,13 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         proposal.setLastModifiedTime(TimeUtils.getTimeStamp());
         updateById(proposal);
 
+    }
+
+    private void insertProjectProposalRecord(Integer projectId, Integer proposalId) {
+        ProjectProposalRecord record = new ProjectProposalRecord();
+        record.setProposalId(proposalId);
+        record.setProjectId(projectId);
+        projectProposalRecordService.save(record);
     }
 
     private Boolean verifyEditProposalPermission(UserPOJO currentUser, Proposal proposal) {
