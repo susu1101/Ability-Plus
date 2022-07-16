@@ -233,80 +233,36 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     public IPage<StudentMyProposalVO> listMyProposal(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
         Page<StudentMyProposalVO> pageSetting = new Page<>(pageNo, pageSize);
-//        MPJLambdaWrapper<Proposal> wrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
-//        wrapper
-//                .eq(Proposal::getCreatorId,user.getId())
-//                .eq(Proposal::getStatus,status)
-//                .select(Proposal::getStatus)
-//                .
-//
-
-        MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
-        myWrapper
-                .leftJoin(User.class,User::getId,Proposal::getCreatorId)
-                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
-                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+        MPJLambdaWrapper<Proposal> wrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
+        wrapper
                 .eq(Proposal::getCreatorId,user.getId())
                 .eq(Proposal::getStatus,status)
-                .select(Proposal::getId)
-                .select(Proposal::getTitle)
-                .select(Proposal::getOneSentenceDescription)
-                .selectAs(ProjectRequest::getName,"projectName")
                 .select(Proposal::getStatus)
-                .select(Proposal::getLastModifiedTime)
-                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
-
-
-
+                .selectAs(Proposal::getId,"proposalId");
+                //todo like好像有bug
+//                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
         if(FilterName.LAST_MODIFIED_TIME.equals(whatOrder)){
-            if (isAscendingOrder){ myWrapper.orderByAsc(Proposal::getLastModifiedTime);}
-            else{myWrapper.orderByDesc(Proposal::getLastModifiedTime); }
+            if (isAscendingOrder){ wrapper.orderByAsc(Proposal::getLastModifiedTime);}
+            else{wrapper.orderByDesc(Proposal::getLastModifiedTime); }
         }
         else if(FilterName.PROPOSAL_DUE.equals(whatOrder)){
-            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
-            else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
+            if(isAscendingOrder){wrapper.orderByAsc(ProjectRequest::getProposalDdl);}
+            else{wrapper.orderByDesc(ProjectRequest::getProposalDdl);}
         }
         else if(FilterName.SOLUTION_DUE.equals(whatOrder)){
-            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
-            else{myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
+            if(isAscendingOrder){wrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
+            else{wrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
         }
         else{
-            if(isAscendingOrder){myWrapper.orderByAsc(Proposal::getLikeNum);}
-            else{myWrapper.orderByDesc(Proposal::getLikeNum);}
+            if(isAscendingOrder){wrapper.orderByAsc(Proposal::getLikeNum);}
+            else{wrapper.orderByDesc(Proposal::getLikeNum);}
         }
 
-        IPage<StudentMyProposalVO> page=proposalMapper.selectJoinPage(pageSetting,StudentMyProposalVO.class,myWrapper);
+        IPage<StudentMyProposalVO> page=proposalMapper.selectJoinPage(pageSetting,StudentMyProposalVO.class,wrapper);
         return page;
     }
 
-    private void setStudentMyProposalOrder(Boolean isAscendingOrder, String whatOrder, MPJLambdaWrapper<Proposal> myWrapper) {
-        if ("LastModifiedTime".equals(whatOrder)) {
-            if (isAscendingOrder) {
-                myWrapper.orderByAsc(Proposal::getLastModifiedTime);
-            } else {
-                myWrapper.orderByDesc(Proposal::getLastModifiedTime);
-            }
-        } else if ("ProposalDue".equals(whatOrder)) {
-            if (isAscendingOrder) {
-                myWrapper.orderByAsc(ProjectRequest::getProposalDdl);
-            } else {
-                myWrapper.orderByDesc(ProjectRequest::getProposalDdl);
-            }
-        } else if ("SolutionDue".equals(whatOrder)) {
-            if (isAscendingOrder) {
-                myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);
-            } else {
-                myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);
-            }
-        } else {
-            if (isAscendingOrder) {
-                myWrapper.orderByAsc(Proposal::getLikeNum);
-            } else {
-                myWrapper.orderByDesc(Proposal::getLikeNum);
-            }
-        }
-    }
 
     @Override
     public IPage<ProposalCard> listOutstandingProposal(Boolean isAscendingOrderLike,
@@ -324,14 +280,14 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
     private void setFilter(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, Page<Proposal> pageSetting) {
         if (isAscendingOrderLike) {
-            pageSetting.addOrder(OrderItem.asc("like_num"));
+            pageSetting.addOrder(OrderItem.asc(FilterName.LIKE_NUM));
         } else {
-            pageSetting.addOrder(OrderItem.desc("like_num"));
+            pageSetting.addOrder(OrderItem.desc(FilterName.LIKE_NUM));
         }
         if (isAscendingOrderTime) {
-            pageSetting.addOrder(OrderItem.asc("last_modified_time"));
+            pageSetting.addOrder(OrderItem.asc(FilterName.LAST_MODIFIED_TIME));
         } else {
-            pageSetting.addOrder(OrderItem.desc("last_modified_time"));
+            pageSetting.addOrder(OrderItem.desc(FilterName.LAST_MODIFIED_TIME));
         }
 
 
