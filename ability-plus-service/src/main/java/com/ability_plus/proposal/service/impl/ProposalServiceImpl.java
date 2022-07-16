@@ -19,6 +19,7 @@ import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
 import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.system.entity.FilterName;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.utils.CheckUtils;
@@ -260,15 +261,15 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
 
 
-        if(whatOrder.equals("LastModifiedTime")){
+        if(FilterName.LAST_MODIFIED_TIME.equals(whatOrder)){
             if (isAscendingOrder){ myWrapper.orderByAsc(Proposal::getLastModifiedTime);}
             else{myWrapper.orderByDesc(Proposal::getLastModifiedTime); }
         }
-        else if(whatOrder.equals("ProposalDue")){
+        else if(FilterName.PROPOSAL_DUE.equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
             else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
         }
-        else if(whatOrder.equals("SolutionDue")){
+        else if(FilterName.SOLUTION_DUE.equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
             else{myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
         }
@@ -310,7 +311,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
             myWrapper.eq(ProjectProposalRecord::getIsPick,isPick);
         }
 
-        if ("Rating".equals(whatOrder)){
+        if (FilterName.RATING.equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectProposalRecord::getRating);}
             else{myWrapper.orderByDesc(ProjectProposalRecord::getRating);}
         }
