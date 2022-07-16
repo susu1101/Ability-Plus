@@ -338,8 +338,8 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     }
 
     @Override
-    public void deleteProposal(Integer projectId,HttpServletRequest http) {
-        Proposal proposal = this.getById(projectId);
+    public void deleteProposal(Integer proposalId,HttpServletRequest http) {
+        Proposal proposal = this.getById(proposalId);
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
         CheckUtils.assertNotNull(proposal,"project not exist");
         if (!Proposal.isDraft(proposal)){

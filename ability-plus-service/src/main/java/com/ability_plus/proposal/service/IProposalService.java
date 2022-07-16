@@ -142,7 +142,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
 
     /**
      * delete draft proposal
-     * @param projectId
+     * @param proposalId
      */
-    void deleteProposal(@RequestParam Integer projectId,HttpServletRequest http);
+    void deleteProposal(Integer proposalId,HttpServletRequest http);
 }

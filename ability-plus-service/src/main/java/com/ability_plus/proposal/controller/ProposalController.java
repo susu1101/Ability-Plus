@@ -219,8 +219,9 @@ public class ProposalController {
             @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
     })
     @PostMapping("/delete_proposal")
-    public RestResponse deleteProposal(@RequestParam Integer projectId,HttpServletRequest http){
-        proposalService.deleteProposal(projectId,http);
+    public RestResponse deleteProposal(@RequestParam Integer proposalId,
+                                       HttpServletRequest http){
+        proposalService.deleteProposal(proposalId,http);
         return RestResponse.success();
     }
 
