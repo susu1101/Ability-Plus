@@ -230,6 +230,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
         MPJLambdaWrapper<Proposal> myWrapper = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
         myWrapper.select(Proposal::getStatus)
+                .selectAs(Proposal::getId,"proposalId")
                 .eq(Proposal::getCreatorId, user.getId())
                 .eq(Proposal::getStatus, status);
 //                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));

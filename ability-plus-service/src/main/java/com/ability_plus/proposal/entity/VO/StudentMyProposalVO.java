@@ -10,4 +10,5 @@ import lombok.EqualsAndHashCode;
 @Data
 public class StudentMyProposalVO extends ProposalCard{
     private String status;
+    private Integer proposalId;
 }
