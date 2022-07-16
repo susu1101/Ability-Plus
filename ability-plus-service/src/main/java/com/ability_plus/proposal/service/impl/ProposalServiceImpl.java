@@ -230,7 +230,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     }
 
     @Override
-    public IPage<ProposalInfoVO> listMyProposal(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http) {
+    public IPage<StudentMyProposalVO> listMyProposal(String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http) {
         UserPOJO user = UserUtils.getCurrentUser(http);
         Page<ProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
@@ -268,7 +268,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
             else{myWrapper.orderByDesc(Proposal::getLikeNum);}
         }
 
-        IPage<ProposalInfoVO> page=proposalMapper.selectJoinPage(pageSetting,ProposalInfoVO.class,myWrapper);
+        IPage<StudentMyProposalVO> page=proposalMapper.selectJoinPage(pageSetting,StudentMyProposalVO.class,myWrapper);
         return page;
     }
 
