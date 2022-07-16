@@ -40,7 +40,7 @@ public class UserProposalLikeRecordServiceImpl extends ServiceImpl<UserProposalL
         CheckUtils.assertNotNull(proposal,"proposal not exist");
 
         UserPOJO user = UserUtils.getCurrentUser(http);
-        if(alreadyLike(proposalId, user)){
+        if(!alreadyLike(proposalId, user)){
             throw new CheckException("you are already like this proposal");
         }
 
