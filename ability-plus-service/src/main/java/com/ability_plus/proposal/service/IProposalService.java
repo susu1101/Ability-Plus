@@ -1,5 +1,6 @@
 package com.ability_plus.proposal.service;
 
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
@@ -56,12 +57,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      */
     List<ProposalInfoVO> listProposalRequests(String ranking, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
-    /**
-     * select proposal
-     * @param ids
-     * @return
-     */
-    List<Integer> selectProposal(List<Integer> ids);
+
 
     /**
      * get proposal detail infomation
@@ -147,8 +143,8 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
 
     /**
      * 批量处理
-     * @param ids
+     * @param request
      * @param http
      */
-    void batchProcessProposals(ProposalIds ids, HttpServletRequest http);
+    void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http);
 }

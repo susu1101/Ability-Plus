@@ -8,9 +8,11 @@ import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
+import com.ability_plus.proposal.entity.ProposalIds;
 import com.ability_plus.proposal.entity.ProposalStatus;
 import com.ability_plus.proposal.entity.VO.*;
 import com.ability_plus.proposal.mapper.ProposalMapper;
@@ -24,6 +26,7 @@ import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -38,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -205,10 +209,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         return page;
     }
 
-    @Override
-    public List<Integer> selectProposal(List<Integer> ids) {
-        return null;
-    }
+
 
     @Override
     public ProposalDetailVO getProposalInfo(Integer proposalId) {
@@ -357,6 +358,24 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
             throw new CheckException("you cannot delete others proposal");
         }
         this.removeById(proposal);
+
+    }
+
+    @Override
+    public void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http) {
+        ArrayList<Integer> ids = request.getIds();
+        String status = request.getStatus();
+        MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        wrapper
+                .leftJoin(ProjectRequest.class,ProjectRequest::getCreatorId,Proposal::get)
+                .leftJoin(Pro)
+                .eq(ProjectProposalRecord::getProjectId)
+        List<Proposal> list = this.list(wrapper);
+        if (list.size()!=ids.size()){
+            throw new CheckException("Some proposal not ")
+        }
+
 
     }
 }

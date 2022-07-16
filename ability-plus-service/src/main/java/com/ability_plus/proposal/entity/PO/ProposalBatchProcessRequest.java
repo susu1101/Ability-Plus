@@ -10,5 +10,6 @@ import java.util.ArrayList;
 @Data
 public class ProposalBatchProcessRequest {
     private ArrayList<Integer> ids;
+    private Integer projectId;
     private String status;
 }

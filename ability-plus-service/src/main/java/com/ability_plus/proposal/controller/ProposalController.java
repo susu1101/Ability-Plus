@@ -80,14 +80,7 @@ public class ProposalController {
         return RestResponse.success(proposalInfoVOS);
     }
 
-    @ApiOperation("select to approve proposal")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "proposalBatchProcessRequest", value = "", required = true)
-    })
-    @PostMapping("/ProposalBatchProcessRequest")
-    public RestResponse selectProposal(@RequestBody ProposalBatchProcessRequest request){
-        return RestResponse.success(proposalService.selectProposal(request);
-    }
+
 
     @ApiOperation("get proposal detail infomation")
     @ApiImplicitParams({
@@ -225,8 +218,8 @@ public class ProposalController {
     }
 
     @PostMapping("/batch_process_proposals")
-    public RestResponse batchProcessProposals(@RequestBody ProposalIds ids,HttpServletRequest http){
-        proposalService.batchProcessProposals(ids,http);
+    public RestResponse batchProcessProposals(@RequestBody ProposalBatchProcessRequest request,HttpServletRequest http){
+        proposalService.batchProcessProposals(request,http);
 
         return RestResponse.success();
     }
