@@ -8,6 +8,7 @@ import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
 import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
+import com.ability_plus.proposal.entity.P2pPOJO;
 import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
@@ -28,6 +29,7 @@ import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -368,14 +370,28 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
         UserPOJO user = UserUtils.getCurrentUser(http);
         wrapper
-                .leftJoin(ProjectRequest.class,ProjectRequest::getCreatorId,Proposal::get)
-                .leftJoin(Pro)
-                .eq(ProjectProposalRecord::getProjectId)
-        List<Proposal> list = this.list(wrapper);
-        if (list.size()!=ids.size()){
-            throw new CheckException("Some proposal not ")
+                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .in(Proposal::getId,ids)
+                .selectAs(ProjectRequest::getStatus,"projectStatus")
+                .selectAs(ProjectRequest::getCreatorId,"projectCreatorId")
+                .selectAs(Proposal::getId,"proposalCreateId");
+        List<P2pPOJO> p2pPOJOS = proposalMapper.selectJoinList(P2pPOJO.class, wrapper);
+
+        for (P2pPOJO p2pPOJO:p2pPOJOS){
+            if (!user.getId().equals(p2pPOJO.getProjectCreatorId())){
+                throw new CheckException("Not all proposals belong in your project");
+            }
+            if (!ProjectRequestStatus.APPROVING.equals(p2pPOJO.getProjectStatus())){
+                throw new CheckException("Not all proposals belong in the processing stage");
+            }
         }
 
+        UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.in("id",ids);
+        Proposal proposal = new Proposal();
+        proposal.set(status);
+        this.update();
 
     }
 }
