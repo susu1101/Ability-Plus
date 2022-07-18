@@ -245,8 +245,9 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .select(Proposal::getOneSentenceDescription)
                 .selectAs(ProjectRequest::getName,"projectName")
                 .select(Proposal::getStatus)
-                .select(Proposal::getLastModifiedTime)
-                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
+                .select(Proposal::getLastModifiedTime);
+                //Todo like 有问题
+//                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
 
 
