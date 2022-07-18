@@ -70,7 +70,7 @@ public class ProjectRequestController {
 
     @ApiOperation("list my project request by condition")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "status", value = "status of project", required = true),
+            @ApiImplicitParam(name = "status", value = "status of project", required = false),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = false),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
@@ -78,7 +78,7 @@ public class ProjectRequestController {
 
     })
     @GetMapping("/list_my_project_request")
-    public RestResponse<IPage<ProjectInfoVO>> listMyProjectRequests(@RequestParam(value = "status") String status,
+    public RestResponse<IPage<ProjectInfoVO>> listMyProjectRequests(@RequestParam(value = "status",required = false) String status,
                                                                    @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
                                                                    @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                    @RequestParam(value = "pageNo") Integer pageNo,

@@ -402,6 +402,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void commitApprovedProposal(Integer projectId) {
         UpdateWrapper<Proposal> updateWrapperApproved = new UpdateWrapper<>();
         updateWrapperApproved.inSql("id","select proposal_id from project_proposal_record where project_id="+projectId.toString()+" and is_pick=1");
@@ -414,8 +415,6 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         Proposal proposalRejected=new Proposal();
         proposalRejected.setStatus(ProposalStatus.REJECTED);
         proposalMapper.update(proposalRejected, updateWrapperRejected);
-
-
     }
 
 
@@ -436,11 +435,18 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
 
     }
 
+    /**
+     * 批量更新proposal ispick状态
+     * @param request
+     * @param http
+     */
     @Override
     public void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http) {
+        //TODO 还没做完
         ArrayList<Integer> ids = request.getIds();
-        String status = request.getStatus();
+        Integer isPick = request.getIsPick();
         MPJLambdaWrapper<Proposal> wrapper = new MPJLambdaWrapper<>();
+        //所有proposal id 属于自己创建的项目，所有proposal可以处理
         UserPOJO user = UserUtils.getCurrentUser(http);
         wrapper
                 .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
@@ -459,12 +465,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 throw new CheckException("Not all proposals belong in the processing stage");
             }
         }
-
+        //业务逻辑，更新
         UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
         updateWrapper.in("id",ids);
-        Proposal proposal = new Proposal();
-//        proposal.set(status);
-//        this.update();
+        ProjectProposalRecord record = new ProjectProposalRecord();
+        record.setIsPick(isPick);
+        projectProposalRecordService.update(record,updateWrapper);
 
     }
 }

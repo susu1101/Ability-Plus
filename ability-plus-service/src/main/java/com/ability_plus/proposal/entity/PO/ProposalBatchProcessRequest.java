@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public class ProposalBatchProcessRequest {
     private ArrayList<Integer> ids;
     private Integer projectId;
-    private String status;
+    private Integer isPick;
 }

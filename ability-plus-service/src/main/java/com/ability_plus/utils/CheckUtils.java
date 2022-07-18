@@ -77,8 +77,15 @@ public class CheckUtils {
         return map == null || map.size() <= 0;
     }
 
+    public static final boolean isEmpty(String s) {
+        return !isEmpty(s);
+    }
+
     public static final boolean isNotEmpty(Collection collection) {
         return !isEmpty(collection);
+    }
+    public static final boolean isNotEmpty(String s) {
+        return !"".equals(s) && !isNull(s);
     }
 
     public static final void assertNotEmpty(Collection collection, String message, Object... args) {

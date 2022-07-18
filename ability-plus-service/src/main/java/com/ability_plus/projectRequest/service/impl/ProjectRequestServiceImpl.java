@@ -203,20 +203,21 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         MPJLambdaWrapper<ProjectRequest> wrapper = new MPJLambdaWrapper<>();
         wrapper
                 .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
-                .eq(ProjectRequest::getStatus,status)
-                .eq(ProjectRequest::getCreatorId,user.getId())
+                .eq(ProjectRequest::getCreatorId,user.getId());
+        if (CheckUtils.isNotEmpty(status)){
+            wrapper.eq(ProjectRequest::getStatus,status);
+        }
 //                //TODO like search key还没写
 //                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
 //                .or()
 //                .like(ProjectRequest::getName,"%"+searchKey+"%")
 //                .or()
 //                .like(User::getFullName,"%"+searchKey+"%")
-                .selectAs(ProjectRequest::getName,"title")
+        wrapper.selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
                 .select(ProjectRequest::getStatus)
                 .select(ProjectRequest::getId)
-
                 .selectAs(User::getFullName,"authorName");
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, wrapper);
