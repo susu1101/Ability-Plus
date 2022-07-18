@@ -205,12 +205,12 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
                 .eq(ProjectRequest::getStatus,status)
                 .eq(ProjectRequest::getCreatorId,user.getId())
-                //TODO like search key还没写
-                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
-                .or()
-                .like(ProjectRequest::getName,"%"+searchKey+"%")
-                .or()
-                .like(User::getFullName,"%"+searchKey+"%")
+//                //TODO like search key还没写
+//                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
+//                .or()
+//                .like(ProjectRequest::getName,"%"+searchKey+"%")
+//                .or()
+//                .like(User::getFullName,"%"+searchKey+"%")
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
