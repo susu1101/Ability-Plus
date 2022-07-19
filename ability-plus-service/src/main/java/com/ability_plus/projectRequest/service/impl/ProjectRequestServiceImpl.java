@@ -201,18 +201,19 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         }
 
         MPJLambdaWrapper<ProjectRequest> wrapper = new MPJLambdaWrapper<>();
-        wrapper
-                .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
-                .eq(ProjectRequest::getCreatorId,user.getId());
         if (CheckUtils.isNotEmpty(status)){
             wrapper.eq(ProjectRequest::getStatus,status);
         }
-//                //TODO like search key还没写
-        wrapper.like(ProjectRequest::getDescription,"%"+searchKey+"%")
+        wrapper
+                .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
+                .eq(ProjectRequest::getCreatorId,user.getId())
+                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
                 .or()
                 .like(ProjectRequest::getName,"%"+searchKey+"%")
                 .or()
                 .like(User::getFullName,"%"+searchKey+"%");
+
+//                //TODO like search key还没写
         wrapper.selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")

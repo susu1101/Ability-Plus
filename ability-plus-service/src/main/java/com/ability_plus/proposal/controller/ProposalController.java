@@ -236,7 +236,7 @@ public class ProposalController {
     })
     public RestResponse companyProcessProposal(@RequestParam(value = "proposalId") Integer proposalId,
                                                @RequestParam(value = "rating", required=false) Integer rating,
-                                               @RequestParam(value = "isPicCk",required = false) Integer isPick,
+                                               @RequestParam(value = "isPick",required = false) Integer isPick,
                                                @RequestParam(value = "comment",required = false) String comment){
         proposalService.companyProcessProposal(proposalId,rating,isPick,comment);
         return RestResponse.success();
