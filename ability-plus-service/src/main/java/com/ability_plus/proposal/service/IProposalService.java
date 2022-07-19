@@ -1,14 +1,16 @@
 package com.ability_plus.proposal.service;
 
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 
-import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.ability_plus.proposal.entity.ProposalIds;
+import com.ability_plus.proposal.entity.VO.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,19 +57,14 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      */
     List<ProposalInfoVO> listProposalRequests(String ranking, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
-    /**
-     * select proposal
-     * @param ids
-     * @return
-     */
-    List<Integer> selectProposal(List<Integer> ids);
+
 
     /**
      * get proposal detail infomation
      * @param proposalId
      * @return
      */
-    Proposal getProposalInfo(@RequestParam(value="proposalId") Integer proposalId);
+    ProposalDetailVO getProposalInfo(@RequestParam(value="proposalId") Integer proposalId);
 
     /**
      * list proposals created by a user for "my proposals" page
@@ -80,7 +77,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param http
      * @return
      */
-    IPage<ProposalInfoVO> listMyProposal(String status, Boolean isAscendingOrder, String whatOrder,String searchKey, Integer pageNo, Integer pageSize,HttpServletRequest http);
+    IPage<StudentMyProposalVO> listMyProposal(String status, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize, HttpServletRequest http);
 
     /**
      * List outstanding proposals for "popular proposal" page
@@ -91,7 +88,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param pageSize
      * @return
      */
-    List<ProposalInfoVO> listOutstandingProposalRequest(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProposalCard> listOutstandingProposal(Boolean isAscendingOrderLike, Boolean isAscendingOrderTime, String searchKey, Integer pageNo, Integer pageSize);
 
 
     /**
@@ -118,6 +115,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
     /**
      * list proposals in one project request using filter
      * @param projectId
+     * @param isPick
      * @param isAscendingOrder
      * @param whatOrder
      * @param searchKey
@@ -125,7 +123,7 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * @param pageSize
      * @return
      */
-    IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize);
+    IPage<ProjectProposalInfoVO> listProjectProposals(Integer projectId, Integer isPick ,Boolean isAscendingOrder, String whatOrder, String searchKey, Integer pageNo, Integer pageSize);
 
     /**
      * list approved proposals in one project request using filter
@@ -138,5 +136,35 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      */
     IPage<ProjectProposalInfoVO> listApprovedProjectProposals(Integer projectId, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize);
 
+    /**
+     * delete draft proposal
+     * @param proposalId
+     */
+    void deleteProposal(Integer proposalId,HttpServletRequest http);
+
+    /**
+     * 批量处理
+     * @param request
+     * @param http
+     */
+    void batchProcessProposals(ProposalBatchProcessRequest request, HttpServletRequest http);
+
+    /**
+     * company process a proposal
+     * @param proposalId
+     * @param rating
+     * @param isPick
+     * @param comment
+     * @return
+     */
+    public void companyProcessProposal(Integer proposalId,Integer rating,Integer isPick,String comment);
+
+
+    /**
+     * company commit approved proposal
+     * @param projectId
+     * @return
+     */
+    public void commitApprovedProposal(Integer projectId);
 
 }

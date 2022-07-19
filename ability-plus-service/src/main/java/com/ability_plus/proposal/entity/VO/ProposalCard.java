@@ -14,6 +14,7 @@ public class ProposalCard {
     private Long lastModifiedTime;
     private String authorName;
     private Integer authorId;
-
+    private String projectName;
+    private Integer likeNum;
 //    private
 }

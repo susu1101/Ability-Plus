@@ -63,14 +63,14 @@ public class ProjectRequestController {
 
     @PostMapping("/edit_project")
     @ApiOperation("edit project")
-    public RestResponse editProject(@RequestBody ProjectEditPO po){
-        projectRequestService.editProject(po);
+    public RestResponse editProject(@RequestBody ProjectEditPO po,HttpServletRequest http){
+        projectRequestService.editProject(po,http);
         return RestResponse.success();
     }
 
     @ApiOperation("list my project request by condition")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "status", value = "status of project", required = true),
+            @ApiImplicitParam(name = "status", value = "status of project", required = false),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the submission order by ascending", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = false),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
@@ -78,7 +78,7 @@ public class ProjectRequestController {
 
     })
     @GetMapping("/list_my_project_request")
-    public RestResponse<IPage<ProjectInfoVO>> listMyProjectRequests(@RequestParam(value = "status") String status,
+    public RestResponse<IPage<ProjectInfoVO>> listMyProjectRequests(@RequestParam(value = "status",required = false) String status,
                                                                    @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
                                                                    @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                    @RequestParam(value = "pageNo") Integer pageNo,
@@ -145,6 +145,17 @@ public class ProjectRequestController {
                                                                     @RequestParam(value = "pageSize") Integer pageSize){
         IPage<ProjectInfoVO> projectInfoVO=projectRequestService.listAllProjectRequests(status,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
         return RestResponse.success(projectInfoVO);
+    }
+
+    @ApiOperation("delete draft project")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+    })
+    @PostMapping("/delete_project")
+    public RestResponse deleteProject(@RequestParam Integer projectId,
+                                       HttpServletRequest http){
+        projectRequestService.deleteProject(projectId,http);
+        return RestResponse.success();
     }
 
 }

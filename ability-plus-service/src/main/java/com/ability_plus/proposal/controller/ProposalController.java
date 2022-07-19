@@ -2,12 +2,12 @@ package com.ability_plus.proposal.controller;
 
 
 import com.ability_plus.projectRequest.entity.VO.ProjectInfoVO;
+import com.ability_plus.proposal.entity.PO.ProposalBatchProcessRequest;
 import com.ability_plus.proposal.entity.PO.ProposalCreatePO;
 import com.ability_plus.proposal.entity.PO.ProposalEditPO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.proposal.entity.ProposalIds;
-import com.ability_plus.proposal.entity.VO.ProjectProposalInfoVO;
-import com.ability_plus.proposal.entity.VO.ProposalInfoVO;
+import com.ability_plus.proposal.entity.VO.*;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.utils.RestResponse;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -79,21 +80,14 @@ public class ProposalController {
         return RestResponse.success(proposalInfoVOS);
     }
 
-    @ApiOperation("select to approve proposal")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "proposalIds", value = "ids of proposal", required = true)
-    })
-    @PostMapping("/select_proposal")
-    public RestResponse selectProposal(@RequestBody ProposalIds ids){
-        return RestResponse.success(proposalService.selectProposal(ids.getIds()));
-    }
+
 
     @ApiOperation("get proposal detail infomation")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "proposalId", value = "id of proposal", required = true)
     })
     @GetMapping("/get_proposal_detail_info")
-    public RestResponse<Proposal> getProposalInfo(@RequestParam(value="proposalId") Integer proposalId){
+    public RestResponse<ProposalDetailVO> getProposalInfo(@RequestParam(value="proposalId") Integer proposalId){
         return RestResponse.success(proposalService.getProposalInfo(proposalId));
     }
 
@@ -107,14 +101,14 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_my_proposal")
-    public RestResponse<IPage<ProposalInfoVO>> listMyProposal(@RequestParam(value = "status") String status,
-                                                             @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
-                                                             @RequestParam(value = "whatOrder") String whatOrder,
-                                                             @RequestParam(value = "searchKey",required = false) String searchKey,
-                                                             @RequestParam(value = "pageNo") Integer pageNo,
-                                                             @RequestParam(value = "pageSize") Integer pageSize,
-                                                             HttpServletRequest http){
-        IPage<ProposalInfoVO> proposalInfoVO = proposalService.listMyProposal(status,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize,http);
+    public RestResponse<IPage<StudentMyProposalVO>> listMyProposal(@RequestParam(value = "status") String status,
+                                                                   @RequestParam(value = "isAscendingOrder") Boolean isAscendingOrder,
+                                                                   @RequestParam(value = "whatOrder") String whatOrder,
+                                                                   @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                   @RequestParam(value = "pageNo") Integer pageNo,
+                                                                   @RequestParam(value = "pageSize") Integer pageSize,
+                                                                   HttpServletRequest http){
+        IPage<StudentMyProposalVO> proposalInfoVO = proposalService.listMyProposal(status,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize,http);
         return RestResponse.success(proposalInfoVO);
     }
 
@@ -164,12 +158,12 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     @GetMapping("/list_outstanding_proposal_request")
-    public RestResponse<List<ProposalInfoVO>> listOutstandingProposalRequest(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
-                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
-                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
-                                                                  @RequestParam(value = "pageNo") Integer pageNo,
-                                                                  @RequestParam(value = "pageSize") Integer pageSize){
-        List<ProposalInfoVO> proposalInfoVOS = proposalService.listOutstandingProposalRequest(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
+    public RestResponse<IPage<ProposalCard>> listOutstandingProposal(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
+                                                                          @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
+                                                                          @RequestParam(value = "searchKey",required = false) String searchKey,
+                                                                          @RequestParam(value = "pageNo") Integer pageNo,
+                                                                          @RequestParam(value = "pageSize") Integer pageSize){
+        IPage<ProposalCard> proposalInfoVOS = proposalService.listOutstandingProposal(isAscendingOrderLike, isAscendingOrderTime, searchKey,pageNo,pageSize);
         return RestResponse.success(proposalInfoVOS);
     }
 
@@ -178,6 +172,7 @@ public class ProposalController {
     @ApiOperation("list project proposals")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
+            @ApiImplicitParam(name = "isPick", value = "the status of is pick",required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
             @ApiImplicitParam(name = "whatOrder", value = "sort by what order", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
@@ -185,12 +180,13 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
     public RestResponse<IPage<ProjectProposalInfoVO>> listProjectProposals (@RequestParam(value = "projectId") Integer projectId,
+                                                                            @RequestParam(value = "isPick") Integer isPick,
                                                                             @RequestParam(value="isAscendingOrder") Boolean isAscendingOrder,
                                                                             @RequestParam(value = "whatOrder") String whatOrder,
                                                                             @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                             @RequestParam(value = "pageNo") Integer pageNo,
                                                                             @RequestParam(value = "pageSize") Integer pageSize){
-        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
+        IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listProjectProposals(projectId, isPick,isAscendingOrder,whatOrder,searchKey,pageNo,pageSize);
         return RestResponse.success(projectProposalInfoVO);
     }
 
@@ -200,7 +196,7 @@ public class ProposalController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "is the order by ascending", required = true),
-            @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
+            @ApiImplicitParam(name = "searchKey", value = "the search key"),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
@@ -212,5 +208,48 @@ public class ProposalController {
         IPage<ProjectProposalInfoVO> projectProposalInfoVO=proposalService.listApprovedProjectProposals(projectId,isAscendingOrder,searchKey,pageNo,pageSize);
         return RestResponse.success(projectProposalInfoVO);
     }
+    @ApiOperation("delete draft proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId", value = "proposalId", required = true),
+    })
+    @PostMapping("/delete_proposal")
+    public RestResponse deleteProposal(@RequestParam Integer proposalId,
+                                       HttpServletRequest http){
+        proposalService.deleteProposal(proposalId,http);
+        return RestResponse.success();
+    }
 
+    @PostMapping("/batch_process_proposals")
+    public RestResponse batchProcessProposals(@RequestBody ProposalBatchProcessRequest request,HttpServletRequest http){
+        proposalService.batchProcessProposals(request,http);
+
+        return RestResponse.success();
+    }
+
+    @PostMapping("/company_process_proposal")
+    @ApiOperation("company process proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proposalId",value = "id of proposal",required = true),
+            @ApiImplicitParam(name = "rating",value = "rating"),
+            @ApiImplicitParam(name = "isPick",value = "the value of proposal is pick"),
+            @ApiImplicitParam(name = "comment",value = "the comment given by company")
+    })
+    public RestResponse companyProcessProposal(@RequestParam(value = "proposalId") Integer proposalId,
+                                               @RequestParam(value = "rating", required=false) Integer rating,
+                                               @RequestParam(value = "isPicCk",required = false) Integer isPick,
+                                               @RequestParam(value = "comment",required = false) String comment){
+        proposalService.companyProcessProposal(proposalId,rating,isPick,comment);
+        return RestResponse.success();
+    }
+
+
+    @PostMapping("/commit_approved_proposal")
+    @ApiOperation("commit approved proposal")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "id of project")
+    })
+    public RestResponse commitApprovedProposal(@RequestParam(value = "projectId") Integer projectId){
+        proposalService.commitApprovedProposal(projectId);
+        return RestResponse.success();
+    }
 }
