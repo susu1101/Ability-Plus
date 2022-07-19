@@ -8,6 +8,7 @@ import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.VO.CompaniesVO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.mapper.UserMapper;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -154,6 +156,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
         }
         this.updateById(userData);
+    }
+
+    @Override
+    public List<CompaniesVO> listCompany() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("is_company",true);
+
+        List<User> list = this.list(wrapper);
+        List<CompaniesVO> companiesVOS = new ArrayList<>();
+        for (User user:list){
+            CompaniesVO companiesVO = new CompaniesVO();
+            BeanUtils.copyProperties(user,companiesVO);
+            companiesVOS.add(companiesVO);
+        }
+
+
+        return companiesVOS;
     }
 
 

@@ -3,6 +3,7 @@ package com.ability_plus.user.controller;
 
 import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
+import com.ability_plus.user.entity.VO.CompaniesVO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.ability_plus.user.service.IUserService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -97,6 +99,12 @@ public class UserController {
     public RestResponse changePassword(@RequestBody ChangePasswordPO po, HttpServletRequest http) throws Exception{
         userService.changePassword(po, http);
         return RestResponse.success();
+    }
+    @GetMapping("/list_company")
+    @ApiOperation("change password")
+    public RestResponse<List<CompaniesVO>> listCompany(){
+        List<CompaniesVO> companiesVOS = userService.listCompany();
+        return RestResponse.success(companiesVOS);
     }
 
 
