@@ -237,18 +237,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         UserPOJO user = UserUtils.getCurrentUser(http);
         Page<ProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
+        CardUtils.appendToProposalCardWrapper(myWrapper);
+
         myWrapper
-                .leftJoin(User.class,User::getId,Proposal::getCreatorId)
-                .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
-                .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
                 .eq(Proposal::getCreatorId,user.getId())
                 .eq(Proposal::getStatus,status)
-                .select(Proposal::getId)
-                .select(Proposal::getTitle)
-                .select(Proposal::getOneSentenceDescription)
-                .selectAs(ProjectRequest::getName,"projectName")
                 .select(Proposal::getStatus)
-                .select(Proposal::getLastModifiedTime)
                 //Todo like 有问题?
                 .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 

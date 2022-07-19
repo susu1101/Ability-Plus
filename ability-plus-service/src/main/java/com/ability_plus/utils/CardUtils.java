@@ -12,6 +12,7 @@ public class CardUtils {
                 .leftJoin(User.class,User::getId,Proposal::getCreatorId)
                 .leftJoin(ProjectProposalRecord.class,ProjectProposalRecord::getProposalId,Proposal::getId)
                 .leftJoin(ProjectRequest.class,ProjectRequest::getId,ProjectProposalRecord::getProjectId)
+                .selectAs(Proposal::getId,"proposalId")
                 .select(Proposal::getTitle)
                 .select(Proposal::getOneSentenceDescription)
                 .select(Proposal::getLastModifiedTime)
