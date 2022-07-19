@@ -45,6 +45,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,8 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     IUserService userService;
     @Resource
     ProposalMapper proposalMapper;
+    @Resource
+    ProjectRequestMapper projectRequestMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -245,9 +248,9 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .select(Proposal::getOneSentenceDescription)
                 .selectAs(ProjectRequest::getName,"projectName")
                 .select(Proposal::getStatus)
-                .select(Proposal::getLastModifiedTime);
-                //Todo like 有问题
-//                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
+                .select(Proposal::getLastModifiedTime)
+                //Todo like 有问题?
+                .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
 
 
@@ -415,6 +418,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         Proposal proposalRejected=new Proposal();
         proposalRejected.setStatus(ProposalStatus.REJECTED);
         proposalMapper.update(proposalRejected, updateWrapperRejected);
+
+        UpdateWrapper<ProjectRequest> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.eq("id",projectId);
+        ProjectRequest projectRequest=new ProjectRequest();
+        projectRequest.setStatus(ProjectRequestStatus.OPEN_FOR_SOLUTION);
+        projectRequestMapper.update(projectRequest,updateWrapper);
     }
 
 
