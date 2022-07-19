@@ -208,16 +208,18 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
             wrapper.eq(ProjectRequest::getStatus,status);
         }
 //                //TODO like search key还没写
-//                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
-//                .or()
-//                .like(ProjectRequest::getName,"%"+searchKey+"%")
-//                .or()
-//                .like(User::getFullName,"%"+searchKey+"%")
+        wrapper.like(ProjectRequest::getDescription,"%"+searchKey+"%")
+                .or()
+                .like(ProjectRequest::getName,"%"+searchKey+"%")
+                .or()
+                .like(User::getFullName,"%"+searchKey+"%");
         wrapper.selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
                 .select(ProjectRequest::getStatus)
                 .select(ProjectRequest::getId)
+                .select(ProjectRequest::getLastModifiedTime)
+
                 .selectAs(User::getFullName,"authorName");
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, wrapper);
