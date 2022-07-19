@@ -30,4 +30,9 @@ public class ProjectEditPO {
 
     @ApiModelProperty("contact email")
     private String contactEmail;
+
+    @ApiModelProperty("isDraft")
+    private String isDraft;
+
+
 }

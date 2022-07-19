@@ -168,6 +168,12 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         if (po.getSolutionDue()!=null){
             proj.setSolutionDdl(po.getSolutionDue());
         }
+        boolean isDraft = Boolean.parseBoolean(po.getIsDraft());
+        if (isDraft){
+            proj.setStatus(ProjectRequestStatus.DRAFT);
+        }else{
+            proj.setStatus(ProjectRequestStatus.OPEN_FOR_PROPOSAL);
+        }
         Map<String, String> extraData = po.getExtraData();
         if (extraData !=null){
             String description = extraData.get("description");
