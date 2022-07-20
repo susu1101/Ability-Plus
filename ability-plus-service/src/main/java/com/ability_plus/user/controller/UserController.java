@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping("/get_profile_info")
     @ApiOperation("get profile info")
 
-    public RestResponse<UserProfileVO> getProfileInfo(@RequestParam  Integer userId) throws Exception{
+    public RestResponse<UserProfileVO> getProfileInfo(@RequestParam(value = "id")  Integer userId) throws Exception{
         UserProfileVO userProfileVO = userService.getProfileInfo(userId);
         return RestResponse.success(userProfileVO);
     }
