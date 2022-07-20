@@ -56,6 +56,8 @@ public interface IUserService extends IService<User> {
      */
     UserProfileVO getProfileInfo(Integer userId) throws Exception;
 
+    UserProfileVO getUserProfileInfo(Integer id);
+
 
     /**
      * edit a profile

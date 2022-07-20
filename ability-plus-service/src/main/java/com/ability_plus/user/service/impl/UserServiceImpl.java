@@ -118,6 +118,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userProfileVO;
     }
 
+    @Override
+    public UserProfileVO getUserProfileInfo(Integer id) {
+        UserProfileVO userProfileVO = new UserProfileVO();
+        User user = this.getById(id);
+        CheckUtils.assertNotNull(user,"user not exists");
+        BeanUtils.copyProperties(user,userProfileVO);
+
+        return userProfileVO;
+    }
+
 
     @Override
     public void editProfile(UserProfileEditPO po,HttpServletRequest http){
