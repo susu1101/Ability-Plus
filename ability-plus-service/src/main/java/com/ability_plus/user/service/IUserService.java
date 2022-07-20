@@ -54,7 +54,7 @@ public interface IUserService extends IService<User> {
      * @return
      * @throws Exception
      */
-    UserProfileVO getProfileInfo(HttpServletRequest http) throws Exception;
+    UserProfileVO getProfileInfo(Integer userId) throws Exception;
 
 
     /**

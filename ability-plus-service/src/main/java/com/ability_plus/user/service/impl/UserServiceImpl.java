@@ -109,10 +109,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
     @Override
-    public UserProfileVO getProfileInfo(HttpServletRequest http){
+    public UserProfileVO getProfileInfo(Integer userId){
         UserProfileVO userProfileVO = new UserProfileVO();
-        UserPOJO currentUser = UserUtils.getCurrentUser(http);
-        User user=this.getById(currentUser.getId());
+        User user=this.getById(userId);
         CheckUtils.assertNotNull(user,"user not exists");
         BeanUtils.copyProperties(user,userProfileVO);
 
