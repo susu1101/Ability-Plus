@@ -12,4 +12,5 @@ public class StudentFollowingVO {
     private String companyName;
     private Integer companyId;
     private Integer followTime;
+    private Integer openingProjectNum;
 }

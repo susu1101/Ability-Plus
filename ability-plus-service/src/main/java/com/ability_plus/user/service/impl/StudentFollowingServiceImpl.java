@@ -1,6 +1,8 @@
 package com.ability_plus.user.service.impl;
 
 
+import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.ProjectRequestStatus;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.StudentFollowing;
 import com.ability_plus.user.entity.User;
@@ -45,10 +47,14 @@ public class StudentFollowingServiceImpl extends MPJBaseServiceImpl<StudentFollo
         MPJLambdaWrapper<StudentFollowing> wrapper = new MPJLambdaWrapper<>();
         wrapper
                 .leftJoin(User.class, User::getId, StudentFollowing::getCompanyId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getCreatorId,StudentFollowing::getCompanyId)
                 .eq(StudentFollowing::getStudentId,user.getId())
                 .selectAs(User::getFullName, "companyName")
                 .selectAs(StudentFollowing::getCompanyId, "companyId")
-                .select(StudentFollowing::getFollowTime);
+                .select(StudentFollowing::getFollowTime)
+                .groupBy(ProjectRequest::getCreatorId)
+                .eq(ProjectRequest::getStatus, ProjectRequestStatus.OPEN_FOR_PROPOSAL)
+                .selectCount(ProjectRequest::getCreatorId,"openingProjectNum");
 
         return studentFollowingMapper.selectJoinList(StudentFollowingVO.class, wrapper);
     }
