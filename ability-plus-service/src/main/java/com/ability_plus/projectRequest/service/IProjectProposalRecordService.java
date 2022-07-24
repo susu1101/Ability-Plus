@@ -2,9 +2,11 @@ package com.ability_plus.projectRequest.service;
 
 
 import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
+import com.ability_plus.projectRequest.entity.VO.CommentInfoVO;
 import com.ability_plus.proposal.entity.Proposal;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.yulichang.base.MPJBaseService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
@@ -23,4 +25,12 @@ public interface IProjectProposalRecordService extends IService<ProjectProposalR
      */
     public Integer getProjectIdByProposalId(Integer proposalId);
 
-}
+    /**
+     * get comment info vo
+     * @param proposalId
+     * @param projectId
+     * @return
+     */
+    CommentInfoVO getInfo(Integer proposalId, Integer projectId);
+
+    }
