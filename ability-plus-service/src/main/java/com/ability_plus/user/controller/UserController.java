@@ -114,6 +114,5 @@ public class UserController {
         return RestResponse.success(companiesVOS);
     }
 
-
 }
 

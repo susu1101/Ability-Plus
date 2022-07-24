@@ -85,6 +85,13 @@ public class UserProposalLikeRecordServiceImpl extends ServiceImpl<UserProposalL
 
     }
 
+    @Override
+    public Boolean alreadyLike(Integer proposal, HttpServletRequest http) {
+        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        return alreadyLike(proposal,currentUser);
+
+    }
+
 
     private Boolean alreadyLike(Integer proposalId, UserPOJO user) {
         QueryWrapper<UserProposalLikeRecord> wrapper = new QueryWrapper<>();

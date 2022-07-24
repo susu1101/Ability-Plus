@@ -7,10 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,5 +50,13 @@ public class UserProposalLikeRecordController {
     public RestResponse<Integer> getLikeNum(@RequestParam Integer proposalId){
         return RestResponse.success(userProposalLikeRecordService.getLikeNum(proposalId));
     }
+
+    @GetMapping("/already_like")
+    @ApiOperation("already like a proposal")
+    public RestResponse<Boolean> alreadyLike(@RequestParam(value="proposalId") Integer proposalId,HttpServletRequest http){
+        Boolean flag = userProposalLikeRecordService.alreadyLike(proposalId,http);
+        return RestResponse.success(flag);
+    }
+
 
 }

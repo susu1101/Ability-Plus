@@ -8,6 +8,7 @@ import com.ability_plus.user.entity.VO.CompaniesVO;
 import com.ability_plus.user.entity.VO.UserLoginVO;
 import com.ability_plus.user.entity.VO.UserProfileVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -74,4 +75,5 @@ public interface IUserService extends IService<User> {
 
 
     public List <CompaniesVO> listCompany();
+
 }

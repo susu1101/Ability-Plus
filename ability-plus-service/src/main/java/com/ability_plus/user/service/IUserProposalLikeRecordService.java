@@ -38,4 +38,12 @@ public interface IUserProposalLikeRecordService extends IService<UserProposalLik
      */
     public Integer getLikeNum(Integer proposalId);
 
+    /**
+     * user is  already like a proposal
+     * @param proposalId
+     * @param http
+     * @return
+     */
+    public Boolean alreadyLike(Integer proposalId, HttpServletRequest http);
+
 }
