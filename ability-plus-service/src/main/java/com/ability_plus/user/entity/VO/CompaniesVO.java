@@ -6,4 +6,5 @@ import lombok.Data;
 public class CompaniesVO {
     private String fullName;
     private Integer id;
+    private Integer totalProjectNum;
 }

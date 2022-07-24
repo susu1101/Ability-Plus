@@ -1,7 +1,9 @@
 package com.ability_plus.user.service.impl;
 
+import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
 import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.mapper.ProjectRequestMapper;
+import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.PO.ChangePasswordPO;
@@ -22,12 +24,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.base.MPJBaseServiceImpl;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +50,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     static final long ONE_HOUR = 60*60*1000;
-
-
+    @Autowired
+    IProjectProposalRecordService projectProposalRecordService;
+    @Resource
+    UserMapper userMapper;
 
     @Override
     public Integer register(String fullName, String email, String password, String extraData, Boolean isCompany) throws Exception {
@@ -169,19 +175,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public List<CompaniesVO> listCompany() {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("is_company",true);
+        MPJLambdaWrapper<User> wrapper = new MPJLambdaWrapper<>();
+        wrapper.eq(User::getIsCompany,true)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getCreatorId,User::getId)
+                .groupBy(User::getId)
+                .selectAs(User::getId,"id")
+                .selectAs(User::getFullName,"fullName")
+                .selectCount(ProjectRequest::getId,"totalProjectNum");
 
-        List<User> list = this.list(wrapper);
-        List<CompaniesVO> companiesVOS = new ArrayList<>();
-        for (User user:list){
-            CompaniesVO companiesVO = new CompaniesVO();
-            BeanUtils.copyProperties(user,companiesVO);
-            companiesVOS.add(companiesVO);
-        }
+        return userMapper.selectJoinList(CompaniesVO.class,wrapper);
+//
+//        QueryWrapper<User> wrapper = new QueryWrapper<>();
+//        wrapper.eq("is_company",true);
+//
+//        List<User> list = this.list(wrapper);
+//        List<CompaniesVO> companiesVOS = new ArrayList<>();
+//        for (User user:list){
+//            CompaniesVO companiesVO = new CompaniesVO();
+//            BeanUtils.copyProperties(user,companiesVO);
+//            companiesVOS.add(companiesVO);
+//        }
 
 
-        return companiesVOS;
+//        return companiesVOS;
     }
 
 

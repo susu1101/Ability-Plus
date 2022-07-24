@@ -1,6 +1,8 @@
 package com.ability_plus.user.controller;
 
 
+import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
+import com.ability_plus.projectRequest.service.IProjectProposalRecordService;
 import com.ability_plus.user.entity.PO.ChangePasswordPO;
 import com.ability_plus.user.entity.PO.UserProfileEditPO;
 import com.ability_plus.user.entity.VO.CompaniesVO;
@@ -111,6 +113,7 @@ public class UserController {
     @ApiOperation("change password")
     public RestResponse<List<CompaniesVO>> listCompany(){
         List<CompaniesVO> companiesVOS = userService.listCompany();
+
         return RestResponse.success(companiesVOS);
     }
 
