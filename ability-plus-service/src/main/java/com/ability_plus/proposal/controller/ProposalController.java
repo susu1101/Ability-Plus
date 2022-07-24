@@ -157,7 +157,7 @@ public class ProposalController {
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
     })
-    @GetMapping("/list_outstanding_proposal_request")
+    @GetMapping("/pass/list_outstanding_proposal_request")
     public RestResponse<IPage<ProposalCard>> listOutstandingProposal(@RequestParam(value="isAscendingOrderLike") Boolean isAscendingOrderLike,
                                                                           @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrderTime,
                                                                           @RequestParam(value = "searchKey",required = false) String searchKey,

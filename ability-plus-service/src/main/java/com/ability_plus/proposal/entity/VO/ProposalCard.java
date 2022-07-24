@@ -16,5 +16,6 @@ public class ProposalCard {
     private Integer authorId;
     private String projectName;
     private Integer likeNum;
+    private Integer proposalId;
 //    private
 }

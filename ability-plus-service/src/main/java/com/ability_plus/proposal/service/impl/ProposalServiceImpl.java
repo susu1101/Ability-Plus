@@ -307,6 +307,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         setFilter(isAscendingOrderLike, isAscendingOrderTime, pageSetting);
 
         MPJLambdaWrapper<Proposal> w = CardUtils.appendToProposalCardWrapper(new MPJLambdaWrapper<>());
+        w.eq(Proposal::getStatus,"approved");
         w.and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));
         IPage<ProposalCard> page = proposalMapper.selectJoinPage(pageSetting, ProposalCard.class, w);
         return page;
