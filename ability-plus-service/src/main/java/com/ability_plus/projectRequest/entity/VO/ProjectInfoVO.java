@@ -17,4 +17,5 @@ public class ProjectInfoVO {
     private Integer authorId;
     private Long lastModifiedTime;
     private String status;
+    private String area;
 }

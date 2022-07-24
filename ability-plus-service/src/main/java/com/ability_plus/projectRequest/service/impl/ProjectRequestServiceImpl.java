@@ -223,6 +223,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
                 .select(ProjectRequest::getStatus)
+                .selectAs(ProjectRequest::getProjectArea,"area")
                 .select(ProjectRequest::getId)
                 .select(ProjectRequest::getLastModifiedTime)
                 .selectAs(User::getFullName,"authorName")
