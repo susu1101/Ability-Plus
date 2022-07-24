@@ -438,7 +438,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     }
 
     @Override
-    public Boolean canSubmitProposal(Integer projectId, HttpServletRequest http) {
+    public Integer canSubmitProposal(Integer projectId, HttpServletRequest http) {
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
         if (currentUser.getIsCompany()){
             throw  new CheckException("Company cannot submit proposal");
@@ -448,11 +448,15 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .eq(ProjectProposalRecord::getProjectId,projectId)
                 .eq(Proposal::getCreatorId,currentUser.getId())
                 .selectAs(Proposal::getCreatorId,"userId")
+                .selectAs(Proposal::getId,"proposalId")
                 .selectAs(ProjectProposalRecord::getProjectId,"projectId");
 
 
         List<Student2ProjectPOJO> student2ProjectPOJO = projectProposalRecordMapper.selectJoinList(Student2ProjectPOJO.class, wrapper);
-        return CheckUtils.isEmpty(student2ProjectPOJO);
+        if (CheckUtils.isEmpty(student2ProjectPOJO)){
+            return -1;
+        }
+        return student2ProjectPOJO.get(0).getProposalId();
     }
 
 

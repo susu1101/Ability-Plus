@@ -171,8 +171,8 @@ public interface IProposalService extends IService<Proposal> , MPJBaseService<Pr
      * student can submit proposal?
      * @param projectId
      * @param http
-     * @return ture : is student and can submit
-     *          false : not student or already submit or cannot submit
+     * @return id : is student and can submit
+     *          false -1 : not student or already submit or cannot submit
      */
-    public Boolean canSubmitProposal (Integer projectId,HttpServletRequest http);
+    public Integer canSubmitProposal (Integer projectId,HttpServletRequest http);
 }

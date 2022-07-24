@@ -9,4 +9,5 @@ import lombok.Data;
 public class Student2ProjectPOJO {
     private Integer userId;
     private Integer projectId;
+    private Integer proposalId;
 }

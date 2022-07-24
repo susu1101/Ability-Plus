@@ -258,7 +258,7 @@ public class ProposalController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
             })
-    public RestResponse<Boolean> canSubmitProposal (@RequestParam(value = "projectId") Integer projectId,HttpServletRequest http){
+    public RestResponse<Integer> canSubmitProposal (@RequestParam(value = "projectId") Integer projectId,HttpServletRequest http){
         return RestResponse.success(proposalService.canSubmitProposal(projectId,http));
     }
 
