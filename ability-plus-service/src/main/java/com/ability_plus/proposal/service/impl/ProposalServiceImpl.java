@@ -69,6 +69,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     @Autowired
     IProjectRequestService projectRequestService;
 
+
     @Autowired
     IUserService userService;
     @Resource
@@ -231,7 +232,13 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         BeanUtils.copyProperties(proposal,data);
         User auth = userService.getById(proposal.getCreatorId());
         data.setCreatorName(auth.getFullName());
-
+        Integer projectId = projectProposalRecordService.getProjectIdByProposalId(proposalId);
+        if (proposalId==-1){
+            throw new CheckException("this proposal has no record");
+        }
+        ProjectRequest project = projectRequestService.getById(projectId);
+        data.setProjectName(project.getName());
+        data.setProjectId(project.getId());
         return data;
     }
 

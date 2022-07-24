@@ -11,4 +11,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ProposalDetailVO extends Proposal {
     private String creatorName;
+    private Integer projectId;
+    private String projectName;
 }

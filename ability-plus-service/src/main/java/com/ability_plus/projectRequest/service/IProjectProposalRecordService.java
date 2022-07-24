@@ -15,5 +15,12 @@ import com.github.yulichang.base.MPJBaseService;
  * @since 2022-06-30
  */
 public interface IProjectProposalRecordService extends IService<ProjectProposalRecord>, MPJBaseService<ProjectProposalRecord> {
+    /**
+     * getProjectIdByProposalId
+     * @param proposalId
+     * @return  projectId if exist
+     *          -1 if record not exist
+     */
+    public Integer getProjectIdByProposalId(Integer proposalId);
 
 }
