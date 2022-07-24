@@ -16,10 +16,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IReplyService extends IService<Reply> {
     /**
-     * new a replay to a post
+     * new a reply to a post
      * @param data
      * @param postId
      * @param http
      */
     void newReply(String data,Integer postId, HttpServletRequest http);
+
+    /**
+     * delete my reply
+     * @param replyId
+     * @param http
+     */
+    void deleteMyReply(Integer replyId, HttpServletRequest http);
 }

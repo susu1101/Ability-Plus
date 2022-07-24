@@ -43,4 +43,16 @@ public class ReplyController {
         replyService.newReply(data,postId,http);
         return RestResponse.success();
     }
+
+    @PostMapping("/delete_my_reply")
+    @ApiOperation("delete_my_reply")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "replyId", value = "replyId", required = true),
+    })
+    public RestResponse deleteMyReply(@RequestParam(value = "replyId") Integer replyId,
+                                     HttpServletRequest http){
+        replyService.deleteMyReply(replyId,http);
+        return RestResponse.success();
+    }
+
 }

@@ -60,6 +60,16 @@ public class PostController {
         return RestResponse.success(postService.listMyPost(projectId,http));
     }
 
+    @PostMapping("/delete_my_post")
+    @ApiOperation("delete_my_post")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postId", value = "postId", required = true),
+    })
+    public RestResponse deleteMyPost(@RequestParam(value = "postId") Integer postId,
+                                                  HttpServletRequest http){
+        postService.deleteMyPost(postId,http);
+        return RestResponse.success();
+    }
 
 
 }

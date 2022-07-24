@@ -39,4 +39,13 @@ public interface IPostService extends IService<Post> {
      * @return
      */
     List<PostVO> listMyPost(Integer projectId, HttpServletRequest http);
+
+    /**
+     * delete my post
+     * @param postId
+     * @param http
+     */
+    void deleteMyPost(Integer postId,HttpServletRequest http);
+
+
 }

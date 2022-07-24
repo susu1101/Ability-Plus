@@ -5,6 +5,8 @@ import com.ability_plus.forum.entity.Reply;
 import com.ability_plus.forum.mapper.ReplyMapper;
 import com.ability_plus.forum.service.IPostService;
 import com.ability_plus.forum.service.IReplyService;
+import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
@@ -41,5 +43,16 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
 
         post.setHasNewUpdate(true);
         postService.updateById(post);
+    }
+
+    @Override
+    public void deleteMyReply(Integer replyId, HttpServletRequest http) {
+        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        Reply reply = this.getById(replyId);
+        CheckUtils.assertNotNull(reply,"reply not exist");
+        if (!reply.getReplierId().equals(currentUser.getId())){
+            throw new CheckException("you have no permission to delete others reply");
+        }
+        this.removeById(reply);
     }
 }
