@@ -25,6 +25,7 @@ import com.ability_plus.system.entity.FilterName;
 import com.ability_plus.user.entity.POJO.Student2ProjectPOJO;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
+import com.ability_plus.user.entity.UserProposalLikeRecord;
 import com.ability_plus.user.service.IUserService;
 import com.ability_plus.utils.CardUtils;
 import com.ability_plus.utils.CheckUtils;
@@ -385,7 +386,10 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .eq(ProjectRequest::getId, projectId)
                 .eq(Proposal::getStatus, ProposalStatus.APPROVED)
                 .select(ProjectProposalRecord::getRating)
-                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"));
+                .selectAs(Proposal::getLikeNum,"likeNum")
+                .selectAs(ProjectProposalRecord::getProposalId,"id")
+                .and(wrapper -> wrapper.like(Proposal::getTitle, "%" + searchKey + "%").or().like(Proposal::getOneSentenceDescription, "%" + searchKey + "%").or().like(User::getFullName, "%" + searchKey + "%"))
+        ;
 
         if (isAscendingOrder) {
             myWrapper.orderByAsc(Proposal::getLikeNum);

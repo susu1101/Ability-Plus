@@ -13,4 +13,5 @@ public class ProjectProposalInfoVO {
     private Integer authorId;
     private String authorName;
     private Integer rating;
+    private Integer likeNum;
 }
