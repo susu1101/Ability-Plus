@@ -46,6 +46,13 @@ public class CheckUtils {
     public static final boolean isNotNull(Object object) {
         return object != null;
     }
+    public static final boolean isNull(String object) {
+        return object == null || "".equals(object);
+    }
+
+    public static final boolean isNotNull(String object) {
+        return object != null && !"".equals(object);
+    }
 
     public static final void assertNotNull(Object object, String message, Object... args) {
         if (isNull(object)) {

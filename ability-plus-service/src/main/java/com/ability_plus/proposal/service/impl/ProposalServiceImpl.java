@@ -248,12 +248,12 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         Page<ProposalInfoVO> pageSetting = new Page<>(pageNo, pageSize);
         MPJLambdaWrapper<Proposal> myWrapper = new MPJLambdaWrapper<>();
         CardUtils.appendToProposalCardWrapper(myWrapper);
-
+        if (CheckUtils.isNotNull(status)){
+            myWrapper.eq(Proposal::getStatus,status);
+        }
         myWrapper
                 .eq(Proposal::getCreatorId,user.getId())
-                .eq(Proposal::getStatus,status)
                 .select(Proposal::getStatus)
-                //Todo like 有问题?
                 .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
 
