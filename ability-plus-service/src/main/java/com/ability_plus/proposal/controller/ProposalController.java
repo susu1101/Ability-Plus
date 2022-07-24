@@ -252,4 +252,14 @@ public class ProposalController {
         proposalService.commitApprovedProposal(projectId);
         return RestResponse.success();
     }
+
+    @GetMapping("/can_submit_proposal")
+    @ApiOperation("show the student can submit the proposal in this project")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId",value = "project ID",required = true),
+            })
+    public RestResponse<Boolean> canSubmitProposal (@RequestParam(value = "projectId") Integer projectId,HttpServletRequest http){
+        return RestResponse.success(proposalService.canSubmitProposal(projectId,http));
+    }
+
 }

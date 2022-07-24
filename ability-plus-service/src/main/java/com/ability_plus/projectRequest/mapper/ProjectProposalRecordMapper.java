@@ -2,7 +2,9 @@ package com.ability_plus.projectRequest.mapper;
 
 
 import com.ability_plus.projectRequest.entity.ProjectProposalRecord;
+import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,6 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2022-06-30
  */
 @Mapper
-public interface ProjectProposalRecordMapper extends BaseMapper<ProjectProposalRecord> {
+public interface ProjectProposalRecordMapper extends BaseMapper<ProjectProposalRecord>, MPJBaseMapper<ProjectProposalRecord> {
 
 }

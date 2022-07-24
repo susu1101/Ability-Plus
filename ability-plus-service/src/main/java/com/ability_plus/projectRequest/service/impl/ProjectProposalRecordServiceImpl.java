@@ -8,6 +8,7 @@ import com.ability_plus.user.entity.User;
 import com.ability_plus.user.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.base.MPJBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,6 @@ import java.util.List;
  * @since 2022-06-30
  */
 @Service
-public class ProjectProposalRecordServiceImpl extends ServiceImpl<ProjectProposalRecordMapper, ProjectProposalRecord> implements IProjectProposalRecordService {
+public class ProjectProposalRecordServiceImpl extends MPJBaseServiceImpl<ProjectProposalRecordMapper, ProjectProposalRecord> implements IProjectProposalRecordService {
 
 }

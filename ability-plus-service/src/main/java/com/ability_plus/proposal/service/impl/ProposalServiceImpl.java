@@ -22,6 +22,7 @@ import com.ability_plus.proposal.mapper.ProposalMapper;
 import com.ability_plus.proposal.service.IProposalService;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.system.entity.FilterName;
+import com.ability_plus.user.entity.POJO.Student2ProjectPOJO;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.service.IUserService;
@@ -74,6 +75,8 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
     ProposalMapper proposalMapper;
     @Resource
     ProjectRequestMapper projectRequestMapper;
+    @Resource
+    ProjectProposalRecordMapper projectProposalRecordMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -421,7 +424,23 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         projectRequestMapper.update(projectRequest,updateWrapper);
     }
 
+    @Override
+    public Boolean canSubmitProposal(Integer projectId, HttpServletRequest http) {
+        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        if (currentUser.getIsCompany()){
+            throw  new CheckException("Company cannot submit proposal");
+        }
+        MPJLambdaWrapper<ProjectProposalRecord> wrapper = new MPJLambdaWrapper<>();
+        wrapper.leftJoin(Proposal.class,Proposal::getId,ProjectProposalRecord::getProposalId)
+                .eq(ProjectProposalRecord::getProjectId,projectId)
+                .eq(Proposal::getCreatorId,currentUser.getId())
+                .selectAs(Proposal::getCreatorId,"userId")
+                .selectAs(ProjectProposalRecord::getProjectId,"projectId");
 
+
+        List<Student2ProjectPOJO> student2ProjectPOJO = projectProposalRecordMapper.selectJoinList(Student2ProjectPOJO.class, wrapper);
+        return CheckUtils.isEmpty(student2ProjectPOJO);
+    }
 
 
     @Override
