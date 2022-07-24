@@ -2,6 +2,8 @@ package com.ability_plus.forum.service;
 
 import com.ability_plus.forum.entity.Post;
 import com.ability_plus.forum.entity.PostVO;
+import com.ability_plus.forum.entity.Reply;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -55,4 +57,13 @@ public interface IPostService extends IService<Post> {
      * @param http
      */
     void editMyPost(Integer postId,String data,Boolean isPick, HttpServletRequest http);
+
+    /**
+     * return all my post which has new reply
+     * @param http
+     * @return
+     */
+    List<Integer> newReplyPost(HttpServletRequest http);
+
+    IPage<Reply> getAPostInfo(Integer postId,Integer pageNo,Integer pageSize);
 }

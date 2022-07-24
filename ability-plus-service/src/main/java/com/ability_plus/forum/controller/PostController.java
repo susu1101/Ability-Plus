@@ -2,9 +2,11 @@ package com.ability_plus.forum.controller;
 
 
 import com.ability_plus.forum.entity.PostVO;
+import com.ability_plus.forum.entity.Reply;
 import com.ability_plus.forum.service.IPostService;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.utils.RestResponse;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -83,6 +85,30 @@ public class PostController {
                                                   HttpServletRequest http){
         postService.editMyPost(postId,data,isPin,http);
         return RestResponse.success();
+    }
+
+    @GetMapping("/new_reply_post")
+    @ApiOperation("my_new_reply_post")
+
+    public RestResponse<List<Integer>> newReplyPost(HttpServletRequest http){
+
+        return RestResponse.success(postService.newReplyPost(http));
+    }
+
+    @GetMapping("/get_a_post_reply_info")
+    @ApiOperation("get_a_post_info")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postId", value = "postId", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false),
+    })
+
+    public RestResponse<IPage<Reply>> getAPostReplyInfo(@RequestParam(value = "postId") Integer postId,
+                                                        @RequestParam(value = "pageNo") Integer pageNo,
+                                                        @RequestParam(value = "pageSize") Integer pageSize
+                                                   ){
+
+        return RestResponse.success(postService.getAPostInfo(postId,pageNo,pageSize));
     }
 
 

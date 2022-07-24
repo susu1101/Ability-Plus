@@ -4,19 +4,29 @@ import com.ability_plus.forum.entity.Post;
 import com.ability_plus.forum.entity.PostVO;
 import com.ability_plus.forum.entity.Reply;
 import com.ability_plus.forum.mapper.PostMapper;
+import com.ability_plus.forum.mapper.ReplyMapper;
 import com.ability_plus.forum.service.IPostService;
 import com.ability_plus.forum.service.IReplyService;
+import com.ability_plus.projectRequest.entity.ProjectRequest;
+import com.ability_plus.projectRequest.entity.VO.ProfileProjectInfoVO;
 import com.ability_plus.system.entity.CheckException;
+import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.MPJMappingWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import org.apache.ibatis.annotations.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +43,8 @@ import java.util.List;
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IPostService {
     @Autowired
     IReplyService replyService;
+    @Resource
+    ReplyMapper replyMapper;
     @Override
     public void newPost(String data, Integer projectId, Boolean isPin,HttpServletRequest http) {
         Post post = new Post();
@@ -95,6 +107,33 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         post.setData(data);
         post.setLastModifiedTime(TimeUtils.getTimeStamp());
         this.updateById(post);
+    }
+
+    @Override
+    public List<Integer> newReplyPost(HttpServletRequest http) {
+        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        QueryWrapper<Post> wrapper = new QueryWrapper<>();
+        wrapper.eq("auth_id",currentUser.getId())
+                .eq("has_new_update",true);
+
+        List<Post> list = this.list(wrapper);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Post post:list){
+            result.add(post.getId());
+        }
+
+        return result;
+    }
+
+    @Override
+    public IPage<Reply> getAPostInfo(Integer postId,Integer pageNo,Integer pageSize) {
+        Page<Reply> pageSetting = new Page<>(pageNo, pageSize);
+        MPJLambdaWrapper<Reply> wrapper = new MPJLambdaWrapper<>();
+        wrapper.eq(Reply::getPostId,postId)
+                .orderByDesc(Reply::getReplyTime);
+        Page<Reply> replyPages = replyMapper.selectPage(pageSetting, wrapper);
+
+        return replyPages;
     }
 
     private List<PostVO> getPostVOS(QueryWrapper<Post> wrapper) {
