@@ -355,7 +355,9 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
                 .select(Proposal::getOneSentenceDescription)
                 .selectAs(User::getId,"authorId")
                 .selectAs(User::getFullName,"authorName")
-                .select(ProjectProposalRecord::getRating)
+                .selectAs(ProjectProposalRecord::getRating,"rating")
+                .selectAs(ProjectProposalRecord::getIsPick,"isPick")
+                .selectAs(ProjectProposalRecord::getComment,"comment")
                 .and(wrapper -> wrapper.like(Proposal::getTitle,"%"+searchKey+"%").or().like(Proposal::getOneSentenceDescription,"%"+searchKey+"%").or().like(User::getFullName,"%"+searchKey+"%"));
 
         if (ProjectProposalRecordIsPick.ALL.equals(isPick)) {

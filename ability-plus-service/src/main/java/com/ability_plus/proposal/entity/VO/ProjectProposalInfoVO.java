@@ -13,5 +13,7 @@ public class ProjectProposalInfoVO {
     private Integer authorId;
     private String authorName;
     private Integer rating;
+    private String comment;
+    private Integer isPick;
     private Integer likeNum;
 }

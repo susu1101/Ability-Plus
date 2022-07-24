@@ -366,4 +366,9 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         this.removeById(project);
 
     }
+
+    @Override
+    public String getProjectStatus(Integer projectId) {
+        return this.getById(projectId).getStatus();
+    }
 }

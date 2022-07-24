@@ -158,6 +158,15 @@ public class ProjectRequestController {
         return RestResponse.success();
     }
 
+    @ApiOperation("get project status")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+    })
+    @GetMapping("/getProjectStatus")
+    public RestResponse<String> getProjectStatus(@RequestParam Integer projectId){
+
+        return RestResponse.success(projectRequestService.getProjectStatus(projectId));
+    }
 
 
 }

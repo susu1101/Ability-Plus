@@ -102,4 +102,11 @@ public interface IProjectRequestService extends IService<ProjectRequest>, MPJBas
      * @param http
      */
     void deleteProject(Integer projectId, HttpServletRequest http);
+
+    /**
+     * get project status
+     * @param projectId
+     * @return
+     */
+    String  getProjectStatus(Integer projectId);
 }
