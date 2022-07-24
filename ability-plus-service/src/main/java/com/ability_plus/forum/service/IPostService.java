@@ -48,4 +48,11 @@ public interface IPostService extends IService<Post> {
     void deleteMyPost(Integer postId,HttpServletRequest http);
 
 
+    /**
+     * edit a post
+     * @param postId
+     * @param data
+     * @param http
+     */
+    void editMyPost(Integer postId,String data,Boolean isPick, HttpServletRequest http);
 }

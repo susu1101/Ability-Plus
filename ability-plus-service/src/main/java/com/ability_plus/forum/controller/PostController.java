@@ -70,6 +70,20 @@ public class PostController {
         postService.deleteMyPost(postId,http);
         return RestResponse.success();
     }
+    @PostMapping("/edit_my_post")
+    @ApiOperation("edit_my_post")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postId", value = "postId", required = true),
+            @ApiImplicitParam(name = "data", value = "data", required = true),
+            @ApiImplicitParam(name = "pin", value = "pin", required = false),
+    })
+    public RestResponse editMyPost(@RequestParam(value = "postId") Integer postId,
+                                   @RequestParam(value = "data") String  data,
+                                   @RequestParam(value = "pin",required = false) Boolean  isPin,
+                                                  HttpServletRequest http){
+        postService.editMyPost(postId,data,isPin,http);
+        return RestResponse.success();
+    }
 
 
 }

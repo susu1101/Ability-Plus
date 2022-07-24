@@ -49,10 +49,28 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
     public void deleteMyReply(Integer replyId, HttpServletRequest http) {
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
         Reply reply = this.getById(replyId);
+        checkReplyPermission(currentUser, reply);
+        this.removeById(reply);
+    }
+
+    private void checkReplyPermission(UserPOJO currentUser, Reply reply) {
         CheckUtils.assertNotNull(reply,"reply not exist");
         if (!reply.getReplierId().equals(currentUser.getId())){
             throw new CheckException("you have no permission to delete others reply");
         }
-        this.removeById(reply);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void editMyReply(Integer replyId, String data, HttpServletRequest http) {
+        UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        Reply reply = this.getById(replyId);
+        checkReplyPermission(currentUser, reply);
+        reply.setData(data);
+        reply.setReplyTime(TimeUtils.getTimeStamp());
+        this.updateById(reply);
+        Post post = postService.getById(reply.getPostId());
+        post.setHasNewUpdate(true);
+        postService.updateById(post);
     }
 }

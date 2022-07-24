@@ -29,4 +29,12 @@ public interface IReplyService extends IService<Reply> {
      * @param http
      */
     void deleteMyReply(Integer replyId, HttpServletRequest http);
+
+    /**
+     * edit my reply
+     * @param replyId
+     * @param data
+     * @param http
+     */
+    void editMyReply(Integer replyId, String data,HttpServletRequest http);
 }

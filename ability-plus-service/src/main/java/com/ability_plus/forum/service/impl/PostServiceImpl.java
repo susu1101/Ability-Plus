@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.Utilities;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,9 +67,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     @Transactional(rollbackFor = Exception.class)
     public void deleteMyPost(Integer postId, HttpServletRequest http) {
         Post post = this.getById(postId);
-        if (!post.getAuthId().equals(UserUtils.getCurrentUser(http).getId())){
-            throw new CheckException("you have no permission to delete others project");
-        }
+        checkPostModifyPermission(http, post);
         this.removeById(post);
 
         QueryWrapper<Reply> wrapper = new QueryWrapper<>();
@@ -79,6 +76,25 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         for (Reply reply:list){
             replyService.removeById(reply);
         }
+    }
+
+    private void checkPostModifyPermission(HttpServletRequest http, Post post) {
+        CheckUtils.assertNotNull(post,"post not exist");
+        if (!post.getAuthId().equals(UserUtils.getCurrentUser(http).getId())){
+            throw new CheckException("you have no permission to delete others project");
+        }
+    }
+
+    @Override
+    public void editMyPost(Integer postId, String data,Boolean isPick, HttpServletRequest http) {
+        Post post = this.getById(postId);
+        checkPostModifyPermission(http, post);
+        if (CheckUtils.isNotNull(isPick)){
+            post.setPin(isPick);
+        }
+        post.setData(data);
+        post.setLastModifiedTime(TimeUtils.getTimeStamp());
+        this.updateById(post);
     }
 
     private List<PostVO> getPostVOS(QueryWrapper<Post> wrapper) {

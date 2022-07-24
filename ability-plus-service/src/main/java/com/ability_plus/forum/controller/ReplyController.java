@@ -55,4 +55,18 @@ public class ReplyController {
         return RestResponse.success();
     }
 
+    @PostMapping("/edit_my_reply")
+    @ApiOperation("edit_my_reply")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "reply", value = "reply", required = true),
+            @ApiImplicitParam(name = "data", value = "data", required = true),
+            @ApiImplicitParam(name = "pin", value = "pin", required = false),
+    })
+    public RestResponse editMyPost(@RequestParam(value = "replyId") Integer replyId,
+                                   @RequestParam(value = "data") String  data,
+                                   HttpServletRequest http){
+        replyService.editMyReply(replyId,data,http);
+        return RestResponse.success();
+    }
+
 }
