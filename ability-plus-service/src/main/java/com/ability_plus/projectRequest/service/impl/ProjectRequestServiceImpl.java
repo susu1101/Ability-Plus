@@ -207,27 +207,27 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         }
 
         MPJLambdaWrapper<ProjectRequest> wrapper = new MPJLambdaWrapper<>();
+//
         if (CheckUtils.isNotEmpty(status)){
             wrapper.eq(ProjectRequest::getStatus,status);
         }
-        wrapper
-                .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
+        wrapper.leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
                 .eq(ProjectRequest::getCreatorId,user.getId())
-                .like(ProjectRequest::getDescription,"%"+searchKey+"%")
+                .eq(ProjectRequest::getCreatorId,user.getId())
+                .and(w->w.like(ProjectRequest::getDescription,"%"+searchKey+"%")
                 .or()
                 .like(ProjectRequest::getName,"%"+searchKey+"%")
                 .or()
-                .like(User::getFullName,"%"+searchKey+"%");
-
-//                //TODO like search key还没写
-        wrapper.selectAs(ProjectRequest::getName,"title")
+                .like(User::getFullName,"%"+searchKey+"%"))
+                .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .selectAs(ProjectRequest::getCreatorId,"authorId")
                 .select(ProjectRequest::getStatus)
                 .select(ProjectRequest::getId)
                 .select(ProjectRequest::getLastModifiedTime)
+                .selectAs(User::getFullName,"authorName")
+                ;
 
-                .selectAs(User::getFullName,"authorName");
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, wrapper);
         return page;
