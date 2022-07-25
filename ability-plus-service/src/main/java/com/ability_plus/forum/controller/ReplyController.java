@@ -34,7 +34,7 @@ public class ReplyController {
     @ApiOperation("new a reply")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "data", value = "data", required = true),
-            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+            @ApiImplicitParam(name = "postId", value = "postId", required = true),
             @ApiImplicitParam(name="isPin",value="isPin")
     })
     public RestResponse newReply(@RequestParam(value = "data") String data,
