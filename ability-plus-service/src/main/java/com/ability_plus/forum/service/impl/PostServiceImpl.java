@@ -11,6 +11,7 @@ import com.ability_plus.projectRequest.entity.ProjectRequest;
 import com.ability_plus.projectRequest.entity.VO.ProfileProjectInfoVO;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.user.entity.POJO.UserPOJO;
+import com.ability_plus.user.entity.User;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
@@ -45,6 +46,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     IReplyService replyService;
     @Resource
     ReplyMapper replyMapper;
+
+    @Resource
+    PostMapper postMapper;
     @Override
     public void newPost(String data, Integer projectId, Boolean isPin,HttpServletRequest http) {
         Post post = new Post();
@@ -60,17 +64,22 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
 
     @Override
     public List<PostVO> listAllPost(Integer projectId) {
-        QueryWrapper<Post> wrapper = new QueryWrapper<>();
-        wrapper.eq("project_id",projectId);
+        MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
+        wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .eq(Post::getProjectId,projectId);
+
+//        QueryWrapper<Post> wrapper = new QueryWrapper<>();
+//        wrapper.eq("project_id",projectId);
         List<PostVO> postVOS = getPostVOS(wrapper);
         return postVOS;
     }
 
     @Override
     public List<PostVO> listMyPost(Integer projectId, HttpServletRequest http) {
-        QueryWrapper<Post> wrapper = new QueryWrapper<>();
-        wrapper.eq("project_id",projectId);
-        wrapper.eq("auth_id", UserUtils.getCurrentUser(http).getId());
+        MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
+        wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .eq(Post::getProjectId,projectId)
+                .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId());
         List<PostVO> postVOS = getPostVOS(wrapper);
         return postVOS;
     }
@@ -112,6 +121,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     @Override
     public List<Integer> newReplyPost(HttpServletRequest http) {
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
+        MPJLambdaWrapper<Post> wrapp = new MPJLambdaWrapper<>();
         QueryWrapper<Post> wrapper = new QueryWrapper<>();
         wrapper.eq("auth_id",currentUser.getId())
                 .eq("has_new_update",true);
@@ -136,14 +146,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         return replyPages;
     }
 
-    private List<PostVO> getPostVOS(QueryWrapper<Post> wrapper) {
-        List<Post> list = this.list(wrapper);
-        List<PostVO> postVOS = new ArrayList<>();
-        for (Post post : list) {
-            PostVO postVO = new PostVO();
-            BeanUtils.copyProperties(post, postVO);
-            postVOS.add(postVO);
-        }
+    private List<PostVO> getPostVOS(MPJLambdaWrapper<Post> wrapper) {
+        wrapper.selectAs(Post::getId,"postId")
+                .selectAs(Post::getData,"data")
+                .selectAs(User::getFullName,"authName")
+                .selectAs(Post::getAuthId,"authId");
+        List<PostVO> postVOS = postMapper.selectJoinList(PostVO.class, wrapper);
         return postVOS;
     }
 
