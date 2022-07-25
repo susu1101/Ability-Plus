@@ -9,6 +9,6 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ProposalInfoVO extends CardUtils {
+public class ProposalInfoVO extends ProposalCard {
     private String status;
 }
