@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements IReplyService {
     @Autowired
     IPostService postService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void newReply(String data, Integer postId, HttpServletRequest http) {
