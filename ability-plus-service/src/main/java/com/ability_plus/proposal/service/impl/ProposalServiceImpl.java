@@ -507,7 +507,7 @@ public class ProposalServiceImpl extends MPJBaseServiceImpl<ProposalMapper, Prop
         }
         //业务逻辑，更新
         UpdateWrapper<ProjectProposalRecord> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.in("id",ids);
+        updateWrapper.in("proposal_id",ids);
         ProjectProposalRecord record = new ProjectProposalRecord();
         record.setIsPick(isPick);
         projectProposalRecordService.update(record,updateWrapper);
