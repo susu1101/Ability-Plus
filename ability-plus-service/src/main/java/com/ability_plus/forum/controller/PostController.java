@@ -3,6 +3,7 @@ package com.ability_plus.forum.controller;
 
 import com.ability_plus.forum.entity.PostVO;
 import com.ability_plus.forum.entity.Reply;
+import com.ability_plus.forum.entity.ReplyVO;
 import com.ability_plus.forum.service.IPostService;
 import com.ability_plus.projectRequest.entity.PO.ProjectEditPO;
 import com.ability_plus.utils.RestResponse;
@@ -103,9 +104,9 @@ public class PostController {
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false),
     })
 
-    public RestResponse<IPage<Reply>> getAPostReplyInfo(@RequestParam(value = "postId") Integer postId,
-                                                        @RequestParam(value = "pageNo") Integer pageNo,
-                                                        @RequestParam(value = "pageSize") Integer pageSize
+    public RestResponse<IPage<ReplyVO>> getAPostReplyInfo(@RequestParam(value = "postId") Integer postId,
+                                                          @RequestParam(value = "pageNo") Integer pageNo,
+                                                          @RequestParam(value = "pageSize") Integer pageSize
                                                    ){
 
         return RestResponse.success(postService.getAPostInfo(postId,pageNo,pageSize));

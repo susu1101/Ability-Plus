@@ -3,6 +3,7 @@ package com.ability_plus.forum.service;
 import com.ability_plus.forum.entity.Post;
 import com.ability_plus.forum.entity.PostVO;
 import com.ability_plus.forum.entity.Reply;
+import com.ability_plus.forum.entity.ReplyVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,5 +66,5 @@ public interface IPostService extends IService<Post> {
      */
     List<Integer> newReplyPost(HttpServletRequest http);
 
-    IPage<Reply> getAPostInfo(Integer postId,Integer pageNo,Integer pageSize);
+    IPage<ReplyVO> getAPostInfo(Integer postId, Integer pageNo, Integer pageSize);
 }

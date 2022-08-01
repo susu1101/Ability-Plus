@@ -3,6 +3,7 @@ package com.ability_plus.forum.service.impl;
 import com.ability_plus.forum.entity.Post;
 import com.ability_plus.forum.entity.PostVO;
 import com.ability_plus.forum.entity.Reply;
+import com.ability_plus.forum.entity.ReplyVO;
 import com.ability_plus.forum.mapper.PostMapper;
 import com.ability_plus.forum.mapper.ReplyMapper;
 import com.ability_plus.forum.service.IPostService;
@@ -121,7 +122,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     @Override
     public List<Integer> newReplyPost(HttpServletRequest http) {
         UserPOJO currentUser = UserUtils.getCurrentUser(http);
-        MPJLambdaWrapper<Post> wrapp = new MPJLambdaWrapper<>();
+
         QueryWrapper<Post> wrapper = new QueryWrapper<>();
         wrapper.eq("auth_id",currentUser.getId())
                 .eq("has_new_update",true);
@@ -136,12 +137,20 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     }
 
     @Override
-    public IPage<Reply> getAPostInfo(Integer postId,Integer pageNo,Integer pageSize) {
+    public IPage<ReplyVO> getAPostInfo(Integer postId, Integer pageNo, Integer pageSize) {
         Page<Reply> pageSetting = new Page<>(pageNo, pageSize);
         MPJLambdaWrapper<Reply> wrapper = new MPJLambdaWrapper<>();
-        wrapper.eq(Reply::getPostId,postId)
-                .orderByDesc(Reply::getReplyTime);
-        Page<Reply> replyPages = replyMapper.selectPage(pageSetting, wrapper);
+        wrapper.leftJoin(User.class,User::getId,Reply::getReplierId)
+                .eq(Reply::getPostId,postId)
+                .orderByDesc(Reply::getReplyTime)
+                .selectAs(User::getFullName,"replierName")
+                .select(Reply::getId)
+                .select(Reply::getPostId)
+                .select(Reply::getReplyTime)
+                .select(Reply::getData)
+                .select(Reply::getReplierId)
+        ;
+        IPage<ReplyVO> replyPages = replyMapper.selectJoinPage(pageSetting, ReplyVO.class, wrapper);
 
         return replyPages;
     }
