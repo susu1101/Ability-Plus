@@ -2,7 +2,7 @@ spring:
   main:
     allow-circular-references: true
   profiles:
-    active: dev
+    active: prod
 
 
 
