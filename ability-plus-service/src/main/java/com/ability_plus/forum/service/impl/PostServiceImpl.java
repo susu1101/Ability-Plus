@@ -79,7 +79,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public IPage<PostVO> listMyPost(HttpServletRequest http,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
-                .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId());
+                .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId())
+                .orderByDesc(Post::getLastModifiedTime);
         Page<Post> pageSetting = new Page<>(pageNo, pageSize);
         IPage<PostVO> postVOS = getPostVOS(wrapper,pageSetting);
         return postVOS;
