@@ -64,24 +64,24 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     }
 
     @Override
-    public List<PostVO> listAllPost(Integer projectId) {
+    public IPage<PostVO> listAllPost(Integer projectId,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
                 .eq(Post::getProjectId,projectId);
-
+        Page<Post> pageSetting = new Page<>(pageNo, pageSize);
 //        QueryWrapper<Post> wrapper = new QueryWrapper<>();
 //        wrapper.eq("project_id",projectId);
-        List<PostVO> postVOS = getPostVOS(wrapper);
+        IPage<PostVO> postVOS = getPostVOS(wrapper,pageSetting);
         return postVOS;
     }
 
     @Override
-    public List<PostVO> listMyPost(Integer projectId, HttpServletRequest http) {
+    public IPage<PostVO> listMyPost(HttpServletRequest http,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
-                .eq(Post::getProjectId,projectId)
                 .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId());
-        List<PostVO> postVOS = getPostVOS(wrapper);
+        Page<Post> pageSetting = new Page<>(pageNo, pageSize);
+        IPage<PostVO> postVOS = getPostVOS(wrapper,pageSetting);
         return postVOS;
     }
 
@@ -155,14 +155,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         return replyPages;
     }
 
-    private List<PostVO> getPostVOS(MPJLambdaWrapper<Post> wrapper) {
+    private IPage<PostVO> getPostVOS(MPJLambdaWrapper<Post> wrapper,Page<Post> pageSetting) {
         wrapper.selectAs(Post::getId,"postId")
                 .selectAs(Post::getData,"data")
                 .selectAs(User::getFullName,"authName")
                 .selectAs(Post::getAuthId,"authId")
                 .selectAs(Post::getLastModifiedTime,"lastModifiedTime")
-                .selectAs(Post::getPin,"isPin");
-        List<PostVO> postVOS = postMapper.selectJoinList(PostVO.class, wrapper);
+                .selectAs(Post::getPin,"isPin")
+        ;
+        IPage<PostVO> postVOS = postMapper.selectJoinPage(pageSetting, PostVO.class, wrapper);
         return postVOS;
     }
 

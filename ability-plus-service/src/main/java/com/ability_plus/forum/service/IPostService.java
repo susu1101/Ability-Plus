@@ -33,7 +33,7 @@ public interface IPostService extends IService<Post> {
      * @param projectId
      * @return
      */
-    List<PostVO> listAllPost(Integer projectId);
+    IPage<PostVO> listAllPost(Integer projectId,Integer pageNo, Integer pageSize);
 
     /**
      * list my post
@@ -41,7 +41,7 @@ public interface IPostService extends IService<Post> {
      * @param http
      * @return
      */
-    List<PostVO> listMyPost(Integer projectId, HttpServletRequest http);
+    IPage<PostVO> listMyPost(HttpServletRequest http,Integer pageNo, Integer pageSize);
 
     /**
      * delete my post

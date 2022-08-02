@@ -49,18 +49,25 @@ public class PostController {
     @ApiOperation("list_all_post")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false),
     })
-    public RestResponse<List<PostVO>> listAllPost(@RequestParam(value = "projectId") Integer projectId){
-        return RestResponse.success(postService.listAllPost(projectId));
+    public RestResponse<IPage<PostVO>> listAllPost(@RequestParam(value = "projectId") Integer projectId,
+                                                   @RequestParam(value = "pageNo") Integer pageNo,
+                                                   @RequestParam(value = "pageSize") Integer pageSize){
+        return RestResponse.success(postService.listAllPost(projectId,pageNo,pageSize));
     }
     @GetMapping("/list_my_post")
     @ApiOperation("list_my_post")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
+            @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false),
     })
-    public RestResponse<List<PostVO>> listAllPost(@RequestParam(value = "projectId") Integer projectId,
-                                    HttpServletRequest http){
-        return RestResponse.success(postService.listMyPost(projectId,http));
+    public RestResponse<IPage<PostVO>> listMyPost(@RequestParam(value = "pageNo") Integer pageNo,
+                                                  @RequestParam(value = "pageSize") Integer pageSize,
+                                                    HttpServletRequest http){
+        return RestResponse.success(postService.listMyPost(http,pageNo,pageSize));
     }
 
     @PostMapping("/delete_my_post")
