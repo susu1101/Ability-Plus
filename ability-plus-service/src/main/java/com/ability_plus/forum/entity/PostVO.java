@@ -8,4 +8,6 @@ public class PostVO {
     private String data;
     private String authName;
     private Integer authId;
+    private Boolean isPin;
+    private Long lastModifiedTime;
 }

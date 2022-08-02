@@ -159,7 +159,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         wrapper.selectAs(Post::getId,"postId")
                 .selectAs(Post::getData,"data")
                 .selectAs(User::getFullName,"authName")
-                .selectAs(Post::getAuthId,"authId");
+                .selectAs(Post::getAuthId,"authId")
+                .selectAs(Post::getLastModifiedTime,"lastModifiedTime")
+                .selectAs(Post::getPin,"isPin");
         List<PostVO> postVOS = postMapper.selectJoinList(PostVO.class, wrapper);
         return postVOS;
     }
