@@ -1,9 +1,6 @@
 package com.ability_plus.forum.service.impl;
 
-import com.ability_plus.forum.entity.Post;
-import com.ability_plus.forum.entity.PostVO;
-import com.ability_plus.forum.entity.Reply;
-import com.ability_plus.forum.entity.ReplyVO;
+import com.ability_plus.forum.entity.*;
 import com.ability_plus.forum.mapper.PostMapper;
 import com.ability_plus.forum.mapper.ReplyMapper;
 import com.ability_plus.forum.service.IPostService;
@@ -16,6 +13,7 @@ import com.ability_plus.user.entity.User;
 import com.ability_plus.utils.CheckUtils;
 import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.MPJMappingWrapper;
@@ -71,7 +69,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         Page<Post> pageSetting = new Page<>(pageNo, pageSize);
 //        QueryWrapper<Post> wrapper = new QueryWrapper<>();
 //        wrapper.eq("project_id",projectId);
-        IPage<PostVO> postVOS = getPostVOS(wrapper,pageSetting);
+        getPostVOS(wrapper);
+        IPage<PostVO> postVOS = postMapper.selectJoinPage(pageSetting, PostVO.class, wrapper);
+
         return postVOS;
     }
 
@@ -82,9 +82,21 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId())
                 .orderByDesc(Post::getLastModifiedTime);
         Page<Post> pageSetting = new Page<>(pageNo, pageSize);
-        IPage<PostVO> postVOS = getPostVOS(wrapper,pageSetting);
+        getPostVOS(wrapper);
+        IPage<PostVO> postVOS = postMapper.selectJoinPage(pageSetting, PostVO.class, wrapper);
         return postVOS;
     }
+
+    @Override
+    public List<PostVO> listPostByIds(List<Integer> ids) {
+        MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
+        wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .in(Post::getId,ids)
+                .orderByDesc(Post::getLastModifiedTime);
+        getPostVOS(wrapper);
+        return postMapper.selectJoinList(PostVO.class,wrapper);
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -156,7 +168,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         return replyPages;
     }
 
-    private IPage<PostVO> getPostVOS(MPJLambdaWrapper<Post> wrapper,Page<Post> pageSetting) {
+    private MPJLambdaWrapper<Post> getPostVOS(MPJLambdaWrapper<Post> wrapper) {
         wrapper.selectAs(Post::getId,"postId")
                 .selectAs(Post::getData,"data")
                 .selectAs(User::getFullName,"authName")
@@ -164,8 +176,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .selectAs(Post::getLastModifiedTime,"lastModifiedTime")
                 .selectAs(Post::getPin,"isPin")
         ;
-        IPage<PostVO> postVOS = postMapper.selectJoinPage(pageSetting, PostVO.class, wrapper);
-        return postVOS;
+        return wrapper;
     }
 
 

@@ -1,11 +1,9 @@
 package com.ability_plus.forum.service;
 
-import com.ability_plus.forum.entity.Post;
-import com.ability_plus.forum.entity.PostVO;
-import com.ability_plus.forum.entity.Reply;
-import com.ability_plus.forum.entity.ReplyVO;
+import com.ability_plus.forum.entity.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +35,13 @@ public interface IPostService extends IService<Post> {
 
     /**
      * list my post
-     * @param projectId
      * @param http
      * @return
      */
     IPage<PostVO> listMyPost(HttpServletRequest http,Integer pageNo, Integer pageSize);
+
+
+    List<PostVO> listPostByIds(List<Integer> ids);
 
     /**
      * delete my post

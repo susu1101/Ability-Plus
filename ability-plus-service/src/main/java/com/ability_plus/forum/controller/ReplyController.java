@@ -58,7 +58,7 @@ public class ReplyController {
     @PostMapping("/edit_my_reply")
     @ApiOperation("edit_my_reply")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "reply", value = "reply", required = true),
+            @ApiImplicitParam(name = "replyId", value = "replyId", required = true),
             @ApiImplicitParam(name = "data", value = "data", required = true),
             @ApiImplicitParam(name = "pin", value = "pin", required = false),
     })

@@ -1,6 +1,7 @@
 package com.ability_plus.forum.controller;
 
 
+import com.ability_plus.forum.entity.PostIds;
 import com.ability_plus.forum.entity.PostVO;
 import com.ability_plus.forum.entity.Reply;
 import com.ability_plus.forum.entity.ReplyVO;
@@ -60,7 +61,6 @@ public class PostController {
     @GetMapping("/list_my_post")
     @ApiOperation("list_my_post")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "projectId", value = "projectId", required = true),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = false),
     })
@@ -68,6 +68,12 @@ public class PostController {
                                                   @RequestParam(value = "pageSize") Integer pageSize,
                                                     HttpServletRequest http){
         return RestResponse.success(postService.listMyPost(http,pageNo,pageSize));
+    }
+
+    @PostMapping("/list_post_by_ids")
+    @ApiOperation("list_my_post")
+    public RestResponse<List<PostVO>> listPostByIds(@RequestBody List<Integer> ids){
+        return RestResponse.success(postService.listPostByIds(ids));
     }
 
     @PostMapping("/delete_my_post")
