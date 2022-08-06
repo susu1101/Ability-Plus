@@ -13,7 +13,6 @@ import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.system.entity.FilterName;
-import com.ability_plus.system.entity.StatusName;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.service.IUserService;
@@ -29,7 +28,6 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ability_plus.system.entity.FilterName;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -341,7 +339,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                         .or()
                         .like(User::getFullName,"%"+searchKey+"%"));
 
-        if (StatusName.All_category.equals(status)){
+        if (ProjectRequestStatus.ALL.equals(status)){
 
         }
         else{
