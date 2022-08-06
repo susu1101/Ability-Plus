@@ -175,6 +175,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .selectAs(Post::getAuthId,"authId")
                 .selectAs(Post::getLastModifiedTime,"lastModifiedTime")
                 .selectAs(Post::getPin,"isPin")
+                .selectAs(Post::getProjectId,"projectId")
         ;
         return wrapper;
     }

@@ -10,4 +10,5 @@ public class PostVO {
     private Integer authId;
     private Boolean isPin;
     private Long lastModifiedTime;
+    private Integer projectId;
 }
