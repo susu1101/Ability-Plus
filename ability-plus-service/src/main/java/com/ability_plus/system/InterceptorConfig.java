@@ -38,21 +38,21 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //                .allowedMethods("*")
 //                .maxAge(3600*60);
 //    }
-//    private CorsConfiguration addCorsCig(){
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add("*");
-//        corsConfiguration.setAllowedOrigins(list);
-//        corsConfiguration.addAllowedOrigin("*");
-//        corsConfiguration.addAllowedHeader("*");
-//        corsConfiguration.addAllowedMethod("*");
-//        return corsConfiguration;
-//    }
-//    @Bean
-//    public CorsFilter corsFilter(){
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**",addCorsCig());
-//        return new CorsFilter(source);
-//    }
+    private CorsConfiguration addCorsCig(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        ArrayList<String> list = new ArrayList<>();
+        list.add("*");
+        corsConfiguration.setAllowedOrigins(list);
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        return corsConfiguration;
+    }
+    @Bean
+    public CorsFilter corsFilter(){
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",addCorsCig());
+        return new CorsFilter(source);
+    }
 
 }
