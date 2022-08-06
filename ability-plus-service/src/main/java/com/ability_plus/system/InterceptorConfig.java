@@ -40,12 +40,13 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //    }
     private CorsConfiguration addCorsCig(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        ArrayList<String> list = new ArrayList<>();
-        list.add("*");
-        corsConfiguration.setAllowedOrigins(list);
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("*");
+//        corsConfiguration.setAllowedOrigins(list);
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
+//        corsConfiguration.setAllowCredentials(true);
         return corsConfiguration;
     }
     @Bean

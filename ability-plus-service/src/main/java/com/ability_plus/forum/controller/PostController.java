@@ -119,10 +119,18 @@ public class PostController {
 
     public RestResponse<IPage<ReplyVO>> getAPostReplyInfo(@RequestParam(value = "postId") Integer postId,
                                                           @RequestParam(value = "pageNo") Integer pageNo,
-                                                          @RequestParam(value = "pageSize") Integer pageSize
+                                                          @RequestParam(value = "pageSize") Integer pageSize,
+                                                          HttpServletRequest http
                                                    ){
 
-        return RestResponse.success(postService.getAPostInfo(postId,pageNo,pageSize));
+        return RestResponse.success(postService.getAPostInfo(postId,pageNo,pageSize,http));
+    }
+
+    @ApiOperation("see all")
+    @PostMapping("/see_all")
+    public RestResponse seeAll(HttpServletRequest http){
+        postService.seeAll(http);
+        return RestResponse.success();
     }
 
 

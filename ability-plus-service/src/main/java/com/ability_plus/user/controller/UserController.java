@@ -31,6 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Api(value="user")
+@CrossOrigin
 public class UserController {
 
 

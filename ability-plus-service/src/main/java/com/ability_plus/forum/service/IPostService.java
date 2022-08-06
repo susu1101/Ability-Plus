@@ -66,5 +66,8 @@ public interface IPostService extends IService<Post> {
      */
     List<Integer> newReplyPost(HttpServletRequest http);
 
-    IPage<ReplyVO> getAPostInfo(Integer postId, Integer pageNo, Integer pageSize);
+    IPage<ReplyVO> getAPostInfo(Integer postId, Integer pageNo, Integer pageSize,HttpServletRequest http);
+
+    void seeAll(HttpServletRequest http);
 }
+

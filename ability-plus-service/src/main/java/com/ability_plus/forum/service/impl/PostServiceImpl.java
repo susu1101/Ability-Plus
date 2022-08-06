@@ -15,6 +15,7 @@ import com.ability_plus.utils.TimeUtils;
 import com.ability_plus.utils.UserUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.MPJMappingWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -66,6 +67,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
                 .eq(Post::getProjectId,projectId);
+
+        wrapper.orderByDesc(Post::getPin,Post::getLastModifiedTime);
+
         Page<Post> pageSetting = new Page<>(pageNo, pageSize);
 //        QueryWrapper<Post> wrapper = new QueryWrapper<>();
 //        wrapper.eq("project_id",projectId);
@@ -150,7 +154,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     }
 
     @Override
-    public IPage<ReplyVO> getAPostInfo(Integer postId, Integer pageNo, Integer pageSize) {
+    public IPage<ReplyVO> getAPostInfo(Integer postId, Integer pageNo, Integer pageSize,HttpServletRequest http) {
         Page<Reply> pageSetting = new Page<>(pageNo, pageSize);
         MPJLambdaWrapper<Reply> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Reply::getReplierId)
@@ -164,8 +168,23 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .select(Reply::getReplierId)
         ;
         IPage<ReplyVO> replyPages = replyMapper.selectJoinPage(pageSetting, ReplyVO.class, wrapper);
-
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        Post post = this.getById(postId);
+        if (post.getAuthId().equals(user.getId())){
+            post.setHasNewUpdate(false);
+            this.updateById(post);
+        }
         return replyPages;
+    }
+
+    @Override
+    public void seeAll(HttpServletRequest http) {
+        UserPOJO user = UserUtils.getCurrentUser(http);
+        UpdateWrapper<Post> update = new UpdateWrapper<>();
+        update.eq("auth_id",user.getId());
+        Post post = new Post();
+        post.setHasNewUpdate(false);
+        this.update(post,update);
     }
 
     private MPJLambdaWrapper<Post> getPostVOS(MPJLambdaWrapper<Post> wrapper) {
@@ -176,6 +195,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .selectAs(Post::getLastModifiedTime,"lastModifiedTime")
                 .selectAs(Post::getPin,"isPin")
                 .selectAs(Post::getProjectId,"projectId")
+
         ;
         return wrapper;
     }
