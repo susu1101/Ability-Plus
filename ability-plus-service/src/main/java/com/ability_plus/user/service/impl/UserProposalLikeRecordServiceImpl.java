@@ -40,7 +40,7 @@ public class UserProposalLikeRecordServiceImpl extends ServiceImpl<UserProposalL
         CheckUtils.assertNotNull(proposal,"proposal not exist");
 
         UserPOJO user = UserUtils.getCurrentUser(http);
-        if(!alreadyLike(proposalId, user)){
+        if(alreadyLike(proposalId, user)){
             throw new CheckException("you are already like this proposal");
         }
 
@@ -98,11 +98,10 @@ public class UserProposalLikeRecordServiceImpl extends ServiceImpl<UserProposalL
         wrapper.eq("student_id", user.getId())
                 .eq("proposal_id", proposalId);
         List<UserProposalLikeRecord> records = this.list(wrapper);
-
-        if (CheckUtils.isNotNull(records)){
-            return true;
+        if (CheckUtils.isNull(records) || records.size()==0){
+            return false;
         }
-        return false;
+        return true;
     }
 
 }
