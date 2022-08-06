@@ -339,9 +339,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                         .or()
                         .like(User::getFullName,"%"+searchKey+"%"));
 
-        if (ProjectRequestStatus.ALL.equals(status)){
-
-        }
+        if (CheckUtils.isNull(status)){}
         else{
             myWrapper.eq(ProjectRequest::getStatus,status);
         }
