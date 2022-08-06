@@ -13,6 +13,7 @@ import com.ability_plus.projectRequest.service.IProjectRequestService;
 import com.ability_plus.proposal.entity.Proposal;
 import com.ability_plus.system.entity.CheckException;
 import com.ability_plus.system.entity.FilterName;
+import com.ability_plus.system.entity.StatusName;
 import com.ability_plus.user.entity.User;
 import com.ability_plus.user.entity.POJO.UserPOJO;
 import com.ability_plus.user.service.IUserService;
@@ -326,7 +327,6 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         MPJLambdaWrapper<ProjectRequest> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
                 .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
-                .eq(ProjectRequest::getStatus,status)
                 .select(ProjectRequest::getId)
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
@@ -340,6 +340,13 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                         .like(ProjectRequest::getName,"%"+searchKey+"%")
                         .or()
                         .like(User::getFullName,"%"+searchKey+"%"));
+
+        if (StatusName.All_category.equals(status)){
+
+        }
+        else{
+            myWrapper.eq(ProjectRequest::getStatus,status);
+        }
 
         if(FilterName.PROPOSAL_DUE.equals(whatOrder)){
             if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
