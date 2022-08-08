@@ -286,9 +286,12 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         }
 
         MPJLambdaWrapper<ProjectRequest> myWrapper = new MPJLambdaWrapper<>();
+        if (CheckUtils.isNull(status)){}
+        else{
+            myWrapper.eq(ProjectRequest::getStatus,status);
+        }
         myWrapper
                 .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
-                .eq(ProjectRequest::getStatus,status)
                 .eq(ProjectRequest::getCreatorId,creatorId)
                 .select(ProjectRequest::getId)
                 .selectAs(ProjectRequest::getName,"title")
