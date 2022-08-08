@@ -105,7 +105,7 @@ public class ProjectRequestController {
 
 
 
-    @ApiOperation("list project request created by a company")
+    @ApiOperation("list project request created by a company ")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),
             @ApiImplicitParam(name = "status", value = "required status to filter", required = true),

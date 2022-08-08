@@ -290,6 +290,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .eq(ProjectRequest::getCreatorId,creatorId)
                 .ne(ProjectRequest::getStatus,ProjectRequestStatus.DRAFT)
                 .select(ProjectRequest::getId)
+                .select(ProjectRequest::getStatus)
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
                 .select(ProjectRequest::getLastModifiedTime)
