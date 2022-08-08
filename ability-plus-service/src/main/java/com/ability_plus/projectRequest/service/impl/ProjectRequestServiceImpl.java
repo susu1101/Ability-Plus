@@ -293,6 +293,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         myWrapper
                 .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
                 .eq(ProjectRequest::getCreatorId,creatorId)
+                .ne(ProjectRequest::getStatus,ProjectRequestStatus.DRAFT)
                 .select(ProjectRequest::getId)
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
