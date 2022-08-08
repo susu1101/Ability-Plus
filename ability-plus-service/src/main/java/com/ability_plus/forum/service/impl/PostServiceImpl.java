@@ -86,6 +86,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public IPage<PostVO> listMyPost(HttpServletRequest http,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,Post::getProjectId)
                 .leftJoin(Reply.class,Reply::getPostId,Post::getId)
                 .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId())
                 .orderByDesc(Post::getLastModifiedTime);
@@ -99,6 +100,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public List<PostVO> listPostByIds(List<Integer> ids) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,Post::getProjectId)
                 .leftJoin(Reply.class,Reply::getPostId,Post::getId)
                 .in(Post::getId,ids)
                 .orderByDesc(Post::getLastModifiedTime);
