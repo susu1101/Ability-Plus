@@ -220,17 +220,6 @@ src/main
 │           │       ├── AppException.java
 │           │       ├── CheckException.java
 │           │       └── FilterName.java
-│           ├── test
-│           │   ├── controller
-│           │   │   └── TestController.java
-│           │   ├── entity
-│           │   │   └── Test.java
-│           │   ├── mapper
-│           │   │   └── TestMapper.java
-│           │   └── service
-│           │       ├── ITestService.java
-│           │       └── impl
-│           │           └── TestServiceImpl.java
 │           ├── user
 │           │   ├── controller
 │           │   │   ├── StudentFollowingController.java
