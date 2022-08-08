@@ -128,24 +128,155 @@ Click to view [the api document](http://ability-plus.site:8080/swagger-ui.html)
 ## File Structure
 
 Within the download you'll find the following directories and files:
-
-
-Most of the work of the team is located in the following directory/files
 ```
-src
-├── assets
-├── auth
-├── context
-├── hooks
-├── components
-├── utils
-├── glhfComponents
-├── pages
-├── App.js
-├── footer.routes.js
-└── routes.js
+src/main
+├── java
+│   └── com
+│       └── ability_plus
+│           ├── Application.java
+│           ├── SwaggerConfig.java
+│           ├── forum
+│           │   ├── controller
+│           │   │   ├── PostController.java
+│           │   │   └── ReplyController.java
+│           │   ├── entity
+│           │   │   ├── Post.java
+│           │   │   ├── PostIds.java
+│           │   │   ├── PostVO.java
+│           │   │   ├── Reply.java
+│           │   │   └── ReplyVO.java
+│           │   ├── mapper
+│           │   │   ├── PostMapper.java
+│           │   │   └── ReplyMapper.java
+│           │   └── service
+│           │       ├── IPostService.java
+│           │       ├── IReplyService.java
+│           │       └── impl
+│           │           ├── PostServiceImpl.java
+│           │           └── ReplyServiceImpl.java
+│           ├── projectRequest
+│           │   ├── controller
+│           │   │   ├── ProjectCategoryController.java
+│           │   │   ├── ProjectProposalRecordController.java
+│           │   │   └── ProjectRequestController.java
+│           │   ├── entity
+│           │   │   ├── PO
+│           │   │   │   ├── ProjectCreatePO.java
+│           │   │   │   └── ProjectEditPO.java
+│           │   │   ├── ProjectCard.java
+│           │   │   ├── ProjectCategory.java
+│           │   │   ├── ProjectProposalRecord.java
+│           │   │   ├── ProjectProposalRecordIsPick.java
+│           │   │   ├── ProjectRequest.java
+│           │   │   ├── ProjectRequestStatus.java
+│           │   │   └── VO
+│           │   │       ├── CommentInfoVO.java
+│           │   │       ├── ProfileProjectInfoVO.java
+│           │   │       ├── ProjectDetailInfoVO.java
+│           │   │       └── ProjectInfoVO.java
+│           │   ├── mapper
+│           │   │   ├── ProjectCategoryMapper.java
+│           │   │   ├── ProjectProposalRecordMapper.java
+│           │   │   └── ProjectRequestMapper.java
+│           │   └── service
+│           │       ├── IProjectCategoryService.java
+│           │       ├── IProjectProposalRecordService.java
+│           │       ├── IProjectRequestService.java
+│           │       └── impl
+│           │           ├── ProjectCategoryServiceImpl.java
+│           │           ├── ProjectProposalRecordServiceImpl.java
+│           │           └── ProjectRequestServiceImpl.java
+│           ├── proposal
+│           │   ├── controller
+│           │   │   └── ProposalController.java
+│           │   ├── entity
+│           │   │   ├── P2pPOJO.java
+│           │   │   ├── PO
+│           │   │   │   ├── ProposalBatchProcessRequest.java
+│           │   │   │   ├── ProposalCreatePO.java
+│           │   │   │   └── ProposalEditPO.java
+│           │   │   ├── Proposal.java
+│           │   │   ├── ProposalIds.java
+│           │   │   ├── ProposalStatus.java
+│           │   │   └── VO
+│           │   │       ├── ProjectProposalInfoVO.java
+│           │   │       ├── ProposalCard.java
+│           │   │       ├── ProposalDetailVO.java
+│           │   │       ├── ProposalInfoVO.java
+│           │   │       └── StudentMyProposalVO.java
+│           │   ├── mapper
+│           │   │   └── ProposalMapper.java
+│           │   └── service
+│           │       ├── IProposalService.java
+│           │       └── impl
+│           │           └── ProposalServiceImpl.java
+│           ├── system
+│           │   ├── GlobalExceptionHandler.java
+│           │   ├── InterceptorConfig.java
+│           │   ├── JWTInterceptor.java
+│           │   ├── MybatisPlusConfig.java
+│           │   ├── ProjectStatusCheckTask.java
+│           │   └── entity
+│           │       ├── AppException.java
+│           │       ├── CheckException.java
+│           │       └── FilterName.java
+│           ├── test
+│           │   ├── controller
+│           │   │   └── TestController.java
+│           │   ├── entity
+│           │   │   └── Test.java
+│           │   ├── mapper
+│           │   │   └── TestMapper.java
+│           │   └── service
+│           │       ├── ITestService.java
+│           │       └── impl
+│           │           └── TestServiceImpl.java
+│           ├── user
+│           │   ├── controller
+│           │   │   ├── StudentFollowingController.java
+│           │   │   ├── UserController.java
+│           │   │   └── UserProposalLikeRecordController.java
+│           │   ├── entity
+│           │   │   ├── PO
+│           │   │   │   ├── ChangePasswordPO.java
+│           │   │   │   └── UserProfileEditPO.java
+│           │   │   ├── POJO
+│           │   │   │   ├── Student2ProjectPOJO.java
+│           │   │   │   └── UserPOJO.java
+│           │   │   ├── StudentFollowing.java
+│           │   │   ├── User.java
+│           │   │   ├── UserProposalLikeRecord.java
+│           │   │   └── VO
+│           │   │       ├── CompaniesVO.java
+│           │   │       ├── StudentFollowingVO.java
+│           │   │       ├── UserLoginVO.java
+│           │   │       └── UserProfileVO.java
+│           │   ├── mapper
+│           │   │   ├── StudentFollowingMapper.java
+│           │   │   ├── UserMapper.java
+│           │   │   └── UserProposalLikeRecordMapper.java
+│           │   └── service
+│           │       ├── IStudentFollowingService.java
+│           │       ├── IUserProposalLikeRecordService.java
+│           │       ├── IUserService.java
+│           │       └── impl
+│           │           ├── StudentFollowingServiceImpl.java
+│           │           ├── UserProposalLikeRecordServiceImpl.java
+│           │           └── UserServiceImpl.java
+│           └── utils
+│               ├── CardUtils.java
+│               ├── CheckUtils.java
+│               ├── JwtUtil.java
+│               ├── RestResponse.java
+│               ├── RestSimpleResponse.java
+│               ├── TimeUtils.java
+│               └── UserUtils.java
+└── resources
+    ├── application-dev.properties
+    ├── application-prod.properties
+    ├── application.yml
+    └── log4j.properties
 ```
-
 
 ## Technical Support or Questions
 
