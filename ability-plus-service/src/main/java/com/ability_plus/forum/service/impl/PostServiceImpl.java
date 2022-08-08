@@ -66,6 +66,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public IPage<PostVO> listAllPost(Integer projectId,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .leftJoin(Reply.class,Reply::getPostId,Post::getId)
+
                 .eq(Post::getProjectId,projectId);
 
         wrapper.orderByDesc(Post::getPin,Post::getLastModifiedTime);
@@ -83,6 +85,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public IPage<PostVO> listMyPost(HttpServletRequest http,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .leftJoin(Reply.class,Reply::getPostId,Post::getId)
                 .eq(Post::getAuthId, UserUtils.getCurrentUser(http).getId())
                 .orderByDesc(Post::getLastModifiedTime);
         Page<Post> pageSetting = new Page<>(pageNo, pageSize);
@@ -95,6 +98,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public List<PostVO> listPostByIds(List<Integer> ids) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .leftJoin(Reply.class,Reply::getPostId,Post::getId)
                 .in(Post::getId,ids)
                 .orderByDesc(Post::getLastModifiedTime);
         getPostVOS(wrapper);
@@ -195,7 +199,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .selectAs(Post::getLastModifiedTime,"lastModifiedTime")
                 .selectAs(Post::getPin,"isPin")
                 .selectAs(Post::getProjectId,"projectId")
-
+                .groupBy(Post::getId)
+                .selectCount(Reply::getId,"replyNum")
         ;
         return wrapper;
     }

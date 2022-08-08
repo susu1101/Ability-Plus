@@ -111,7 +111,7 @@ public class UserController {
         return RestResponse.success();
     }
     @GetMapping("/list_company")
-    @ApiOperation("change password")
+    @ApiOperation("list_company")
     public RestResponse<List<CompaniesVO>> listCompany(){
         List<CompaniesVO> companiesVOS = userService.listCompany();
 
