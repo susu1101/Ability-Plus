@@ -105,11 +105,12 @@ public class ProjectRequestController {
 
 
 
-    @ApiOperation("list all project request created by a company")
+    @ApiOperation("list project request created by a company")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "creatorId", value = "id of proposal creator", required = true),
             @ApiImplicitParam(name = "status", value = "required status to filter", required = true),
             @ApiImplicitParam(name = "isAscendingOrder", value = "required order to sort", required = true),
+            @ApiImplicitParam(name = "whatOrder",value = "sort by what order", required = true),
             @ApiImplicitParam(name = "searchKey", value = "the search key", required = true),
             @ApiImplicitParam(name = "pageNo", value = "pageNo", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true),
@@ -118,10 +119,11 @@ public class ProjectRequestController {
     public RestResponse<IPage<ProfileProjectInfoVO>> listCompanyProjectRequests(@RequestParam(value="creatorId") Integer creatorId,
                                                                  @RequestParam(value = "status") String status,
                                                                  @RequestParam(value = "isAscendingOrderTime") Boolean isAscendingOrder,
+                                                                 @RequestParam(value = "whatOrder") String whatOrder,
                                                                  @RequestParam(value = "searchKey",required = false) String searchKey,
                                                                  @RequestParam(value = "pageNo") Integer pageNo,
                                                                  @RequestParam(value = "pageSize") Integer pageSize){
-        IPage<ProfileProjectInfoVO> profileProjectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrder, searchKey, pageNo, pageSize);
+        IPage<ProfileProjectInfoVO> profileProjectInfoVO = projectRequestService.listCompanyProjectRequests(creatorId, status, isAscendingOrder,whatOrder, searchKey, pageNo, pageSize);
         return RestResponse.success(profileProjectInfoVO);
     }
 

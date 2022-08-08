@@ -274,13 +274,8 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
      * @return
      */
     @Override
-    public IPage<ProfileProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrder, String searchKey, Integer pageNo, Integer pageSize) {
+    public IPage<ProfileProjectInfoVO> listCompanyProjectRequests(Integer creatorId, String status, Boolean isAscendingOrder,String whatOrder, String searchKey, Integer pageNo, Integer pageSize) {
         Page<ProfileProjectInfoVO> pageSetting = new Page<>(pageNo, pageSize);
-        if (isAscendingOrder){
-            pageSetting.addOrder(OrderItem.asc("create_time"));
-        }else {
-            pageSetting.addOrder(OrderItem.desc("create_time"));
-        }
         if (status.equals(ProjectRequestStatus.DRAFT)){
             throw new CheckException("Cannot view draft project requests");
         }
@@ -303,9 +298,19 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                         .like(ProjectRequest::getName,"%"+searchKey+"%")
                         .or()
                         .like(User::getFullName,"%"+searchKey+"%"));
-
+        setOrder(isAscendingOrder, whatOrder, myWrapper);
         IPage<ProfileProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProfileProjectInfoVO.class, myWrapper);
         return page;
+    }
+
+    private void setOrder(Boolean isAscendingOrder, String whatOrder, MPJLambdaWrapper<ProjectRequest> myWrapper) {
+        if(FilterName.PROPOSAL_DUE.equals(whatOrder)){
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
+            else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
+        }else{
+            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
+            else{myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
+        }
     }
 
     /**
@@ -347,13 +352,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
             myWrapper.eq(ProjectRequest::getStatus,status);
         }
 
-        if(FilterName.PROPOSAL_DUE.equals(whatOrder)){
-            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getProposalDdl);}
-            else{myWrapper.orderByDesc(ProjectRequest::getProposalDdl);}
-        }else{
-            if(isAscendingOrder){myWrapper.orderByAsc(ProjectRequest::getSolutionDdl);}
-            else{myWrapper.orderByDesc(ProjectRequest::getSolutionDdl);}
-        }
+        setOrder(isAscendingOrder, whatOrder, myWrapper);
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, myWrapper);
         return page;
