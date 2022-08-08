@@ -12,4 +12,5 @@ public class PostVO {
     private Long lastModifiedTime;
     private Integer projectId;
     private Integer replyNum;
+    private String projectName;
 }

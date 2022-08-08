@@ -296,7 +296,6 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .select(ProjectRequest::getId)
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)
-                .select(ProjectRequest::getStatus)
                 .select(ProjectRequest::getLastModifiedTime)
                 .and(wrapper->wrapper.like(ProjectRequest::getDescription,"%"+searchKey+"%")
                         .or()

@@ -66,6 +66,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public IPage<PostVO> listAllPost(Integer projectId,Integer pageNo, Integer pageSize) {
         MPJLambdaWrapper<Post> wrapper = new MPJLambdaWrapper<>();
         wrapper.leftJoin(User.class,User::getId,Post::getAuthId)
+                .leftJoin(ProjectRequest.class,ProjectRequest::getId,Post::getProjectId)
                 .leftJoin(Reply.class,Reply::getPostId,Post::getId)
 
                 .eq(Post::getProjectId,projectId);
@@ -201,6 +202,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
                 .selectAs(Post::getProjectId,"projectId")
                 .groupBy(Post::getId)
                 .selectCount(Reply::getId,"replyNum")
+                .selectAs(ProjectRequest::getName,"projectName")
         ;
         return wrapper;
     }
