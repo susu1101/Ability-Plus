@@ -8,8 +8,9 @@ Ability Plus is a project proposal management tool that not only provides an eff
 - [Author](#author)
 - [Live Demo](#live-demo)
 - [Features](#features)
+- [System Architecture](#system-architecture)
 - [Local Deployment](#local-deployment)
-- [front-end](#frontend)
+- [Frontend](#frontend)
 - [File Structure](#file-structure)
 - [Technical Support or Questions](#technical-support-or-questions)
 
@@ -109,6 +110,11 @@ The backend of Ability Plus is developed by four of the glhf's group members:
 18. Student can see Outstanding Proposals selected from company' project challenges, sort them by the number of likes/submission date, search by keyword and learn from them.
 19. Student can like/unlike proposals from the proposals that selected as outstanding from project challenges.
 20. ...
+
+## System Architecture
+
+<img width="1457" alt="image" src="https://user-images.githubusercontent.com/31226246/189354861-d4b0ee44-fd8d-4791-8308-25e64ccdc323.png">
+
 ## Local Deployment
 The back-end runs on jdk11, if you don't have a jdk environment, please click on the link below to download and install.
 
@@ -118,7 +124,7 @@ Then in terminal go to the root of this project and run the following command to
 
 java -jar ./ability-plus-service/target/ability-plus-service-2.7.1.jar
 
-## frontend
+## Frontend
 
 Click to view [the repo of the frontend](https://github.com/KatrinaaDing/COMP9323-glhf-frontend)
 
