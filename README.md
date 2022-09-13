@@ -275,4 +275,4 @@ src/main
 
 ## Technical Support or Questions
 
-If you have questions or need help running the app please contact [Junxu Su](mailto:z5232553@ad.unsw.edu.au).
+If you have questions or need help running the app please contact [Junxu Su](mailto:hardworkingsusu@gmail.com).
