@@ -133,6 +133,9 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
     @Override
     public Boolean canEditProject(Integer projectId) {
         ProjectRequest proj = this.getById(projectId);
+        if (ProjectRequestStatus.DRAFT.equals(proj.getStatus())){
+            return true;
+        }
         return TimeUtils.getTimeStamp() < proj.getProposalDdl();
     }
 
@@ -227,7 +230,6 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
                 .select(ProjectRequest::getLastModifiedTime)
                 .selectAs(User::getFullName,"authorName")
                 ;
-
 
         IPage<ProjectInfoVO> page = projectRequestMapper.selectJoinPage(pageSetting, ProjectInfoVO.class, wrapper);
         return page;
@@ -334,6 +336,7 @@ public class ProjectRequestServiceImpl extends MPJBaseServiceImpl<ProjectRequest
         MPJLambdaWrapper<ProjectRequest> myWrapper = new MPJLambdaWrapper<>();
         myWrapper
                 .leftJoin(User.class,User::getId,ProjectRequest::getCreatorId)
+                .ne(ProjectRequest::getStatus,ProjectRequestStatus.DRAFT)
                 .select(ProjectRequest::getId)
                 .selectAs(ProjectRequest::getName,"title")
                 .select(ProjectRequest::getDescription)

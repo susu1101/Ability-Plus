@@ -20,8 +20,8 @@ public class SwaggerConfig {
 //    @Value("${swagger_path}")
 //    String path;
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("API接口文档")
-                .description("ability-plus接口")
+        return new ApiInfoBuilder().title("API document")
+                .description("ability-plus interface")
 //                .termsOfServiceUrl(path)
                 .version("v1")
                 .build();
